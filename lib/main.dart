@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/shared/widgets/button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,10 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            GamaButton(text: 'Entrar', onPressed: () {}, isLoading: false)
           ],
         ),
       ),

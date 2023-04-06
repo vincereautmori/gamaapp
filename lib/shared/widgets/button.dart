@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GamaButton extends StatelessWidget {
   const GamaButton(
@@ -24,15 +25,18 @@ class GamaButton extends StatelessWidget {
       ),
       child: isLoading
           ? const SizedBox(
-              height: 24,
-              width: 24,
+              height: 36,
+              width: 36,
               child: CircularProgressIndicator(
                 color: Palette.white,
                 strokeWidth: 2,
               ))
           : Text(
               text,
-              style: const TextStyle(fontSize: 18),
+              style: GoogleFonts.montserrat(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
     );
   }
