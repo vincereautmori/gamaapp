@@ -1,4 +1,4 @@
-import 'package:gamaapp/app/login/sign_in_page.dart';
+import 'package:gamaapp/app/login/presenter/pages/sign_in_page.dart';
 import 'package:get/get.dart';
 
 class Routes {
