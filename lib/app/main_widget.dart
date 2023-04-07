@@ -3,16 +3,17 @@ import 'package:gamaapp/app/routes.dart';
 import 'package:get/get.dart';
 
 import '../shared/themes/themes.dart';
+import 'main_bind.dart';
 
 class GamaApp extends StatelessWidget {
   const GamaApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: GamaThemes().lightTheme,
+      initialBinding: MainBind(),
       initialRoute: '/login',
       getPages: [
         Routes.login,
