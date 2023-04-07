@@ -3,12 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../extensions/string_extension.dart';
 
 class CredentialsEntity extends Equatable {
-  final String companyDocument;
   final String email;
   final String password;
 
   const CredentialsEntity({
-    required this.companyDocument,
     required this.email,
     required this.password,
   });

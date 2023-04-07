@@ -16,19 +16,14 @@ class SignInController extends GetxController {
 
   String get email => SignInFormStates.email.value;
   String get password => SignInFormStates.password.value;
-  String get companyDocument => SignInFormStates.companyDocument.value;
-  String get formView => SignInFormStates.formView.value;
   bool get isLoading => SignInFormStates.isLoading.value;
 
   void setEmail(String newEmailValue) =>
       SignInFormStates.email.value = newEmailValue;
   void setPassword(String newPasswordValue) =>
       SignInFormStates.password.value = newPasswordValue;
-  void setCompanyDocument(String newCompanyDocumentValue) =>
-      SignInFormStates.companyDocument.value = newCompanyDocumentValue;
 
   CredentialsEntity get credentials => CredentialsEntity(
-        companyDocument: companyDocument,
         email: email,
         password: password,
       );
@@ -37,14 +32,6 @@ class SignInController extends GetxController {
   bool get isPasswordValid => credentials.isPasswordValid;
 
   bool get isFormValid => credentials.isCredentialsValid;
-
-  void toggleFormView() {
-    if (formView == "login") {
-      SignInFormStates.formView.value = "forgotPassword";
-    } else {
-      SignInFormStates.formView.value = "login";
-    }
-  }
 
   Future<void> signIn() async {
     SignInFormStates.isLoading.toggle();
