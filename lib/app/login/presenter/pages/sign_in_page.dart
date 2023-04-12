@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/login/presenter/controllers/sign_in_controller.dart';
+import 'package:gamaapp/app/login/presenter/widgets/password_textfield.dart';
 import 'package:gamaapp/app/login/presenter/widgets/square_line.dart';
 import 'package:gamaapp/shared/themes/images.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/widgets/button.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../widgets/email_textfield.dart';
 
 class SignInPage extends GetView<SignInController> {
   const SignInPage({super.key});
@@ -20,8 +24,8 @@ class SignInPage extends GetView<SignInController> {
             child: Center(
               child: Image.asset(
                 Images.logoPNG,
-                height: 139,
-                width: 139,
+                height: 138,
+                width: 138,
               ),
             ),
           ),
@@ -47,48 +51,18 @@ class SignInPage extends GetView<SignInController> {
                   ],
                 ),
                 const SizedBox(height: 40),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: "Ex: email@gmail.com",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: Palette.lightGrey,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Palette.lightGrey,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(width: 2),
-                    ),
-                  ),
-                ),
+                const EmailTextField(),
                 const SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Insira sua senha",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: Palette.lightGrey,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Palette.lightGrey,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(width: 2),
-                    ),
-                  ),
-                ),
+                const PasswordTextField(),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   "Esqueceu sua senha?",
                   textAlign: TextAlign.right,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Palette.grey,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 GamaButton(
