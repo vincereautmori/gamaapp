@@ -9,6 +9,7 @@ class GamaTextField extends StatelessWidget {
   final bool isObscure;
   final Widget? suffix;
   final String label;
+  final void Function(String)? onChange;
 
   const GamaTextField({
     super.key,
@@ -17,6 +18,7 @@ class GamaTextField extends StatelessWidget {
     this.isObscure = false,
     this.suffix,
     required this.label,
+    this.onChange,
   });
 
   @override
@@ -39,6 +41,7 @@ class GamaTextField extends StatelessWidget {
         TextFormField(
           keyboardType: keyboardType,
           obscureText: isObscure,
+          onChanged: onChange,
           decoration: InputDecoration(
             hintText: placeholder,
             suffixIcon: suffix,

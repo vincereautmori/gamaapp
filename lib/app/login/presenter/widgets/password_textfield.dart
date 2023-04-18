@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../shared/widgets/textfield.dart';
 
 class PasswordTextField extends StatefulWidget {
-  const PasswordTextField({super.key});
+  final void Function(String)? onChange;
+  const PasswordTextField({super.key, this.onChange});
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -18,6 +19,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       label: "Senha",
       isObscure: isObscure,
       placeholder: 'Insira sua senha',
+      onChange: widget.onChange,
       suffix: IconButton(
         onPressed: () => setState(() {
           isObscure = !isObscure;
