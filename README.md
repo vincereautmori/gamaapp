@@ -60,3 +60,6 @@ Para facilitar o uso do Git via terminal, adicione as seguintes configurações 
 	amend = !git add --all && git commit --amend --no-edit
 	count = !git shortlog -s --grep
 ```
+
+#### Link Figma
+[Protótipo Figma](https://www.figma.com/file/QdC0vIsrWQE8g11uaZ9jzX/(V.002)-%5BTCC-UNISAL%7C-APP-GAMA---UX-AND-UI%5D?node-id=101-1660&t=phC87QmNl3uuyK5L-0)
