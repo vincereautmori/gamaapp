@@ -18,9 +18,9 @@ class AuthenticationDatasourceImp implements AuthenticationDatasource {
       "password": password,
     });
     return AuthModel(
-      internalCode: 1, //response.data['internalCode'],
-      token: response.data['accessToken'], //response.data['token'],
-      success: response.data != null, //response.data['success'],
+      internalCode: 1,
+      token: response.data['token'],
+      success: response.data != null,
     );
   }
 
