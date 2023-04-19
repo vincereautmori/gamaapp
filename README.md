@@ -10,6 +10,7 @@ Nosso projeto tem como objetivo facilitar o registro de multas e ocorrências do
 ## Para o DEV:
 
 > Flutter: 3.7.#
+
 > Dart 2.19.#
 
 #### Para executar o projeto pela primeira vez:
