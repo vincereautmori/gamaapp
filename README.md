@@ -6,7 +6,7 @@ Grupo: VINCERE AUT MORI <!-- Não faço a ideia do porque desse nome...  -->
 
 ### Objetivo do projeto
 
-Nosso projeto tem como objetivo facilitar o registro de multas e ocorrências dos oficiais da Guarda Armada Municipal de Americana (GAMA), com um aplicativo para registrar denuncias por parte do cidadão comum, além de permitir visualizar suas multas. Para o oficial, ele vai poder visualizar em um mapa as ocorrências mais urgentes, além de poder fazer o registro de multas.
+Nosso objetivo é criar um aplicativo que facilite o registro de multas e ocorrências dos oficiais da Guarda Armada Municipal de Americana (GAMA), além de permitir que o cidadão comum possa registrar denúncias e visualizar suas multas.
 
 ## Desenvolvimento:
 
