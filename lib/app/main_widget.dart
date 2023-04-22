@@ -17,6 +17,7 @@ class GamaApp extends StatelessWidget {
       initialRoute: '/login',
       getPages: [
         Routes.login,
+        Routes.testPageToNavigationOnSuccessLogin,
       ],
     );
   }

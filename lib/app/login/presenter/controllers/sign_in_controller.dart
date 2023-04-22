@@ -43,11 +43,7 @@ class SignInController extends GetxController {
     result.when(
       (authInfo) async {
         await _saveSecureToken.save(authInfo as AuthEntity);
-        utils.callSnackBar(
-          title: "Sucesso",
-          message: "Autenticado com sucesso!",
-          snackStyle: SnackBarStyles.success,
-        );
+        Get.offAllNamed('/success');
       },
       (error) => utils.callSnackBar(
         title: "Falha na autenticação",
