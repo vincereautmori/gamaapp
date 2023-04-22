@@ -25,3 +25,9 @@ class SignOutError extends Failure {
   final String message;
   SignOutError({required this.message});
 }
+
+class CacheError extends Failure {
+  @override
+  final String message;
+  CacheError({required this.message});
+}
