@@ -4,5 +4,5 @@ abstract class CacheStorageDatasource {
     required String token,
   });
 
-  Future<String> loadSecure(String key);
+  Future<String?> loadSecure(String key);
 }
