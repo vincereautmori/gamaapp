@@ -1,6 +1,6 @@
-import 'package:gamaapp/app/login/domain/errors/errors.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../domain/errors/errors.dart';
 import '../../domain/repositories/cache_repository.dart';
 import '../datasources/cache_datasource.dart';
 

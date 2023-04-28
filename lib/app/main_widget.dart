@@ -14,9 +14,10 @@ class GamaApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: GamaThemes().lightTheme,
       initialBinding: MainBind(),
-      initialRoute: '/login',
+      initialRoute: '/splash',
       getPages: [
         Routes.login,
+        Routes.splash,
         Routes.testPageToNavigationOnSuccessLogin,
       ],
     );

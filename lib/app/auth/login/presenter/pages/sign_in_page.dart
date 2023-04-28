@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gamaapp/app/login/presenter/controllers/sign_in_controller.dart';
-import 'package:gamaapp/app/login/presenter/widgets/password_textfield.dart';
-import 'package:gamaapp/app/login/presenter/widgets/square_line.dart';
-import 'package:gamaapp/shared/themes/images.dart';
-import 'package:gamaapp/shared/themes/palette.dart';
-import 'package:gamaapp/shared/widgets/button.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../shared/themes/images.dart';
+import '../../../../../shared/themes/palette.dart';
+import '../../../../../shared/widgets/button.dart';
+import '../../../../../shared/widgets/square_line.dart';
+import '../controllers/sign_in_controller.dart';
 import '../widgets/email_textfield.dart';
+import '../widgets/password_textfield.dart';
 
 class SignInPage extends GetView<SignInController> {
   const SignInPage({super.key});
