@@ -10,4 +10,10 @@ class CacheStorageDatasourceImp implements CacheStorageDatasource {
   Future<void> saveSecure({required String key, required String token}) async {
     await secureStorage.write(key: key, value: token);
   }
+
+  @override
+  Future<String> loadSecure(String key) {
+    // TODO: implement loadSecure
+    throw UnimplementedError();
+  }
 }

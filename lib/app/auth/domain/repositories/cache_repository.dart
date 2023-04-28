@@ -5,4 +5,6 @@ import '../../domain/errors/errors.dart';
 abstract class CacheStorageRepository {
   Future<Result<Unit, Failure>> saveSecure(
       {required String key, required String value});
+
+  Future<Result<String, Failure>> fetchSecure(String key);
 }

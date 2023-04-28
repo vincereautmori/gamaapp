@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'auth/login/presenter/pages/sign_in_page.dart';
-import 'auth/splashscreen/presenter/pages/splashscreen_page.dart';
+import 'auth/presenter/pages/sign_in_page.dart';
+import 'auth/presenter/pages/splashscreen_page.dart';
 
 class Routes {
   static GetPage get login => GetPage(
