@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../shared/themes/images.dart';
 import '../../../../shared/themes/palette.dart';
 import '../../../../shared/widgets/button.dart';
-import '../../../../shared/widgets/square_line.dart';
+import '../widgets/square_line.dart';
 import '../controllers/sign_in_controller.dart';
 import '../widgets/email_textfield.dart';
 import '../widgets/password_textfield.dart';

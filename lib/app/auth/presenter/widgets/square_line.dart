@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/shared/utils/sizes.dart';
 
-import '../themes/palette.dart';
+import '../../../../shared/themes/palette.dart';
 
 class SquaresLines extends StatelessWidget {
   const SquaresLines({super.key});
