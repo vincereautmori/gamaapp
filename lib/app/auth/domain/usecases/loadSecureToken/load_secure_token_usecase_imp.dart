@@ -16,9 +16,9 @@ class LoadSecureTokenImp implements LoadSecureToken {
       return Error(CacheError(message: "Falha ao salvar token"));
     }
 
-    final result =
-        await repository.saveSecure(key: 'token', value: account.token);
+    final result = await repository.fetchSecure('token');
 
-    return const Success(AuthEntity(internalCode: 200, token: 'token'));
+    return Success(
+        AuthEntity(internalCode: 200, token: result.tryGetSuccess() ?? ""));
   }
 }

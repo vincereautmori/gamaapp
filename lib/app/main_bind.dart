@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gamaapp/app/auth/presenter/controllers/splashscreen_controller.dart';
 import 'package:get/get.dart';
 
 import '../shared/config/config.dart';
@@ -40,5 +41,6 @@ class MainBind extends Bindings {
         SaveSecureTokenImp(repository: cacheRepository);
 
     Get.put(SignInController(useCase, cacheUseCase));
+    Get.put(SplashscreenController());
   }
 }
