@@ -11,12 +11,12 @@ class LoadSecureTokenImp implements LoadSecureToken {
   LoadSecureTokenImp({required this.repository});
 
   @override
-  Future<Result<AuthEntity, Failure>> load(AuthEntity account) async {
-    if (!account.success) {
-      return Error(CacheError(message: "Falha ao salvar token"));
-    }
-
+  Future<Result<AuthEntity, Failure>> load() async {
     final result = await repository.fetchSecure('token');
+
+    if (result.isError()) {
+      return Error(CacheError(message: "Falha ao carregar token"));
+    }
 
     return Success(
         AuthEntity(internalCode: 200, token: result.tryGetSuccess() ?? ""));

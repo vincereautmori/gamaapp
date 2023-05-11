@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase.dart';
+import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase_imp.dart';
 import 'package:gamaapp/app/auth/presenter/controllers/splashscreen_controller.dart';
 import 'package:get/get.dart';
 
@@ -37,10 +39,12 @@ class MainBind extends Bindings {
         CacheStorageRepositoryImp(datasource: cacheDataSource);
 
     SignInUseCase useCase = SignInUseCaseImp(repository: repository);
-    SaveSecureToken cacheUseCase =
+    SaveSecureToken saveSecureUseCase =
         SaveSecureTokenImp(repository: cacheRepository);
+    LoadSecureToken loadSecureUseCase =
+        LoadSecureTokenImp(repository: cacheRepository);
 
-    Get.put(SignInController(useCase, cacheUseCase));
-    Get.put(SplashscreenController());
+    Get.put(SignInController(useCase, saveSecureUseCase));
+    Get.put(SplashscreenController(loadSecureUseCase));
   }
 }

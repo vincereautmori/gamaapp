@@ -4,5 +4,5 @@ import '../../entities/auth/auth.dart';
 import '../../errors/errors.dart';
 
 abstract class LoadSecureToken {
-  Future<Result<AuthEntity, Failure>> load(AuthEntity account);
+  Future<Result<AuthEntity, Failure>> load();
 }
