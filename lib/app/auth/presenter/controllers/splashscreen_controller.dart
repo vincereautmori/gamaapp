@@ -15,7 +15,7 @@ class SplashscreenController extends GetxController {
     super.onInit();
     Result<AuthEntity, Failure> result = await _usecase.load();
 
-    result.whenSuccess((success) => null);
+    result.whenSuccess((success) => print(success));
     await Future.delayed(const Duration(seconds: 3));
     Get.offAndToNamed('/login');
   }

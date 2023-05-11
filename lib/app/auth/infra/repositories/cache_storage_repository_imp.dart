@@ -27,8 +27,8 @@ class CacheStorageRepositoryImp implements CacheStorageRepository {
   @override
   Future<Result<String, Failure>> fetchSecure(String key) async {
     try {
-      await datasource.loadSecure(key);
-      return const Success('_success');
+      String? token = await datasource.loadSecure(key);
+      return Success(token ?? "");
     } catch (e) {
       return Error(
         CacheError(
