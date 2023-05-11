@@ -10,15 +10,18 @@ class LoadSecureTokenImp implements LoadSecureToken {
 
   LoadSecureTokenImp({required this.repository});
 
+  void validateIfTokenHasExpired(AuthEntity auth) {}
+
   @override
   Future<Result<AuthEntity, Failure>> load() async {
-    final result = await repository.fetchSecure('token');
+    final result = await repository.fetchSecure();
 
-    if (result.isError()) {
-      return Error(CacheError(message: "Falha ao carregar token"));
-    }
+    Map<String, String> secureData = result.tryGetSuccess() ?? {};
 
-    return Success(
-        AuthEntity(internalCode: 200, token: result.tryGetSuccess() ?? ""));
+    return Success(AuthEntity(
+        internalCode: int.parse(secureData['internalCode'] ?? "200"),
+        token: secureData['token'] ?? "",
+        expiresIn: double.parse(secureData['expiresIn'] ?? "0"),
+        role: secureData['role'] ?? ""));
   }
 }

@@ -1,8 +1,8 @@
 abstract class CacheStorageDatasource {
-  Future<void> saveSecure({
+  Future<void> saveSecure<T>({
     required String key,
-    required String token,
+    required T value,
   });
 
-  Future<String?> loadSecure(String key);
+  Future<Map<String, String>> loadSecure();
 }

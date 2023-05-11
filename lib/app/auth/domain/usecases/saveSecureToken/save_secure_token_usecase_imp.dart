@@ -16,9 +16,11 @@ class SaveSecureTokenImp implements SaveSecureToken {
       return Error(CacheError(message: "Falha ao salvar token"));
     }
 
-    final result =
-        await repository.saveSecure(key: 'token', value: account.token);
+    await repository.saveSecure<String>(key: 'token', value: account.token);
+    await repository.saveSecure<double>(
+        key: 'expiresIn', value: account.expiresIn);
+    await repository.saveSecure<String>(key: 'role', value: account.role);
 
-    return result;
+    return const Success(unit);
   }
 }

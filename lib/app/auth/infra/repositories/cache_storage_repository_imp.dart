@@ -10,10 +10,10 @@ class CacheStorageRepositoryImp implements CacheStorageRepository {
   CacheStorageRepositoryImp({required this.datasource});
 
   @override
-  Future<Result<Unit, Failure>> saveSecure(
-      {required String key, required String value}) async {
+  Future<Result<Unit, Failure>> saveSecure<T>(
+      {required String key, required T value}) async {
     try {
-      await datasource.saveSecure(key: key, token: value);
+      await datasource.saveSecure<T>(key: key, value: value);
       return const Success(unit);
     } catch (e) {
       return Error(
@@ -25,10 +25,10 @@ class CacheStorageRepositoryImp implements CacheStorageRepository {
   }
 
   @override
-  Future<Result<String, Failure>> fetchSecure(String key) async {
+  Future<Result<Map<String, String>, Failure>> fetchSecure() async {
     try {
-      String? token = await datasource.loadSecure(key);
-      return Success(token ?? "");
+      Map<String, String> secureData = await datasource.loadSecure();
+      return Success(secureData);
     } catch (e) {
       return Error(
         CacheError(

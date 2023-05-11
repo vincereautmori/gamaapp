@@ -7,6 +7,8 @@ class AuthModel extends AuthEntity with EquatableMixin implements AuthInfo {
   AuthModel({
     required super.internalCode,
     required super.token,
+    required super.expiresIn,
+    required super.role,
     super.success,
   });
 
