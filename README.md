@@ -12,8 +12,8 @@ Nosso objetivo é criar um aplicativo que facilite o registro de multas e ocorr�
 
 #### Requisitos
 
-- Flutter: 3.7.#
-- Dart 2.19.#
+- Flutter: 3.10.#
+- Dart 3.00.#
 
 #### Para executar o projeto pela primeira vez:
 
@@ -62,4 +62,5 @@ Para facilitar o uso do Git via terminal, adicione as seguintes configurações 
 ```
 
 #### Link Figma
-[Protótipo Figma](https://www.figma.com/file/QdC0vIsrWQE8g11uaZ9jzX/(V.002)-%5BTCC-UNISAL%7C-APP-GAMA---UX-AND-UI%5D?node-id=101-1660&t=phC87QmNl3uuyK5L-0)
+
+[Protótipo Figma](<https://www.figma.com/file/QdC0vIsrWQE8g11uaZ9jzX/(V.002)-%5BTCC-UNISAL%7C-APP-GAMA---UX-AND-UI%5D?node-id=101-1660&t=phC87QmNl3uuyK5L-0>)
