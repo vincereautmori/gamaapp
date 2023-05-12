@@ -1,3 +1,4 @@
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../entities/auth/auth.dart';
@@ -10,13 +11,19 @@ class LoadSecureTokenImp implements LoadSecureToken {
 
   LoadSecureTokenImp({required this.repository});
 
-  void validateIfTokenHasExpired(AuthEntity auth) {}
+  bool validateIfTokenHasExpired(String token) {
+    return JwtDecoder.isExpired(token);
+  }
 
   @override
   Future<Result<AuthEntity, Failure>> load() async {
     final result = await repository.fetchSecure();
 
     Map<String, String> secureData = result.tryGetSuccess() ?? {};
+
+    if (validateIfTokenHasExpired(secureData['token'] ?? "")) {
+      return Error(CacheError(message: 'Token expirado'));
+    }
 
     return Success(AuthEntity(
         internalCode: int.parse(secureData['internalCode'] ?? "200"),

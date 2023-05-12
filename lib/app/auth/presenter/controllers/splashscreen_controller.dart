@@ -1,3 +1,5 @@
+import 'package:gamaapp/shared/themes/snackbar_styles.dart';
+import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:multiple_result/multiple_result.dart';
 
@@ -15,8 +17,14 @@ class SplashscreenController extends GetxController {
     super.onInit();
     Result<AuthEntity, Failure> result = await _usecase.load();
 
-    result.whenSuccess((success) => print(success));
     await Future.delayed(const Duration(seconds: 3));
-    Get.offAndToNamed('/login');
+    result.when((success) => Get.offAndToNamed('/success'), (error) {
+      utils.callSnackBar(
+        title: "Falha na autenticação",
+        message: error.message,
+        snackStyle: SnackBarStyles.warning,
+      );
+      Get.offAndToNamed('/login');
+    });
   }
 }
