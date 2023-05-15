@@ -12,6 +12,8 @@ class LoadSecureTokenImp implements LoadSecureToken {
   LoadSecureTokenImp({required this.repository});
 
   bool validateIfTokenHasExpired(String token) {
+    if (token.isEmpty) return true;
+
     return JwtDecoder.isExpired(token);
   }
 

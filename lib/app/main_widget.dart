@@ -15,11 +15,7 @@ class GamaApp extends StatelessWidget {
       theme: GamaThemes().lightTheme,
       initialBinding: MainBind(),
       initialRoute: '/splash',
-      getPages: [
-        Routes.login,
-        Routes.splash,
-        Routes.testPageToNavigationOnSuccessLogin,
-      ],
+      getPages: [Routes.login, Routes.splash, Routes.cop, Routes.citizen],
     );
   }
 }

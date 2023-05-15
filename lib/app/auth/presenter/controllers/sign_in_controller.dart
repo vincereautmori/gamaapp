@@ -1,3 +1,4 @@
+import 'package:gamaapp/app/auth/presenter/states/splash_screen_states.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
@@ -43,7 +44,7 @@ class SignInController extends GetxController {
     result.when(
       (authInfo) async {
         await _saveSecureToken.save(authInfo as AuthEntity);
-        Get.offAllNamed('/success');
+        Get.offAllNamed('/${SplashScreenStates.successRoutes[authInfo.role]}');
       },
       (error) => utils.callSnackBar(
         title: "Falha na autenticação",
