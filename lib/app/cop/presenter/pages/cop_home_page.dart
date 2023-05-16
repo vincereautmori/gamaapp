@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/app/auth/presenter/controllers/sign_in_controller.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_home_controller.dart';
-import 'package:gamaapp/shared/widgets/button.dart';
+import 'package:gamaapp/shared/widgets/buttons/button.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/themes/images.dart';
 import '../../../../shared/themes/palette.dart';
+import '../../../../shared/widgets/buttons/outlined_button.dart';
 import '../../../../shared/widgets/square_line.dart';
 
 class CopHomePage extends GetView<CopHomeController> {
@@ -12,6 +14,7 @@ class CopHomePage extends GetView<CopHomeController> {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationController signInController = Get.find();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -42,19 +45,19 @@ class CopHomePage extends GetView<CopHomeController> {
                   const SizedBox(height: 32),
                   GamaButton(
                     text: 'Cadastro de Multas',
-                    onPressed: () => controller.goToOcurrence(),
+                    onPressed: controller.goToOcurrence,
                     isLoading: false,
                   ),
                   const SizedBox(height: 16),
                   GamaButton(
                     text: 'Cadastro de Denúncias',
-                    onPressed: () => controller.goToOcurrence(),
+                    onPressed: controller.goToOcurrence,
                     isLoading: false,
                   ),
                   const SizedBox(height: 64),
-                  GamaButton(
+                  GamaOutlinedButton(
                     text: 'Sair',
-                    onPressed: () => controller.goToOcurrence(),
+                    onPressed: () => signInController.signOut(),
                     isLoading: false,
                   ),
                 ],

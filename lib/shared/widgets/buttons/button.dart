@@ -3,12 +3,12 @@ import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GamaButton extends StatelessWidget {
-  const GamaButton(
-      {Key? key,
-      required this.text,
-      required this.onPressed,
-      required this.isLoading})
-      : super(key: key);
+  const GamaButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    required this.isLoading,
+  }) : super(key: key);
   final String text;
   final VoidCallback? onPressed;
   final bool isLoading;

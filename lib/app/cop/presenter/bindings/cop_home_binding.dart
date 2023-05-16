@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class CopHomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(CopHomeController(), permanent: true);
+    Get.lazyPut(() => CopHomeController(), fenix: true);
   }
 }

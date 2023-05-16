@@ -15,4 +15,9 @@ class CacheStorageDatasourceImp implements CacheStorageDatasource {
   Future<Map<String, String>> loadSecure() async {
     return await secureStorage.readAll();
   }
+
+  @override
+  Future<void> clearSecure() async {
+    await secureStorage.deleteAll();
+  }
 }

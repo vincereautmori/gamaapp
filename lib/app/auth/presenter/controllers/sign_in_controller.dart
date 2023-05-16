@@ -1,3 +1,5 @@
+import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
+import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase.dart';
 import 'package:gamaapp/app/auth/presenter/states/splash_screen_states.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
@@ -12,11 +14,18 @@ import '../../domain/usecases/saveSecureToken/save_secure_token_usecase.dart';
 import '../../domain/usecases/signIn/sign_in_usecase.dart';
 import '../states/sign_in_form_states.dart';
 
-class SignInController extends GetxController {
-  final SignInUseCase _usecase;
-  final SaveSecureToken _saveSecureToken;
+class AuthenticationController extends GetxController {
+  final SignInUseCase authUseCase;
+  final SignOutUseCase logoutUseCase;
+  final SaveSecureToken saveSecureToken;
+  final ClearSecureStorage clearSecureStorage;
 
-  SignInController(this._usecase, this._saveSecureToken);
+  AuthenticationController({
+    required this.authUseCase,
+    required this.saveSecureToken,
+    required this.clearSecureStorage,
+    required this.logoutUseCase,
+  });
 
   String get email => SignInFormStates.email.value;
   String get password => SignInFormStates.password.value;
@@ -39,11 +48,11 @@ class SignInController extends GetxController {
 
   Future<void> signIn() async {
     SignInFormStates.isLoading.toggle();
-    Result<AuthInfo, Failure> result = await _usecase.signIn(credentials);
+    Result<AuthInfo, Failure> result = await authUseCase.signIn(credentials);
     SignInFormStates.isLoading.toggle();
     result.when(
       (authInfo) async {
-        await _saveSecureToken.save(authInfo as AuthEntity);
+        await saveSecureToken.save(authInfo as AuthEntity);
         Get.offAllNamed('/${SplashScreenStates.successRoutes[authInfo.role]}');
       },
       (error) => utils.callSnackBar(
@@ -54,5 +63,10 @@ class SignInController extends GetxController {
             : SnackBarStyles.error,
       ),
     );
+  }
+
+  Future<void> signOut() async {
+    await clearSecureStorage.clear();
+    await logoutUseCase.signOut();
   }
 }

@@ -5,4 +5,6 @@ abstract class CacheStorageDatasource {
   });
 
   Future<Map<String, String>> loadSecure();
+
+  Future<void> clearSecure();
 }

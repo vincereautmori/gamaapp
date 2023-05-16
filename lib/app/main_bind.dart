@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
+import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase_imp.dart';
 import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase.dart';
 import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase_imp.dart';
+import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase.dart';
+import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase_imp.dart';
 import 'package:gamaapp/app/auth/presenter/controllers/splashscreen_controller.dart';
 import 'package:get/get.dart';
 
@@ -39,12 +43,23 @@ class MainBind extends Bindings {
         CacheStorageRepositoryImp(datasource: cacheDataSource);
 
     SignInUseCase useCase = SignInUseCaseImp(repository: repository);
+    SignOutUseCase logoutUseCase = SignOutUseCaseImp(repository);
+
     SaveSecureToken saveSecureUseCase =
         SaveSecureTokenImp(repository: cacheRepository);
     LoadSecureToken loadSecureUseCase =
         LoadSecureTokenImp(repository: cacheRepository);
+    ClearSecureStorage clearSecure =
+        ClearSecureStorageImp(repository: cacheRepository);
 
-    Get.put(SignInController(useCase, saveSecureUseCase));
+    Get.put(
+      AuthenticationController(
+        authUseCase: useCase,
+        logoutUseCase: logoutUseCase,
+        saveSecureToken: saveSecureUseCase,
+        clearSecureStorage: clearSecure,
+      ),
+    );
     Get.put(SplashscreenController(loadSecureUseCase));
   }
 }

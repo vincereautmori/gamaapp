@@ -7,4 +7,6 @@ abstract class CacheStorageRepository {
       {required String key, required T value});
 
   Future<Result<Map<String, String>, Failure>> fetchSecure();
+
+  Future<Result<Unit, Failure>> clearSecure();
 }

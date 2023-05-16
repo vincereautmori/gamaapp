@@ -37,4 +37,18 @@ class CacheStorageRepositoryImp implements CacheStorageRepository {
       );
     }
   }
+
+  @override
+  Future<Result<Unit, Failure>> clearSecure() async {
+    try {
+      await datasource.clearSecure();
+      return Success.unit();
+    } catch (e) {
+      return Error(
+        CacheError(
+          message: "Erro ao limpar SecureStorage",
+        ),
+      );
+    }
+  }
 }

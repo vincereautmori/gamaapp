@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
+import 'package:gamaapp/app/routes.dart';
+import 'package:get/route_manager.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../infra/datasources/authentication_datasource.dart';
@@ -44,5 +46,7 @@ class AuthenticationDatasourceImp implements AuthenticationDatasource {
   }
 
   @override
-  Future<void> signOut() async {}
+  Future<void> signOut() async {
+    Get.offAllNamed(Routes.login.name);
+  }
 }
