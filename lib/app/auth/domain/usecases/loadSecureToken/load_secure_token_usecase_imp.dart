@@ -23,8 +23,12 @@ class LoadSecureTokenImp implements LoadSecureToken {
 
     Map<String, String> secureData = result.tryGetSuccess() ?? {};
 
-    if (validateIfTokenHasExpired(secureData['token'] ?? "")) {
-      return Error(CacheError(message: 'Token expirado'));
+    if (secureData['token'] == null) {
+      return Error(CacheError(message: 'Nenhum token informado'));
+    }
+
+    if (validateIfTokenHasExpired(secureData['token']!)) {
+      return Error(ExpiredTokenError(message: 'Token expirado'));
     }
 
     return Success(AuthEntity(

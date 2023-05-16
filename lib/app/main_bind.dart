@@ -26,7 +26,11 @@ import 'auth/presenter/controllers/sign_in_controller.dart';
 
 class MainBind extends Bindings {
   final Dio _dio = Dio(
-    BaseOptions(baseUrl: Config.coreApiUrl),
+    BaseOptions(
+      baseUrl: Config.coreApiUrl,
+      connectTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 60),
+    ),
   );
 
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();

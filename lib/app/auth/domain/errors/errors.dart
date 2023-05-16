@@ -31,3 +31,9 @@ class CacheError extends Failure {
   final String message;
   CacheError({required this.message});
 }
+
+class ExpiredTokenError extends Failure {
+  @override
+  final String message;
+  ExpiredTokenError({required this.message});
+}

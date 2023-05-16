@@ -20,14 +20,19 @@ class SplashscreenController extends GetxController {
 
     await Future.delayed(const Duration(seconds: 3));
     result.when(
-        (success) => Get.offAndToNamed(
-            '/${SplashScreenStates.successRoutes[success.role]}'), (error) {
-      utils.callSnackBar(
-        title: "Falha na autenticação",
-        message: error.message,
-        snackStyle: SnackBarStyles.warning,
-      );
-      Get.offAndToNamed('/login');
-    });
+      (success) => Get.offAndToNamed(
+          '/${SplashScreenStates.successRoutes[success.role]}'),
+      (error) {
+        if (error.runtimeType == ExpiredTokenError) {
+          utils.callSnackBar(
+            title: "Falha na autenticação",
+            message: error.message,
+            snackStyle: SnackBarStyles.warning,
+          );
+        }
+
+        Get.offAndToNamed('/login');
+      },
+    );
   }
 }
