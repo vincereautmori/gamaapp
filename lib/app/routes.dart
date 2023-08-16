@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/app/citizen/presenter/pages/citizen_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
 import 'package:get/get.dart';
@@ -17,12 +18,7 @@ class Routes {
 
   static GetPage get citizen => GetPage(
         name: '/citizen',
-        page: () => Scaffold(
-          appBar: AppBar(
-            title: const Text('Cidadão'),
-          ),
-          body: const Text("Hey"),
-        ),
+        page: () => const CitizenPage(),
       );
 
   static GetPage get cop => GetPage(

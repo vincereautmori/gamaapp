@@ -16,6 +16,7 @@ class GamaApp extends StatelessWidget {
       initialBinding: MainBind(),
       initialRoute: '/splash',
       getPages: [Routes.login, Routes.splash, Routes.cop, Routes.citizen],
+      debugShowCheckedModeBanner: false,
     );
   }
 }
