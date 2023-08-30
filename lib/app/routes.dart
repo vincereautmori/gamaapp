@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gamaapp/app/citizen/presenter/pages/citizen_page.dart';
+import 'package:gamaapp/app/citizen/presenter/binds/home_bind.dart';
+import 'package:gamaapp/app/citizen/presenter/pages/home_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,8 @@ class Routes {
 
   static GetPage get citizen => GetPage(
         name: '/citizen',
-        page: () => const CitizenPage(),
+        page: () => const HomePage(),
+        binding: HomeBinding(),
       );
 
   static GetPage get cop => GetPage(
