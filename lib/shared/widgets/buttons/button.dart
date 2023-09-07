@@ -18,6 +18,8 @@ class GamaButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        backgroundColor: Palette.primary,
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 16,
@@ -36,6 +38,7 @@ class GamaButton extends StatelessWidget {
               style: GoogleFonts.montserrat(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: Palette.white,
               ),
             ),
     );

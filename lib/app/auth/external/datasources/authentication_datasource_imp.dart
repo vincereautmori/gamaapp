@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
-import 'package:gamaapp/app/routes.dart';
+import 'package:gamaapp/app/routes/routes.dart';
 import 'package:get/route_manager.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 

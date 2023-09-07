@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/citizen/presenter/controllers/navigation_controller.dart';
+import 'package:gamaapp/app/routes/routes_name.dart';
 import 'package:get/get.dart';
 
 class HomePage extends GetView<NavigationController> {
@@ -26,6 +27,16 @@ class HomePage extends GetView<NavigationController> {
         Widget currentPage = controller.pages[controller.pageIndex];
         return currentPage;
       }),
+      floatingActionButton: Obx(
+        () => controller.pageIndex.isEqual(1)
+            ? FloatingActionButton(
+                onPressed: () => Get.toNamed(RoutesNames.newOcurrence),
+                child: const Icon(
+                  Icons.add,
+                ),
+              )
+            : const SizedBox(),
+      ),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             currentIndex: controller.pageIndex,
             onTap: controller.changePage,

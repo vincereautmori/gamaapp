@@ -4,14 +4,36 @@ import 'palette.dart';
 import 'text_theme.dart';
 
 class GamaThemes {
-  //TODO update to Gama themes
-
   ThemeData lightTheme = ThemeData(
     colorScheme: Palette.gamaColorScheme,
+    useMaterial3: true,
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Palette.primary,
+      foregroundColor: Palette.white,
+    ),
     textTheme: TextTheme(
       titleLarge: Texts.title,
       titleSmall: Texts.subtitle,
       bodyMedium: Texts.body,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(width: 2),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(
+          width: 2,
+          color: Palette.lightGrey,
+        ),
+      ),
+      filled: true,
+      fillColor: Palette.lightGrey,
+      hintStyle: const TextStyle(
+        color: Palette.grey,
+        fontWeight: FontWeight.normal,
+      ),
     ),
     splashColor: Palette.primary,
   );

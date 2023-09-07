@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../themes/palette.dart';
@@ -8,6 +9,7 @@ class GamaTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool isObscure;
   final Widget? suffix;
+  final int? maxLines;
   final String label;
   final void Function(String)? onChange;
 
@@ -19,6 +21,7 @@ class GamaTextField extends StatelessWidget {
     this.suffix,
     required this.label,
     this.onChange,
+    this.maxLines = 1,
   });
 
   @override
@@ -39,26 +42,15 @@ class GamaTextField extends StatelessWidget {
           height: 4,
         ),
         TextFormField(
+          style: Texts.body,
           keyboardType: keyboardType,
           obscureText: isObscure,
           onChanged: onChange,
           decoration: InputDecoration(
             hintText: placeholder,
             suffixIcon: suffix,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(
-                width: 2,
-                color: Palette.lightGrey,
-              ),
-            ),
-            filled: true,
-            fillColor: Palette.lightGrey,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(width: 2),
-            ),
           ),
+          maxLines: maxLines,
         ),
       ],
     );

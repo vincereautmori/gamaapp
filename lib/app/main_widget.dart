@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gamaapp/app/routes.dart';
+import 'package:gamaapp/app/routes/routes.dart';
 import 'package:get/get.dart';
 
 import '../shared/themes/themes.dart';
@@ -15,7 +15,13 @@ class GamaApp extends StatelessWidget {
       theme: GamaThemes().lightTheme,
       initialBinding: MainBind(),
       initialRoute: '/splash',
-      getPages: [Routes.login, Routes.splash, Routes.cop, Routes.citizen],
+      getPages: [
+        Routes.login,
+        Routes.splash,
+        Routes.cop,
+        Routes.citizen,
+        Routes.newOcurrence,
+      ],
       debugShowCheckedModeBanner: false,
     );
   }

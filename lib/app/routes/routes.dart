@@ -1,35 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/citizen/presenter/binds/home_bind.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/home_page.dart';
+import 'package:gamaapp/app/citizen/presenter/pages/new_ocurrence_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
 import 'package:get/get.dart';
 
-import 'auth/presenter/pages/sign_in_page.dart';
-import 'auth/presenter/pages/splashscreen_page.dart';
+import '../auth/presenter/pages/sign_in_page.dart';
+import '../auth/presenter/pages/splashscreen_page.dart';
+import '../citizen/presenter/controllers/new_ocurrence_controller.dart';
+import 'routes_name.dart';
 
 class Routes {
   static GetPage get login => GetPage(
-        name: '/login',
+        name: RoutesNames.login,
         page: () => const SignInPage(),
       );
 
   static GetPage get splash =>
-      GetPage(name: '/splash', page: () => const SplashScreen());
+      GetPage(name: RoutesNames.splash, page: () => const SplashScreen());
 
   static GetPage get citizen => GetPage(
-        name: '/citizen',
+        name: RoutesNames.citizen,
         page: () => const HomePage(),
         binding: HomeBinding(),
       );
 
+  static GetPage get newOcurrence => GetPage(
+        name: RoutesNames.newOcurrence,
+        page: () => const NewOcurrencePage<OcurrenceController>(),
+      );
+
   static GetPage get cop => GetPage(
-          name: '/cop',
+          name: RoutesNames.cop,
           binding: CopHomeBinding(),
           page: () => const CopHomePage(),
           children: [
             GetPage(
-                name: '/ocurrence',
+                name: RoutesNames.ocurrence,
                 page: () => const Center(
                       child: Text(''),
                     ))

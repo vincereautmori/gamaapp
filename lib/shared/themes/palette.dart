@@ -8,6 +8,7 @@ class Palette {
   static const Color darkGrey = Color(0xFF646262);
   static const Color grey = Color(0xFF949494);
   static const Color lightGrey = Color(0xFFeeeeee);
+  static const Color greyBackground = Color(0xFFF4F4F4);
   static const Color warning = Color(0xFFFF9800);
 
   static const ColorScheme gamaColorScheme = ColorScheme(
@@ -18,7 +19,7 @@ class Palette {
     onSecondary: black,
     background: white,
     onBackground: black,
-    error: red,
+    error: black,
     onError: white,
     surface: white,
     onSurface: grey,
