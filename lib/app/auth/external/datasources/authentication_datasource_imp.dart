@@ -27,7 +27,7 @@ class AuthenticationDatasourceImp implements AuthenticationDatasource {
     required String email,
     required String password,
   }) async {
-    Response response = await dio.post('/v1/auth/token', data: {
+    Response response = await dio.post('/auth/token', data: {
       "login": email,
       "password": password,
     });
