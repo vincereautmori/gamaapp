@@ -5,4 +5,5 @@ class RoutesNames {
   static String get cop => '/cop';
   static String get ocurrence => '/ocurrence';
   static String get newOcurrence => '/new-ocurrence';
+  static String get trafficFine => '/traffic-fine';
 }

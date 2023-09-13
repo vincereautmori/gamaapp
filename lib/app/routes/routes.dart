@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import '../auth/presenter/pages/sign_in_page.dart';
 import '../auth/presenter/pages/splashscreen_page.dart';
 import '../citizen/presenter/controllers/new_ocurrence_controller.dart';
+import '../cop/presenter/pages/trafficFine/list_traffice_fine_page.dart';
 import 'routes_name.dart';
 
 class Routes {
@@ -37,9 +38,14 @@ class Routes {
           page: () => const CopHomePage(),
           children: [
             GetPage(
-                name: RoutesNames.ocurrence,
-                page: () => const Center(
-                      child: Text(''),
-                    ))
+              name: RoutesNames.ocurrence,
+              page: () => const Center(
+                child: Text(''),
+              ),
+            ),
+            GetPage(
+              name: RoutesNames.trafficFine,
+              page: () => const TrafficFineList(),
+            )
           ]);
 }

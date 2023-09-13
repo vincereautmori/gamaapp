@@ -48,7 +48,7 @@ class CopHomePage extends GetView<CopHomeController> {
                   const SizedBox(height: 32),
                   GamaButton(
                     text: 'Cadastro de Multas',
-                    onPressed: controller.goToOcurrence,
+                    onPressed: controller.goToTrafficFine,
                     isLoading: false,
                   ),
                   const SizedBox(height: 16),
@@ -60,7 +60,7 @@ class CopHomePage extends GetView<CopHomeController> {
                   const SizedBox(height: 64),
                   GamaOutlinedButton(
                     text: 'Sair',
-                    onPressed: () => signInController.signOut(),
+                    onPressed: signInController.signOut,
                     isLoading: false,
                   ),
                 ],
