@@ -6,6 +6,7 @@ import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_tok
 import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase_imp.dart';
 import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase.dart';
 import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase_imp.dart';
+import 'package:gamaapp/app/auth/external/providers/auth_provider.dart';
 import 'package:gamaapp/app/auth/presenter/controllers/splashscreen_controller.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +26,10 @@ import 'auth/infra/repositories/cache_storage_repository_imp.dart';
 import 'auth/presenter/controllers/sign_in_controller.dart';
 
 class MainBind extends Bindings {
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
+  final authorizationProvider =
+      AuthorizationProvider(const FlutterSecureStorage());
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: Config.coreApiUrl,
@@ -33,10 +38,18 @@ class MainBind extends Bindings {
     ),
   );
 
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-
   @override
   void dependencies() {
+    _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final accessToken = await authorizationProvider.getAccessToken();
+        if (accessToken != null) {
+          options.headers['Authorization'] = 'Bearer $accessToken';
+        }
+        handler.next(options);
+      },
+    ));
+
     AuthenticationDatasource dataSource = AuthenticationDatasourceImp(_dio);
     CacheStorageDatasource cacheDataSource =
         CacheStorageDatasourceImp(secureStorage: _secureStorage);
