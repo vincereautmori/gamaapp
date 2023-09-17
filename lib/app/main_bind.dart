@@ -1,15 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
-import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase_imp.dart';
-import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase.dart';
-import 'package:gamaapp/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase_imp.dart';
-import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase.dart';
-import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase_imp.dart';
-import 'package:gamaapp/app/auth/external/providers/auth_provider.dart';
-import 'package:gamaapp/app/auth/presenter/controllers/splashscreen_controller.dart';
+import 'package:gamaapp/app/cop/domain/repositories/traffic_fine_repository.dart';
+import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
+import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase_imp.dart';
+import 'package:gamaapp/app/cop/infra/repositories/traffic_fine_repository_imp.dart';
+import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:get/get.dart';
 
+import '/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
+import '/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase_imp.dart';
+import '/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase.dart';
+import '/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase_imp.dart';
+import '/app/auth/domain/usecases/signOut/signout_usecase.dart';
+import '/app/auth/domain/usecases/signOut/signout_usecase_imp.dart';
+import '/app/auth/external/providers/auth_provider.dart';
+import '/app/auth/presenter/controllers/splashscreen_controller.dart';
+import '/app/cop/external/datasources/traffic_fine_datasource_imp.dart';
+import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '../shared/config/config.dart';
 import 'auth/domain/repositories/authentication_repository.dart';
 import 'auth/domain/repositories/cache_repository.dart';
@@ -50,6 +57,10 @@ class MainBind extends Bindings {
       },
     ));
 
+    TrafficFineDatasource tfDatasource = TrafficFineDatasourceImp(_dio);
+    TrafficFineRepository tfRepository = TrafficFineRepositoryImp(tfDatasource);
+    GetTrafficFineUsecase tfUseCase = GetTrafficFineUsecaseImp(tfRepository);
+
     AuthenticationDatasource dataSource = AuthenticationDatasourceImp(_dio);
     CacheStorageDatasource cacheDataSource =
         CacheStorageDatasourceImp(secureStorage: _secureStorage);
@@ -69,6 +80,7 @@ class MainBind extends Bindings {
     ClearSecureStorage clearSecure =
         ClearSecureStorageImp(repository: cacheRepository);
 
+    Get.put(CopTrafficFineController(tfUseCase));
     Get.put(
       AuthenticationController(
         authUseCase: useCase,

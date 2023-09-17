@@ -12,6 +12,12 @@ class Texts {
     fontSize: 26,
   );
 
+  static TextStyle cardTitle = GoogleFonts.montserrat(
+    color: Palette.primary,
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+  );
+
   static TextStyle subtitle = GoogleFonts.montserrat(
     color: Palette.darkGrey,
     fontSize: 16,
