@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fina_info.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
+import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class TrafficFineList extends GetView<CopTrafficFineController> {
   const TrafficFineList({super.key});
@@ -94,9 +94,8 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                                     style: Texts.cardTitle,
                                   ),
                                   Text(
-                                    DateFormat('dd/MM/yyyy').format(
-                                      listedItem.createdAt,
-                                    ),
+                                    listedItem.createdAt
+                                        .formatDate('dd/MM/yyyy às hh:mm')!,
                                     style: Texts.body.copyWith(
                                       color: Palette.grey,
                                     ),
