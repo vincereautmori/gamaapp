@@ -88,6 +88,7 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     listedItem.licensePlate.toUpperCase(),
@@ -95,7 +96,7 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                                   ),
                                   Text(
                                     listedItem.createdAt
-                                        .formatDate('dd/MM/yyyy às hh:mm')!,
+                                        .formatDate('dd/MM/yyyy - hh:mm')!,
                                     style: Texts.body.copyWith(
                                       color: Palette.grey,
                                     ),
