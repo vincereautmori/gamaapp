@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-import '/app/cop/domain/entities/trafficFine/listed_traffic_fina_info.dart';
-import '/app/cop/domain/entities/trafficFine/traffic_fine_filter_dto.dart';
 import '/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '/app/cop/presenter/states/traffic_fine_states.dart';
+import '../../domain/entities/dtos/traffic_fine_filter_dto.dart';
+import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
 
 class CopTrafficFineController extends GetxController {
   final GetTrafficFineUsecase getTrafficFines;

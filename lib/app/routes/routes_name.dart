@@ -6,4 +6,5 @@ class RoutesNames {
   static String get ocurrence => '/ocurrence';
   static String get newOcurrence => '/new-ocurrence';
   static String get trafficFine => '/traffic-fine';
+  static String get createTrafficFine => '/new-traffic-fine';
 }

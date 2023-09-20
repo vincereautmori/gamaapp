@@ -1,6 +1,6 @@
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
-import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fina_info.dart';
-import 'package:gamaapp/app/cop/domain/entities/trafficFine/traffic_fine_filter_dto.dart';
+import 'package:gamaapp/app/cop/domain/entities/dtos/traffic_fine_filter_dto.dart';
+import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fine_info.dart';
 import 'package:gamaapp/app/cop/domain/repositories/traffic_fine_repository.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:multiple_result/multiple_result.dart';

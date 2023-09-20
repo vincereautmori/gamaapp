@@ -4,6 +4,7 @@ import 'package:gamaapp/app/citizen/presenter/pages/home_page.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/new_ocurrence_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
+import 'package:gamaapp/app/cop/presenter/pages/trafficFine/new_traffic_fine_page.dart';
 import 'package:get/get.dart';
 
 import '../auth/presenter/pages/sign_in_page.dart';
@@ -46,6 +47,11 @@ class Routes {
             GetPage(
               name: RoutesNames.trafficFine,
               page: () => const TrafficFineList(),
-            )
+            ),
           ]);
+
+  static GetPage get newTrafficFine => GetPage(
+        name: RoutesNames.createTrafficFine,
+        page: () => const NewTrafficFinePage(),
+      );
 }

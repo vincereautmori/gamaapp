@@ -1,5 +1,5 @@
-import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fina_info.dart';
 import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fine_entity.dart';
+import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fine_info.dart';
 
 class ListedTrafficFineModel extends ListedTrafficFineEntity
     implements ListedTrafficFineInfo {

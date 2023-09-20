@@ -1,5 +1,5 @@
-import '/app/cop/domain/entities/trafficFine/traffic_fina_info.dart';
 import '/app/cop/domain/entities/trafficFine/traffic_fine_entity.dart';
+import '../../domain/entities/trafficFine/traffic_fine_info.dart';
 
 class TrafficFineModel extends TrafficFineEntity implements TrafficFineInfo {
   const TrafficFineModel({

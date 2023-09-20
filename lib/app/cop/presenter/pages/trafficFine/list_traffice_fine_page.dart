@@ -1,11 +1,13 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fina_info.dart';
+import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fine_info.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
+import 'package:gamaapp/app/routes/routes_name.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
+import 'package:gamaapp/shared/widgets/square_line.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,66 +18,86 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Multas'),
+        title: const Text(
+          'Multas',
+        ),
+        foregroundColor: Palette.white,
+        backgroundColor: Palette.primary,
       ),
       body: RefreshIndicator(
         onRefresh: controller.fetchAllTrafficFines,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              const TextField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: 'Busque pela placa',
-                  prefixIcon: Icon(
-                    Icons.search,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          children: [
+            Container(
+              color: Palette.primary,
+              child: Column(
                 children: [
-                  Expanded(
+                  const SizedBox(height: 24),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     child: TextField(
-                      keyboardType: TextInputType.datetime,
-                      controller: controller.createdSince,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         isDense: true,
-                        hintText: '_ _/_ _/_ _ _ _',
-                        suffixIcon: Icon(
-                          Icons.calendar_today_outlined,
+                        hintText: 'Busque pela placa',
+                        prefixIcon: Icon(
+                          Icons.search,
                         ),
                       ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        DataInputFormatter()
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.datetime,
+                            controller: controller.createdSince,
+                            decoration: const InputDecoration(
+                              isDense: true,
+                              hintText: '_ _/_ _/_ _ _ _',
+                              suffixIcon: Icon(
+                                Icons.calendar_today_outlined,
+                              ),
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              DataInputFormatter()
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.datetime,
+                            controller: controller.createdUntil,
+                            decoration: const InputDecoration(
+                              isDense: true,
+                              hintText: '_ _/_ _/_ _ _ _',
+                              suffixIcon: Icon(
+                                Icons.calendar_today_outlined,
+                              ),
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              DataInputFormatter()
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.datetime,
-                      controller: controller.createdUntil,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        hintText: '_ _/_ _/_ _ _ _',
-                        suffixIcon: Icon(
-                          Icons.calendar_today_outlined,
-                        ),
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        DataInputFormatter()
-                      ],
-                    ),
-                  ),
+                  const SizedBox(height: 24),
+                  const SquaresLines(),
                 ],
               ),
-              const SizedBox(height: 24),
-              Expanded(
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Obx(() => ListView.builder(
                       itemCount: controller.trafficFines.length,
                       itemBuilder: (context, index) {
@@ -126,13 +148,15 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                         );
                       },
                     )),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(RoutesNames.createTrafficFine);
+        },
         icon: const Icon(Icons.add),
         label: const Text('Nova multa'),
       ),
