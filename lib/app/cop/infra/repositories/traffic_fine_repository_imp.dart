@@ -41,8 +41,23 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
     required double longitude,
     required List<Map<String, int>> trafficViolations,
     required String imageUrl,
-  }) {
-    // TODO: implement createTrafficFine
-    throw UnimplementedError();
+  }) async {
+    try {
+      TrafficFineInfo createdTrafficFine = await datasource.createTrafficFine(
+        licensePlate: licensePlate,
+        latitude: latitude,
+        longitude: longitude,
+        trafficViolations: trafficViolations,
+        imageUrl: imageUrl,
+      );
+
+      return Success(createdTrafficFine);
+    } catch (e) {
+      return Error(
+        TrafficFineError(
+          message: 'Falha ao criar multa!',
+        ),
+      );
+    }
   }
 }
