@@ -1,3 +1,5 @@
+import 'package:gamaapp/app/cop/domain/entities/trafficViolations/traffic_violation_info.dart';
+
 abstract class TrafficFineInfo {
   int get id;
   String get licensePlate;
@@ -8,4 +10,5 @@ abstract class TrafficFineInfo {
   String get imageUrl;
   bool get deleted;
   DateTime get createdAt;
+  List<TrafficViolationInfo> get trafficViolations;
 }
