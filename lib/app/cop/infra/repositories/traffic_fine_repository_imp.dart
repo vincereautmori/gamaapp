@@ -1,4 +1,3 @@
-import 'package:gamaapp/app/cop/domain/entities/trafficFine/traffic_fine_info.dart';
 import 'package:gamaapp/app/cop/domain/errors/error.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -7,6 +6,7 @@ import '/app/auth/domain/errors/errors.dart';
 import '/app/cop/domain/repositories/traffic_fine_repository.dart';
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
+import '../models/traffic_fine_model.dart';
 
 class TrafficFineRepositoryImp implements TrafficFineRepository {
   final TrafficFineDatasource datasource;
@@ -35,7 +35,7 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
   }
 
   @override
-  Future<Result<TrafficFineInfo, Failure>> createTrafficFine({
+  Future<Result<TrafficFineModel, Failure>> createTrafficFine({
     required String licensePlate,
     required double latitude,
     required double longitude,
@@ -43,7 +43,7 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
     required String imageUrl,
   }) async {
     try {
-      TrafficFineInfo createdTrafficFine = await datasource.createTrafficFine(
+      TrafficFineModel createdTrafficFine = await datasource.createTrafficFine(
         licensePlate: licensePlate,
         latitude: latitude,
         longitude: longitude,

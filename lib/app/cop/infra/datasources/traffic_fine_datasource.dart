@@ -1,6 +1,6 @@
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 
-import '../../domain/entities/trafficFine/traffic_fine_info.dart';
+import '../models/traffic_fine_model.dart';
 
 abstract class TrafficFineDatasource {
   Future<List<ListedTrafficFineModel>> fetchTrafficFines({
@@ -8,7 +8,7 @@ abstract class TrafficFineDatasource {
     String? createdUntil,
   });
 
-  Future<TrafficFineInfo> createTrafficFine({
+  Future<TrafficFineModel> createTrafficFine({
     required String licensePlate,
     required double latitude,
     required double longitude,

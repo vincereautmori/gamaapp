@@ -12,5 +12,20 @@ class TrafficFineModel extends TrafficFineEntity implements TrafficFineInfo {
     required super.imageUrl,
     required super.deleted,
     required super.createdAt,
+    required super.trafficViolations,
   });
+
+  static TrafficFineModel fromJson(Map<String, dynamic> json) =>
+      TrafficFineModel(
+        active: json['active'],
+        computed: json['computed'],
+        createdAt: json['createdAt'],
+        trafficViolations: json['trafficViolations'],
+        deleted: json['deleted'],
+        id: json['id'],
+        imageUrl: json['imageUrl'],
+        latitude: json['latitude'],
+        licensePlate: json['licensePlate'],
+        longitude: json['longitude'],
+      );
 }

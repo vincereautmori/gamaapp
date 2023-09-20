@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '/app/cop/infra/models/listed_traffic_fine_model.dart';
+import '../../infra/models/traffic_fine_model.dart';
 
 class TrafficFineDatasourceImp implements TrafficFineDatasource {
   final Dio dio;
@@ -37,5 +38,26 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
         .toList();
 
     return trafficModels;
+  }
+
+  @override
+  Future<TrafficFineModel> createTrafficFine({
+    required String licensePlate,
+    required double latitude,
+    required double longitude,
+    required List<Map<String, int>> trafficViolations,
+    required String imageUrl,
+  }) async {
+    Response res = await dio.post('/v1/traffic-fines', data: {
+      "licensePlate": licensePlate,
+      "latitude": latitude,
+      "longitude": longitude,
+      "trafficViolations": trafficViolations,
+      "imageUrl": imageUrl,
+    });
+
+    TrafficFineModel trafficFine =
+        TrafficFineModel.fromJson(res.data['response']);
+    return trafficFine;
   }
 }
