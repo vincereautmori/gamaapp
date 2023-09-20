@@ -2,7 +2,7 @@ class TrafficFineInputDto {
   final String licensePlate;
   final double latitude;
   final double longitude;
-  final List<Map<String, dynamic>> trafficViolations;
+  final List<Map<String, int>> trafficViolations;
   final String imageUrl;
 
   TrafficFineInputDto({

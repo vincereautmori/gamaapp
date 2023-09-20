@@ -1,3 +1,4 @@
+import 'package:gamaapp/app/cop/domain/entities/trafficFine/traffic_fine_info.dart';
 import 'package:gamaapp/app/cop/domain/errors/error.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -31,5 +32,17 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
         ),
       );
     }
+  }
+
+  @override
+  Future<Result<TrafficFineInfo, Failure>> createTrafficFine({
+    required String licensePlate,
+    required double latitude,
+    required double longitude,
+    required List<Map<String, int>> trafficViolations,
+    required String imageUrl,
+  }) {
+    // TODO: implement createTrafficFine
+    throw UnimplementedError();
   }
 }

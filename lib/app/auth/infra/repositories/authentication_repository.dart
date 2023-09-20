@@ -23,23 +23,23 @@ class AuthenticationRepositoryImp implements AuthenticationRepository {
         password: password,
       );
       return Success(auth);
-    } on DioError catch (e) {
-      //DioErrorType.response
-      if (e.type == DioErrorType.badResponse) {
+    } on DioException catch (e) {
+      //DioExceptionType.response
+      if (e.type == DioExceptionType.badResponse) {
         return Error(
           AuthenticationError(
             message: "Usuário ou senha incorretos!",
           ),
         );
       }
-      if (e.type == DioErrorType.cancel) {
+      if (e.type == DioExceptionType.cancel) {
         return Error(
           AuthenticationError(
             message: "Conexão com o servidor cancelada",
           ),
         );
       }
-      if (e.type == DioErrorType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout) {
         return Error(
           AuthenticationServerError(
             message:
@@ -47,14 +47,14 @@ class AuthenticationRepositoryImp implements AuthenticationRepository {
           ),
         );
       }
-      if (e.type == DioErrorType.receiveTimeout) {
+      if (e.type == DioExceptionType.receiveTimeout) {
         return Error(
           AuthenticationServerError(
             message: "Tempo de resposta excedido",
           ),
         );
       }
-      if (e.type == DioErrorType.sendTimeout) {
+      if (e.type == DioExceptionType.sendTimeout) {
         return Error(
           AuthenticationServerError(
             message: "Tempo de envio excedido",
