@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gamaapp/app/cop/domain/repositories/traffic_fine_repository.dart';
 import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase_imp.dart';
+import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase_imp.dart';
 import 'package:gamaapp/app/cop/infra/repositories/traffic_fine_repository_imp.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:get/get.dart';
@@ -31,6 +32,7 @@ import 'auth/infra/datasources/cache_datasource.dart';
 import 'auth/infra/repositories/authentication_repository.dart';
 import 'auth/infra/repositories/cache_storage_repository_imp.dart';
 import 'auth/presenter/controllers/sign_in_controller.dart';
+import 'cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 
 class MainBind extends Bindings {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -59,7 +61,8 @@ class MainBind extends Bindings {
 
     TrafficFineDatasource tfDatasource = TrafficFineDatasourceImp(_dio);
     TrafficFineRepository tfRepository = TrafficFineRepositoryImp(tfDatasource);
-    GetTrafficFineUsecase tfUseCase = GetTrafficFineUsecaseImp(tfRepository);
+    GetTrafficFineUsecase getTfUseCase = GetTrafficFineUsecaseImp(tfRepository);
+    SaveTrafficUsecase saveTfUseCase = SaveTrafficUsecaseImp(tfRepository);
 
     AuthenticationDatasource dataSource = AuthenticationDatasourceImp(_dio);
     CacheStorageDatasource cacheDataSource =
@@ -80,7 +83,12 @@ class MainBind extends Bindings {
     ClearSecureStorage clearSecure =
         ClearSecureStorageImp(repository: cacheRepository);
 
-    Get.put(CopTrafficFineController(tfUseCase));
+    Get.put(
+      CopTrafficFineController(
+        getTrafficFines: getTfUseCase,
+        saveTrafficFine: saveTfUseCase,
+      ),
+    );
     Get.put(
       AuthenticationController(
         authUseCase: useCase,

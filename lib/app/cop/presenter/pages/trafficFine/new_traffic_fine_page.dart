@@ -127,7 +127,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: controller.addTrafficFine,
         icon: const Icon(Icons.save_outlined),
         label: const Text('Gravar multa'),
       ),

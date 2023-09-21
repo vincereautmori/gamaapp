@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/app/cop/domain/entities/dtos/traffic_fine_input_dto.dart';
+import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
@@ -12,8 +14,12 @@ import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
 
 class CopTrafficFineController extends GetxController {
   final GetTrafficFineUsecase getTrafficFines;
+  final SaveTrafficUsecase saveTrafficFine;
 
-  CopTrafficFineController(this.getTrafficFines);
+  CopTrafficFineController({
+    required this.getTrafficFines,
+    required this.saveTrafficFine,
+  });
 
   List<ListedTrafficFineInfo> get trafficFines =>
       TrafficFineStates.trafficFines;
@@ -47,6 +53,33 @@ class CopTrafficFineController extends GetxController {
       (success) => TrafficFineStates.trafficFines.value = success,
       (error) => utils.callSnackBar(
         title: "Falha ao carregar multas",
+        message: error.message,
+        snackStyle: SnackBarStyles.error,
+      ),
+    );
+  }
+
+  Future<void> addTrafficFine() async {
+    Result result = await saveTrafficFine(
+      TrafficFineInputDto(
+        licensePlate: 'EAH6B88',
+        latitude: 41.1425,
+        longitude: -41.1425,
+        trafficViolations: [
+          {"id": 1}
+        ],
+        imageUrl: "",
+      ),
+    );
+
+    result.when(
+      (success) => utils.callSnackBar(
+        title: "Multa salva com sucesso",
+        message: "Multa salva com sucesso",
+        snackStyle: SnackBarStyles.error,
+      ),
+      (error) => utils.callSnackBar(
+        title: "Falha ao salvar multas",
         message: error.message,
         snackStyle: SnackBarStyles.error,
       ),
