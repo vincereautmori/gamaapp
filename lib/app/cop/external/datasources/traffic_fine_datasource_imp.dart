@@ -60,4 +60,14 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
         TrafficFineModel.fromJson(res.data['response']);
     return trafficFine;
   }
+
+  @override
+  Future<String> uploadImage(FormData fileFormData) async {
+    Response response = await Dio().post(
+      '/v1/files',
+      data: fileFormData,
+    );
+
+    return response.data;
+  }
 }

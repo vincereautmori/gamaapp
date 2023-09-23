@@ -3,8 +3,10 @@ import 'package:gamaapp/app/citizen/presenter/binds/home_bind.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/home_page.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/new_ocurrence_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
+import 'package:gamaapp/app/cop/presenter/bindings/cop_traffic_fine_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/new_traffic_fine_page.dart';
+import 'package:gamaapp/app/main_bind.dart';
 import 'package:get/get.dart';
 
 import '../auth/presenter/pages/sign_in_page.dart';
@@ -19,8 +21,11 @@ class Routes {
         page: () => const SignInPage(),
       );
 
-  static GetPage get splash =>
-      GetPage(name: RoutesNames.splash, page: () => const SplashScreen());
+  static GetPage get splash => GetPage(
+        name: RoutesNames.splash,
+        page: () => const SplashScreen(),
+        binding: MainBind(),
+      );
 
   static GetPage get citizen => GetPage(
         name: RoutesNames.citizen,
@@ -34,21 +39,24 @@ class Routes {
       );
 
   static GetPage get cop => GetPage(
-          name: RoutesNames.cop,
-          binding: CopHomeBinding(),
-          page: () => const CopHomePage(),
-          children: [
-            GetPage(
-              name: RoutesNames.ocurrence,
-              page: () => const Center(
-                child: Text(''),
-              ),
-            ),
-            GetPage(
-              name: RoutesNames.trafficFine,
-              page: () => const TrafficFineList(),
-            ),
-          ]);
+      name: RoutesNames.cop,
+      bindings: [
+        CopHomeBinding(),
+        CopTrafficFineBinding(),
+      ],
+      page: () => const CopHomePage(),
+      children: [
+        GetPage(
+          name: RoutesNames.ocurrence,
+          page: () => const Center(
+            child: Text(''),
+          ),
+        ),
+        GetPage(
+          name: RoutesNames.trafficFine,
+          page: () => const TrafficFineList(),
+        ),
+      ]);
 
   static GetPage get newTrafficFine => GetPage(
         name: RoutesNames.createTrafficFine,

@@ -11,9 +11,9 @@ class CameraRepositoryImp implements CameraRepository {
   CameraRepositoryImp(this.datasource);
 
   @override
-  Future<Result<XFile, Failure>> takeCameraFile() async {
+  Future<Result<XFile?, Failure>> takeCameraFile() async {
     try {
-      XFile xfile = await datasource.getCameraFile();
+      XFile? xfile = await datasource.getCameraFile();
       return Success(xfile);
     } catch (e) {
       return Error(CameraError(message: "Falha ao abrir a camera"));

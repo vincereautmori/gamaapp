@@ -1,3 +1,4 @@
+import 'package:dio/src/form_data.dart';
 import 'package:gamaapp/app/cop/domain/errors/error.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -56,6 +57,20 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
       return Error(
         TrafficFineError(
           message: 'Falha ao criar multa!',
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<String, Failure>> uploadFile(FormData fileFormData) async {
+    try {
+      String uploadedImageUrl = await datasource.uploadImage(fileFormData);
+      return Success(uploadedImageUrl);
+    } catch (e) {
+      return Error(
+        UploadImageError(
+          message: 'Falha ao fazer upload da imagem',
         ),
       );
     }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/app/camera/presenter/binds/camera_bind.dart';
 import 'package:gamaapp/app/routes/routes.dart';
+import 'package:gamaapp/app/routes/routes_name.dart';
 import 'package:get/get.dart';
 
 import '../shared/themes/themes.dart';
-import 'main_bind.dart';
 
 class GamaApp extends StatelessWidget {
   const GamaApp({super.key});
@@ -13,8 +14,8 @@ class GamaApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: GamaThemes().lightTheme,
-      initialBinding: MainBind(),
-      initialRoute: '/splash',
+      initialBinding: CameraBind(),
+      initialRoute: RoutesNames.splash,
       getPages: [
         Routes.login,
         Routes.splash,

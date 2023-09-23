@@ -4,12 +4,12 @@ import 'package:gamaapp/app/camera/domain/usecases/getMetadataFromCamera/get_met
 import 'package:image_picker/image_picker.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-class GetMetadataFromCameraUsecaseImp implements GetMetadataFromCameraUsecase {
+class GetFileFromCameraUsecaseImp implements GetFileFromCameraUsecase {
   final CameraRepository repository;
 
-  GetMetadataFromCameraUsecaseImp(this.repository);
+  GetFileFromCameraUsecaseImp(this.repository);
 
 // TODO implementar validações de permissões
   @override
-  Future<Result<XFile, Failure>> call() => repository.takeCameraFile();
+  Future<Result<XFile?, Failure>> call() => repository.takeCameraFile();
 }

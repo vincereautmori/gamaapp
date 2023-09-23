@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '/app/auth/domain/errors/errors.dart';
@@ -17,4 +18,6 @@ abstract class TrafficFineRepository {
     required List<Map<String, int>> trafficViolations,
     required String imageUrl,
   });
+
+  Future<Result<String, Failure>> uploadFile(FormData fileFormData);
 }

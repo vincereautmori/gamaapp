@@ -1,11 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:gamaapp/app/cop/domain/repositories/traffic_fine_repository.dart';
-import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
-import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase_imp.dart';
-import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase_imp.dart';
-import 'package:gamaapp/app/cop/infra/repositories/traffic_fine_repository_imp.dart';
-import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:get/get.dart';
 
 import '/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
@@ -16,8 +10,6 @@ import '/app/auth/domain/usecases/signOut/signout_usecase.dart';
 import '/app/auth/domain/usecases/signOut/signout_usecase_imp.dart';
 import '/app/auth/external/providers/auth_provider.dart';
 import '/app/auth/presenter/controllers/splashscreen_controller.dart';
-import '/app/cop/external/datasources/traffic_fine_datasource_imp.dart';
-import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '../shared/config/config.dart';
 import 'auth/domain/repositories/authentication_repository.dart';
 import 'auth/domain/repositories/cache_repository.dart';
@@ -32,7 +24,6 @@ import 'auth/infra/datasources/cache_datasource.dart';
 import 'auth/infra/repositories/authentication_repository.dart';
 import 'auth/infra/repositories/cache_storage_repository_imp.dart';
 import 'auth/presenter/controllers/sign_in_controller.dart';
-import 'cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 
 class MainBind extends Bindings {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -59,11 +50,6 @@ class MainBind extends Bindings {
       },
     ));
 
-    TrafficFineDatasource tfDatasource = TrafficFineDatasourceImp(_dio);
-    TrafficFineRepository tfRepository = TrafficFineRepositoryImp(tfDatasource);
-    GetTrafficFineUsecase getTfUseCase = GetTrafficFineUsecaseImp(tfRepository);
-    SaveTrafficUsecase saveTfUseCase = SaveTrafficUsecaseImp(tfRepository);
-
     AuthenticationDatasource dataSource = AuthenticationDatasourceImp(_dio);
     CacheStorageDatasource cacheDataSource =
         CacheStorageDatasourceImp(secureStorage: _secureStorage);
@@ -84,18 +70,13 @@ class MainBind extends Bindings {
         ClearSecureStorageImp(repository: cacheRepository);
 
     Get.put(
-      CopTrafficFineController(
-        getTrafficFines: getTfUseCase,
-        saveTrafficFine: saveTfUseCase,
-      ),
-    );
-    Get.put(
       AuthenticationController(
         authUseCase: useCase,
         logoutUseCase: logoutUseCase,
         saveSecureToken: saveSecureUseCase,
         clearSecureStorage: clearSecure,
       ),
+      permanent: true,
     );
     Get.put(SplashscreenController(loadSecureUseCase));
   }

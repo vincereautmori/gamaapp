@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 extension AuthStringsExtension on XFile {
   File toFile() => File(path);
 
-  Future<FormData> toFormData(String fileName) async {
+  Future<FormData?> toFormData(String fileName) async {
     File file = toFile();
 
     return FormData.fromMap({

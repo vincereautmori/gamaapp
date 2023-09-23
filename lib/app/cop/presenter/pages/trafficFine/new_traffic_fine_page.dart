@@ -91,14 +91,15 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                   border: Border.all(color: Palette.greyBackground),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const ListTile(
-                  leading: CircleAvatar(
+                child: ListTile(
+                  leading: const CircleAvatar(
                     child: Icon(
                       Icons.photo_outlined,
                     ),
                   ),
-                  title: Text('Nenhuma imagem'),
-                  trailing: Icon(Icons.add),
+                  onTap: controller.uploadImage,
+                  title: const Text('Nenhuma imagem'),
+                  trailing: const Icon(Icons.add),
                 ),
               ),
             ),
