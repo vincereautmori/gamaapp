@@ -48,7 +48,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     required List<Map<String, int>> trafficViolations,
     required String imageUrl,
   }) async {
-    Response res = await dio.post('/v1/traffic-fines', data: {
+    Response res = await dio.post('/traffic-fines', data: {
       "licensePlate": licensePlate,
       "latitude": latitude,
       "longitude": longitude,
@@ -63,8 +63,8 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
 
   @override
   Future<String> uploadImage(FormData fileFormData) async {
-    Response response = await Dio().post(
-      '/v1/files',
+    Response response = await dio.post(
+      '/files',
       data: fileFormData,
     );
 

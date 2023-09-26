@@ -10,7 +10,8 @@ extension AuthStringsExtension on XFile {
     File file = toFile();
 
     return FormData.fromMap({
-      'file': await MultipartFile.fromFile(file.path, filename: fileName),
+      'file':
+          await MultipartFile.fromFile(file.path, filename: '$fileName.jpg'),
     });
   }
 }
