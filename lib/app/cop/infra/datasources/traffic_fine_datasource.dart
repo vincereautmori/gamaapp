@@ -5,6 +5,7 @@ import '../models/traffic_fine_model.dart';
 
 abstract class TrafficFineDatasource {
   Future<List<ListedTrafficFineModel>> fetchTrafficFines({
+    String? licensePlate,
     String? createdSince,
     String? createdUntil,
   });

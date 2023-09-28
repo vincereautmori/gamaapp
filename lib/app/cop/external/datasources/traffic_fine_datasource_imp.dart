@@ -11,10 +11,11 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
 
   @override
   Future<List<ListedTrafficFineModel>> fetchTrafficFines({
+    String? licensePlate,
     String? createdSince,
     String? createdUntil,
   }) async {
-    Map<String, dynamic>? params = {};
+    Map<String, dynamic>? params = {"licensePlate": licensePlate};
 
     if (createdSince != null) {
       params["createdSince"] = createdSince;
@@ -25,7 +26,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     }
 
     Response res = await dio.get('/traffic-fines', queryParameters: params);
-
+    print(res);
     List<ListedTrafficFineModel> trafficModels = res.data['results']
         .map<ListedTrafficFineModel>(
           (trafficFine) => ListedTrafficFineModel(

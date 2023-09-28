@@ -21,6 +21,7 @@ class GetTrafficFineUsecaseImp implements GetTrafficFineUsecase {
 
     final Result<List<ListedTrafficFineInfo>, Failure> result =
         await repository.fetchTrafficFine(
+      licensePlate: dto.licensePlate,
       createdSince: createdSince,
       createdUntil: createdUntil,
     );

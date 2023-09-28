@@ -1,4 +1,4 @@
-import 'package:dio/src/form_data.dart';
+import 'package:dio/dio.dart';
 import 'package:gamaapp/app/cop/domain/errors/error.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -16,20 +16,37 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
 
   @override
   Future<Result<List<ListedTrafficFineInfo>, Failure>> fetchTrafficFine({
+    String? licensePlate,
     String? createdSince,
     String? createdUntil,
   }) async {
     try {
       List<ListedTrafficFineModel> listedTrafficFine =
           await datasource.fetchTrafficFines(
+        licensePlate: licensePlate,
         createdSince: createdSince,
         createdUntil: createdUntil,
       );
       return Success(listedTrafficFine);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        return Error(
+          TrafficFineError(
+            message:
+                e.response?.data['search.LicensePlate'][0] ?? "Algo deu errado",
+          ),
+        );
+      }
+
+      return Error(
+        TrafficFineError(
+          message: "Falha na requisição",
+        ),
+      );
     } catch (e) {
       return Error(
         TrafficFineError(
-          message: 'Algo deu errado!',
+          message: "Algo deu errado",
         ),
       );
     }

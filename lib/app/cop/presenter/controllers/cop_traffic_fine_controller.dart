@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
@@ -31,6 +33,8 @@ class CopTrafficFineController extends GetxController {
     required this.uploadFile,
   });
 
+  Timer? _debounce;
+
   List<ListedTrafficFineInfo> get trafficFines =>
       TrafficFineStates.trafficFines;
 
@@ -38,6 +42,8 @@ class CopTrafficFineController extends GetxController {
       TrafficFineStates.createdSince.value;
   TextEditingController get createdUntil =>
       TrafficFineStates.createdUntil.value;
+  TextEditingController get licensePlateFilter =>
+      TrafficFineStates.licensePlateFilter.value;
 
   @override
   void onInit() {
@@ -47,6 +53,12 @@ class CopTrafficFineController extends GetxController {
     fetchAllTrafficFines();
   }
 
+  @override
+  void onClose() {
+    _debounce?.cancel();
+    super.onClose();
+  }
+
   Future<void> fetchAllTrafficFines() async {
     DateTime? since = createdSince.text != ""
         ? DateFormat('dd/MM/yyyy').parse(createdSince.text)
@@ -54,10 +66,13 @@ class CopTrafficFineController extends GetxController {
     DateTime? until = createdUntil.text != ""
         ? DateFormat('dd/MM/yyyy').parse(createdUntil.text)
         : null;
+    String licensePlate = licensePlateFilter.text;
+
     Result result = await getTrafficFines(
       TrafficFineFilterDto(
         createdSince: since,
         createdUntil: until,
+        licensePlate: licensePlate,
       ),
     );
 
@@ -66,9 +81,16 @@ class CopTrafficFineController extends GetxController {
       (error) => utils.callSnackBar(
         title: "Falha ao carregar multas",
         message: error.message,
-        snackStyle: SnackBarStyles.error,
+        snackStyle: SnackBarStyles.warning,
       ),
     );
+  }
+
+  Future<void> debounceSearchByLicensePlate(String licensePlate) async {
+    if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      await fetchAllTrafficFines();
+    });
   }
 
   Future<void> uploadImage() async {

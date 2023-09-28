@@ -33,10 +33,13 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               child: Column(
                 children: [
                   const SizedBox(height: 24),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: TextField(
-                      decoration: InputDecoration(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: TextFormField(
+                      controller: controller.licensePlateFilter,
+                      onChanged: controller.debounceSearchByLicensePlate,
+                      inputFormatters: [PlacaVeiculoInputFormatter()],
+                      decoration: const InputDecoration(
                         isDense: true,
                         hintText: 'Busque pela placa',
                         prefixIcon: Icon(

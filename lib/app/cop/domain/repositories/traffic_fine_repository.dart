@@ -7,6 +7,7 @@ import '../entities/trafficFine/traffic_fine_info.dart';
 
 abstract class TrafficFineRepository {
   Future<Result<List<ListedTrafficFineInfo>, Failure>> fetchTrafficFine({
+    String? licensePlate,
     String? createdSince,
     String? createdUntil,
   });
