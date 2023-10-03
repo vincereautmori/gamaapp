@@ -12,5 +12,5 @@ class GetTrafficViolationsUsecaseImp implements GetTrafficViolationsUsecase {
 
   @override
   Future<Result<List<TrafficViolationInfo>, Failure>> call() =>
-      repository.fetchTrafficFine();
+      repository.fetchTrafficViolation();
 }
