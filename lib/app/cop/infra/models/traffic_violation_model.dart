@@ -18,4 +18,12 @@ class TrafficViolationModel extends TrafficViolationEntity
         code: json['code'],
         active: json['active'],
       );
+
+  static List<TrafficViolationModel> fromJsonList(
+          List<Map<String, dynamic>> jsonList) =>
+      List<TrafficViolationModel>.from(
+        jsonList.map(
+          (json) => fromJson(json),
+        ),
+      );
 }
