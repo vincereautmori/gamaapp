@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:gamaapp/app/cop/presenter/states/traffic_fine_states.dart';
 
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '/app/cop/infra/models/listed_traffic_fine_model.dart';
-import '../../infra/models/traffic_fine_model.dart';
 
 class TrafficFineDatasourceImp implements TrafficFineDatasource {
   final Dio dio;
@@ -15,7 +15,9 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     String? createdSince,
     String? createdUntil,
   }) async {
-    Map<String, dynamic>? params = {"licensePlate": licensePlate};
+    Map<String, dynamic>? params = {
+      "licensePlate": licensePlate?.replaceAll(RegExp(r'\W+'), '')
+    };
 
     if (createdSince != null) {
       params["createdSince"] = createdSince;
@@ -25,8 +27,9 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
       params["createdUntil"] = createdUntil;
     }
 
+    print(params['licensePlate']);
     Response res = await dio.get('/traffic-fines', queryParameters: params);
-    print(res);
+
     List<ListedTrafficFineModel> trafficModels = res.data['results']
         .map<ListedTrafficFineModel>(
           (trafficFine) => ListedTrafficFineModel(
@@ -42,7 +45,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
   }
 
   @override
-  Future<TrafficFineModel> createTrafficFine({
+  Future<int> createTrafficFine({
     required String licensePlate,
     required double latitude,
     required double longitude,
@@ -57,9 +60,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
       "imageUrl": imageUrl,
     });
 
-    TrafficFineModel trafficFine =
-        TrafficFineModel.fromJson(res.data['response']);
-    return trafficFine;
+    return res.statusCode ?? 500;
   }
 
   @override
@@ -67,6 +68,10 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     Response response = await dio.post(
       '/files',
       data: fileFormData,
+      onSendProgress: (count, total) {
+        TrafficFineStates.trafficFineImageBytesCount.value = count;
+        TrafficFineStates.trafficFineImageBytesTotal.value = total;
+      },
     );
 
     return response.data;

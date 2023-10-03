@@ -7,7 +7,6 @@ import '/app/auth/domain/errors/errors.dart';
 import '/app/cop/domain/repositories/traffic_fine_repository.dart';
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
-import '../models/traffic_fine_model.dart';
 
 class TrafficFineRepositoryImp implements TrafficFineRepository {
   final TrafficFineDatasource datasource;
@@ -53,7 +52,7 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
   }
 
   @override
-  Future<Result<TrafficFineModel, Failure>> createTrafficFine({
+  Future<Result<int, Failure>> createTrafficFine({
     required String licensePlate,
     required double latitude,
     required double longitude,
@@ -61,7 +60,7 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
     required String imageUrl,
   }) async {
     try {
-      TrafficFineModel createdTrafficFine = await datasource.createTrafficFine(
+      int createdStatusCode = await datasource.createTrafficFine(
         licensePlate: licensePlate,
         latitude: latitude,
         longitude: longitude,
@@ -69,7 +68,27 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
         imageUrl: imageUrl,
       );
 
-      return Success(createdTrafficFine);
+      if (createdStatusCode != 201) {
+        return Error(TrafficFineError(message: "Falha ao criar multa"));
+      }
+
+      return Success(createdStatusCode);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        return Error(
+          TrafficFineError(
+            message: e.response?.data['createTrafficFineCommand.LicensePlate']
+                    [0] ??
+                "Algo deu errado",
+          ),
+        );
+      }
+
+      return Error(
+        TrafficFineError(
+          message: "Falha na requisição",
+        ),
+      );
     } catch (e) {
       return Error(
         TrafficFineError(

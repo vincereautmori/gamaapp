@@ -20,4 +20,13 @@ class TrafficFineStates {
   static final Rx<TextEditingController> licensePlateFilter = Rx(
     TextEditingController(text: ""),
   );
+
+  static final Rx<TextEditingController> licensePlateCreate = Rx(
+    TextEditingController(text: ""),
+  );
+
+  static final RxString trafficFineImageURL = "".obs;
+
+  static final RxInt trafficFineImageBytesCount = 0.obs;
+  static final RxInt trafficFineImageBytesTotal = 1.obs;
 }

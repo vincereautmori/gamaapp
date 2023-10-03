@@ -14,6 +14,7 @@ class GamaTextField extends StatelessWidget {
   final String label;
   final void Function(String)? onChange;
   final List<TextInputFormatter>? masks;
+  final TextEditingController? controller;
 
   const GamaTextField({
     super.key,
@@ -25,6 +26,7 @@ class GamaTextField extends StatelessWidget {
     this.onChange,
     this.maxLines = 1,
     this.masks,
+    this.controller,
   });
 
   @override
@@ -46,6 +48,7 @@ class GamaTextField extends StatelessWidget {
         ),
         TextFormField(
           style: Texts.body,
+          controller: controller,
           keyboardType: keyboardType,
           obscureText: isObscure,
           onChanged: onChange,

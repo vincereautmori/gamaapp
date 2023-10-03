@@ -4,10 +4,10 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
-import 'package:gamaapp/app/cop/domain/entities/dtos/traffic_fine_input_dto.dart';
 import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/uploadFile/upload_file_usecase.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
+import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +18,7 @@ import '/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '/app/cop/presenter/states/traffic_fine_states.dart';
 import '../../../camera/presenter/controllers/camera_controller.dart';
 import '../../domain/entities/dtos/traffic_fine_filter_dto.dart';
+import '../../domain/entities/dtos/traffic_fine_input_dto.dart';
 import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
 
 class CopTrafficFineController extends GetxController {
@@ -35,15 +36,35 @@ class CopTrafficFineController extends GetxController {
 
   Timer? _debounce;
 
+  bool get isUploading =>
+      LoadingHandler.loadingState.value ==
+      LoadingStates.uploadingTrafficFineImage;
+
+  bool get isCreateLoading =>
+      LoadingHandler.loadingState.value == LoadingStates.createTrafficFine;
+
+  bool get isFetchLoading =>
+      LoadingHandler.loadingState.value == LoadingStates.loadingTrafficFine;
+
   List<ListedTrafficFineInfo> get trafficFines =>
       TrafficFineStates.trafficFines;
 
   TextEditingController get createdSince =>
       TrafficFineStates.createdSince.value;
+
   TextEditingController get createdUntil =>
       TrafficFineStates.createdUntil.value;
+
   TextEditingController get licensePlateFilter =>
       TrafficFineStates.licensePlateFilter.value;
+
+  TextEditingController get licensePlateCreate =>
+      TrafficFineStates.licensePlateCreate.value;
+
+  int get imageBytesCount => TrafficFineStates.trafficFineImageBytesCount.value;
+  int get imageBytesTotal => TrafficFineStates.trafficFineImageBytesTotal.value;
+
+  String get trafficFineImageURL => TrafficFineStates.trafficFineImageURL.value;
 
   @override
   void onInit() {
@@ -56,7 +77,16 @@ class CopTrafficFineController extends GetxController {
   @override
   void onClose() {
     _debounce?.cancel();
+    clearFields();
     super.onClose();
+  }
+
+  void clearFields() {
+    TrafficFineStates.trafficFines.clear();
+    TrafficFineStates.createdSince.value.text = "";
+    TrafficFineStates.createdUntil.value.text = "";
+    TrafficFineStates.licensePlateFilter.value.text = "";
+    TrafficFineStates.licensePlateCreate.value.text = "";
   }
 
   Future<void> fetchAllTrafficFines() async {
@@ -94,35 +124,48 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> uploadImage() async {
+    LoadingHandler.setLoading(LoadingStates.uploadingTrafficFineImage);
     Result<XFile?, Failure> result = await cameraController.getFileFromCamera();
     result.when((file) async {
       if (file != null) {
         Dio.FormData? formData = await file.toFormData('fileName');
         Result uploadResult = await uploadFile(formData!);
-        var bla = uploadResult.tryGetSuccess();
-        print(bla);
+        LoadingHandler.stopLoading();
+        String url = uploadResult.tryGetSuccess();
+
+        TrafficFineStates.trafficFineImageURL.value = url;
       }
-    }, (error) => null);
+    },
+        (error) => utils.callSnackBar(
+              title: "Falha ao salvar imagem",
+              message: error.message,
+              snackStyle: SnackBarStyles.error,
+            ));
   }
 
   Future<void> addTrafficFine() async {
+    LoadingHandler.setLoading(LoadingStates.createTrafficFine);
+
+    String licensePlate = licensePlateCreate.text;
+
     Result result = await saveTrafficFine(
       TrafficFineInputDto(
-        licensePlate: 'EAH6B88',
+        licensePlate: licensePlate.replaceAll(RegExp(r'\W+'), ''),
         latitude: 41.1425,
         longitude: -41.1425,
         trafficViolations: [
           {"id": 1}
         ],
-        imageUrl: "",
+        imageUrl: trafficFineImageURL,
       ),
     );
+    LoadingHandler.stopLoading();
 
     result.when(
       (success) => utils.callSnackBar(
         title: "Multa salva com sucesso",
         message: "Multa salva com sucesso",
-        snackStyle: SnackBarStyles.error,
+        snackStyle: SnackBarStyles.success,
       ),
       (error) => utils.callSnackBar(
         title: "Falha ao salvar multas",

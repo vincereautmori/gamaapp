@@ -78,6 +78,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: GamaTextField(
+                controller: controller.licensePlateCreate,
                 label: 'Placa',
                 placeholder: "Informe o número da placa",
                 masks: [PlacaVeiculoInputFormatter()],
@@ -99,7 +100,26 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                   ),
                   onTap: controller.uploadImage,
                   title: const Text('Nenhuma imagem'),
-                  trailing: const Icon(Icons.add),
+                  trailing: Obx(() {
+                    if (controller.imageBytesCount == 0) {
+                      return const Icon(Icons.add);
+                    }
+
+                    if (controller.isUploading) {
+                      return SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Palette.primary,
+                          value: controller.imageBytesCount /
+                              controller.imageBytesTotal,
+                          strokeWidth: 2,
+                        ),
+                      );
+                    }
+
+                    return const Icon(Icons.check);
+                  }),
                 ),
               ),
             ),
@@ -127,10 +147,25 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: controller.addTrafficFine,
-        icon: const Icon(Icons.save_outlined),
-        label: const Text('Gravar multa'),
+      floatingActionButton: Obx(
+        () {
+          return FloatingActionButton.extended(
+            onPressed:
+                controller.isCreateLoading ? null : controller.addTrafficFine,
+            icon: controller.isCreateLoading
+                ? const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      color: Palette.white,
+                      strokeWidth: 2,
+                    ))
+                : const Icon(Icons.save_outlined),
+            label: Text(
+              controller.isCreateLoading ? "Gravando..." : 'Gravar multa',
+            ),
+          );
+        },
       ),
     );
   }
