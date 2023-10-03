@@ -6,6 +6,12 @@ class TrafficFineError extends Failure {
   TrafficFineError({required this.message});
 }
 
+class TrafficViolationError extends Failure {
+  @override
+  final String message;
+  TrafficViolationError({required this.message});
+}
+
 class UploadImageError extends Failure {
   @override
   final String message;

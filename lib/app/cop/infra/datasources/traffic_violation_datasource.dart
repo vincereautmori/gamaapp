@@ -1,5 +1,5 @@
 import '../models/traffic_violation_model.dart';
 
-abstract class TrafficFineDatasource {
+abstract class TrafficViolationDatasource {
   Future<List<TrafficViolationModel>> fetchTrafficViolations();
 }
