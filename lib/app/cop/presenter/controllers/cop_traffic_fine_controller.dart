@@ -117,10 +117,13 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> debounceSearchByLicensePlate(String licensePlate) async {
-    if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
+    // if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
+    // _debounce = Timer(const Duration(milliseconds: 500), () async {
+    //   await fetchAllTrafficFines();
+    // });
+    if (licensePlate.length == 8) {
       await fetchAllTrafficFines();
-    });
+    }
   }
 
   Future<void> uploadImage() async {

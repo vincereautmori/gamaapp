@@ -15,9 +15,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     String? createdSince,
     String? createdUntil,
   }) async {
-    Map<String, dynamic>? params = {
-      "licensePlate": licensePlate?.replaceAll(RegExp(r'\W+'), '')
-    };
+    Map<String, dynamic>? params = {"licensePlate": licensePlate};
 
     if (createdSince != null) {
       params["createdSince"] = createdSince;
@@ -27,7 +25,6 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
       params["createdUntil"] = createdUntil;
     }
 
-    print(params['licensePlate']);
     Response res = await dio.get('/traffic-fines', queryParameters: params);
 
     List<ListedTrafficFineModel> trafficModels = res.data['results']
