@@ -11,7 +11,7 @@ class TrafficViolationDatasourceImp implements TrafficViolationDatasource {
   @override
   Future<List<TrafficViolationModel>> fetchTrafficViolations() async {
     Response res = await dio.get('/traffic-violations');
-
+    print(res.data);
     List<TrafficViolationModel> trafficViolations =
         TrafficViolationModel.fromJsonList(res.data);
 

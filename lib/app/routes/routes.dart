@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../auth/presenter/pages/sign_in_page.dart';
 import '../auth/presenter/pages/splashscreen_page.dart';
 import '../citizen/presenter/controllers/new_ocurrence_controller.dart';
+import '../cop/presenter/bindings/cop_traffic_violation_binding.dart';
 import '../cop/presenter/pages/trafficFine/list_traffice_fine_page.dart';
 import 'routes_name.dart';
 
@@ -43,6 +44,7 @@ class Routes {
       bindings: [
         CopHomeBinding(),
         CopTrafficFineBinding(),
+        CopTrafficViolationBinding(),
       ],
       page: () => const CopHomePage(),
       children: [

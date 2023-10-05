@@ -129,21 +129,23 @@ class CopTrafficFineController extends GetxController {
   Future<void> uploadImage() async {
     LoadingHandler.setLoading(LoadingStates.uploadingTrafficFineImage);
     Result<XFile?, Failure> result = await cameraController.getFileFromCamera();
-    result.when((file) async {
-      if (file != null) {
-        Dio.FormData? formData = await file.toFormData('fileName');
-        Result uploadResult = await uploadFile(formData!);
-        LoadingHandler.stopLoading();
-        String url = uploadResult.tryGetSuccess();
+    result.when(
+      (file) async {
+        if (file != null) {
+          Dio.FormData? formData = await file.toFormData('fileName');
+          Result uploadResult = await uploadFile(formData!);
+          LoadingHandler.stopLoading();
+          String url = uploadResult.tryGetSuccess();
 
-        TrafficFineStates.trafficFineImageURL.value = url;
-      }
-    },
-        (error) => utils.callSnackBar(
-              title: "Falha ao salvar imagem",
-              message: error.message,
-              snackStyle: SnackBarStyles.error,
-            ));
+          TrafficFineStates.trafficFineImageURL.value = url;
+        }
+      },
+      (error) => utils.callSnackBar(
+        title: "Falha ao salvar imagem",
+        message: error.message,
+        snackStyle: SnackBarStyles.error,
+      ),
+    );
   }
 
   Future<void> addTrafficFine() async {

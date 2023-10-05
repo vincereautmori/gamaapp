@@ -8,12 +8,16 @@ import 'package:gamaapp/shared/widgets/textfield.dart';
 import 'package:get/get.dart';
 
 import '../../../../../shared/widgets/square_line.dart';
+import '../../../domain/entities/trafficViolations/traffic_violation_info.dart';
+import '../../controllers/cop_traffic_violation_controller.dart';
 
 class NewTrafficFinePage extends GetView<CopTrafficFineController> {
   const NewTrafficFinePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CopTrafficViolationController violationsController = Get.find();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastrar multa'),
@@ -137,7 +141,40 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     style: Texts.cardTitle,
                   ),
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      violationsController.getAllViolations();
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => BottomSheet(
+                          enableDrag: false,
+                          showDragHandle: true,
+                          onClosing: () {},
+                          builder: (context) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text("Clique na infração"),
+                                ListView.builder(
+                                  itemCount: violationsController
+                                      .trafficViolations.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    TrafficViolationInfo violation =
+                                        violationsController
+                                            .trafficViolations[index];
+                                    return ListTile(
+                                      leading: Text(violation.code),
+                                      title: Text(violation.name),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text('Adicionar infração'),
                   ),
