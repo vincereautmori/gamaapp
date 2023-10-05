@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
+import 'package:gamaapp/shared/extensions/set_extension.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:gamaapp/shared/widgets/textfield.dart';
@@ -166,6 +167,11 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                                     return ListTile(
                                       leading: Text(violation.code),
                                       title: Text(violation.name),
+                                      onTap: () {
+                                        violationsController
+                                            .selectViolation(violation);
+                                        Get.back();
+                                      },
                                     );
                                   },
                                 ),
@@ -180,7 +186,29 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                   ),
                 ],
               ),
-            )
+            ),
+            const SizedBox(height: 8),
+            Obx(() {
+              print(violationsController.selectedTrafficViolations);
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount:
+                    violationsController.selectedTrafficViolations.length,
+                itemBuilder: (context, index) {
+                  TrafficViolationInfo violation =
+                      violationsController.selectedTrafficViolations[index];
+                  return ListTile(
+                    title: Text(violation.name),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => violationsController.unselectViolation(
+                        violation,
+                      ),
+                    ),
+                  );
+                },
+              );
+            })
           ],
         ),
       ),
