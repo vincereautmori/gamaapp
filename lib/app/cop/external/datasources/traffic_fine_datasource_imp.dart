@@ -15,7 +15,9 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     String? createdSince,
     String? createdUntil,
   }) async {
-    Map<String, dynamic>? params = {"licensePlate": licensePlate};
+    Map<String, dynamic>? params = {
+      "licensePlate": licensePlate?.toLowerCase()
+    };
 
     if (createdSince != null) {
       params["createdSince"] = createdSince;

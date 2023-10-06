@@ -98,10 +98,16 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               ),
             ),
             const SizedBox(height: 24),
+            Obx(
+              () => Text(
+                controller.pagination.pageNumber.toString(),
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Obx(() => ListView.builder(
+                      controller: controller.scroll,
                       itemCount: controller.trafficFines.length,
                       itemBuilder: (context, index) {
                         ListedTrafficFineInfo listedItem =

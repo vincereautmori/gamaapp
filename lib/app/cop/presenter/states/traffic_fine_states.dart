@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:get/get.dart';
 
@@ -29,4 +30,6 @@ class TrafficFineStates {
 
   static final RxInt trafficFineImageBytesCount = 0.obs;
   static final RxInt trafficFineImageBytesTotal = 1.obs;
+
+  static final Rx<PaginationDto> pagination = Rx(PaginationDto());
 }

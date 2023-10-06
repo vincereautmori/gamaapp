@@ -4,6 +4,7 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
+import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
 import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/uploadFile/upload_file_usecase.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
@@ -61,15 +62,21 @@ class CopTrafficFineController extends GetxController {
   TextEditingController get licensePlateCreate =>
       TrafficFineStates.licensePlateCreate.value;
 
+  PaginationDto get pagination => TrafficFineStates.pagination.value;
+
   int get imageBytesCount => TrafficFineStates.trafficFineImageBytesCount.value;
   int get imageBytesTotal => TrafficFineStates.trafficFineImageBytesTotal.value;
 
   String get trafficFineImageURL => TrafficFineStates.trafficFineImageURL.value;
 
+  late ScrollController scroll;
+
   @override
   void onInit() {
     super.onInit();
     cameraController = Get.find<CameraController>();
+    scroll = ScrollController();
+    scroll.addListener(scrollListener);
 
     fetchAllTrafficFines();
   }
@@ -79,6 +86,20 @@ class CopTrafficFineController extends GetxController {
     _debounce?.cancel();
     clearFields();
     super.onClose();
+  }
+
+  void scrollListener() {
+    if (scroll.offset >= scroll.position.maxScrollExtent &&
+        !scroll.position.outOfRange) {
+      nextPage();
+      //TODO adicionar ao array a segunda página, sem apagar os dados da primeira. Máx de 3 páginas por vez
+    }
+    if (scroll.offset <= scroll.position.minScrollExtent &&
+        !scroll.position.outOfRange &&
+        pagination.pageNumber > 1) {
+      previousPage();
+      //TODO ir retornando até acabar as páginas. Se necessário, fazer um novo fetch e adicionar ao inicio da lista. Ex> Avancei 4 páginas, a página 1 foi removida da lista, ao voltar 3, ele da o fetch novamente na página 1
+    }
   }
 
   void clearFields() {
@@ -115,6 +136,12 @@ class CopTrafficFineController extends GetxController {
       ),
     );
   }
+
+  void nextPage() => TrafficFineStates.pagination.value =
+      pagination.copyWith(pageNumber: pagination.pageNumber + 1);
+
+  void previousPage() => TrafficFineStates.pagination.value =
+      pagination.copyWith(pageNumber: pagination.pageNumber - 1);
 
   Future<void> debounceSearchByLicensePlate(String licensePlate) async {
     // if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
