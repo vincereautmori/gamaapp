@@ -24,6 +24,8 @@ class GetTrafficFineUsecaseImp implements GetTrafficFineUsecase {
       licensePlate: dto.licensePlate,
       createdSince: createdSince,
       createdUntil: createdUntil,
+      pageNumber: dto.pagination.pageNumber,
+      size: dto.pagination.size,
     );
     return result;
   }

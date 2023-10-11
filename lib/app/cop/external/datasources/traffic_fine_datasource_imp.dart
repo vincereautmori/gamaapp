@@ -14,9 +14,13 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     String? licensePlate,
     String? createdSince,
     String? createdUntil,
+    required int size,
+    required int pageNumber,
   }) async {
     Map<String, dynamic>? params = {
-      "licensePlate": licensePlate?.toLowerCase()
+      "licensePlate": licensePlate?.toLowerCase(),
+      "size": size,
+      "pageNumber": pageNumber,
     };
 
     if (createdSince != null) {
@@ -29,6 +33,8 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
 
     Response res = await dio.get('/traffic-fines', queryParameters: params);
 
+    int pageAt = res.data['pageNumber'];
+
     List<ListedTrafficFineModel> trafficModels = res.data['results']
         .map<ListedTrafficFineModel>(
           (trafficFine) => ListedTrafficFineModel(
@@ -36,6 +42,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
             computed: trafficFine['computed'],
             createdAt: DateTime.parse(trafficFine['createdAt']),
             licensePlate: trafficFine['licensePlate'],
+            pageNumber: pageAt,
           ),
         )
         .toList();

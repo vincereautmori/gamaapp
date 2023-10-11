@@ -5,12 +5,14 @@ class ListedTrafficFineEntity extends Equatable {
   final String licensePlate;
   final bool computed;
   final DateTime createdAt;
+  final int pageNumber;
 
   const ListedTrafficFineEntity({
     required this.id,
     required this.licensePlate,
     required this.computed,
     required this.createdAt,
+    required this.pageNumber,
   });
 
   @override
@@ -19,5 +21,6 @@ class ListedTrafficFineEntity extends Equatable {
         licensePlate,
         computed,
         createdAt,
+        pageNumber,
       ];
 }

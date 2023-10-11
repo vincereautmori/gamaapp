@@ -189,7 +189,6 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
             ),
             const SizedBox(height: 8),
             Obx(() {
-              print(violationsController.selectedTrafficViolations);
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount:

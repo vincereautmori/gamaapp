@@ -25,7 +25,10 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
         backgroundColor: Palette.primary,
       ),
       body: RefreshIndicator(
-        onRefresh: controller.fetchAllTrafficFines,
+        onRefresh: () async {
+          controller.clearTrafficFines();
+          await controller.fetchAllTrafficFines();
+        },
         child: Column(
           children: [
             Container(
@@ -98,67 +101,84 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               ),
             ),
             const SizedBox(height: 24),
-            Obx(
-              () => Text(
-                controller.pagination.pageNumber.toString(),
-              ),
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Obx(() => ListView.builder(
-                      controller: controller.scroll,
-                      itemCount: controller.trafficFines.length,
-                      itemBuilder: (context, index) {
-                        ListedTrafficFineInfo listedItem =
-                            controller.trafficFines[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    listedItem.licensePlate.toUpperCase(),
-                                    style: Texts.cardTitle,
-                                  ),
-                                  Text(
-                                    listedItem.createdAt
-                                        .formatDate('dd/MM/yyyy - hh:mm')!,
-                                    style: Texts.body.copyWith(
-                                      color: Palette.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: listedItem.computed
-                                      ? Colors.green
-                                      : Palette.red,
-                                  borderRadius: BorderRadius.circular(4),
+                child: Obx(() {
+                  if (controller.trafficFines.isEmpty &&
+                      controller.isFetchLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return ListView.builder(
+                    controller: controller.scroll,
+                    itemCount: controller.trafficFines.length,
+                    itemBuilder: (context, index) {
+                      ListedTrafficFineInfo listedItem =
+                          controller.trafficFines[index];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  listedItem.licensePlate.toUpperCase(),
+                                  style: Texts.cardTitle,
                                 ),
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  listedItem.computed
-                                      ? "Computado"
-                                      : "Não computado",
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 12,
-                                    color: Palette.white,
+                                Text(
+                                  listedItem.createdAt
+                                      .formatDate('dd/MM/yyyy - hh:mm')!,
+                                  style: Texts.body.copyWith(
+                                    color: Palette.grey,
                                   ),
                                 ),
+                              ],
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: listedItem.computed
+                                    ? Colors.green
+                                    : Palette.red,
+                                borderRadius: BorderRadius.circular(4),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    )),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                listedItem.computed
+                                    ? "Computado"
+                                    : "Não computado",
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                  color: Palette.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
-            )
+            ),
+            Obx(() {
+              if (controller.isFetchLoading &&
+                  controller.trafficFines.isNotEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              return const SizedBox();
+            }),
           ],
         ),
       ),

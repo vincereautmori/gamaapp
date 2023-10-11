@@ -8,5 +8,6 @@ class ListedTrafficFineModel extends ListedTrafficFineEntity
     required super.licensePlate,
     required super.computed,
     required super.createdAt,
+    required super.pageNumber,
   });
 }

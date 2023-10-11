@@ -18,6 +18,8 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
     String? licensePlate,
     String? createdSince,
     String? createdUntil,
+    required int size,
+    required int pageNumber,
   }) async {
     try {
       List<ListedTrafficFineModel> listedTrafficFine =
@@ -25,6 +27,8 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
         licensePlate: licensePlate,
         createdSince: createdSince,
         createdUntil: createdUntil,
+        size: size,
+        pageNumber: pageNumber,
       );
       return Success(listedTrafficFine);
     } on DioException catch (e) {

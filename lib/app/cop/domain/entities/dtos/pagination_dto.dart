@@ -2,7 +2,7 @@ class PaginationDto {
   final int pageNumber;
   final int size;
 
-  PaginationDto({
+  const PaginationDto({
     this.pageNumber = 1,
     this.size = 10,
   });

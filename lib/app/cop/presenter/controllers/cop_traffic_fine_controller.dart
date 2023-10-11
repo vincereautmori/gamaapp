@@ -88,18 +88,22 @@ class CopTrafficFineController extends GetxController {
     super.onClose();
   }
 
+  void clearTrafficFines() {
+    TrafficFineStates.pagination.value = pagination.copyWith(pageNumber: 1);
+    TrafficFineStates.trafficFines.clear();
+  }
+
   void scrollListener() {
     if (scroll.offset >= scroll.position.maxScrollExtent &&
         !scroll.position.outOfRange) {
       nextPage();
-      //TODO adicionar ao array a segunda página, sem apagar os dados da primeira. Máx de 3 páginas por vez
     }
-    if (scroll.offset <= scroll.position.minScrollExtent &&
-        !scroll.position.outOfRange &&
-        pagination.pageNumber > 1) {
-      previousPage();
-      //TODO ir retornando até acabar as páginas. Se necessário, fazer um novo fetch e adicionar ao inicio da lista. Ex> Avancei 4 páginas, a página 1 foi removida da lista, ao voltar 3, ele da o fetch novamente na página 1
-    }
+    // if (scroll.offset <= scroll.position.minScrollExtent &&
+    //     !scroll.position.outOfRange &&
+    //     pagination.pageNumber > 1) {
+    //   previousPage();
+    //   //TODO ir retornando até acabar as páginas. Se necessário, fazer um novo fetch e adicionar ao inicio da lista. Ex> Avancei 4 páginas, a página 1 foi removida da lista, ao voltar 3, ele da o fetch novamente na página 1
+    // }
   }
 
   void clearFields() {
@@ -111,6 +115,8 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> fetchAllTrafficFines() async {
+    LoadingHandler.setLoading(LoadingStates.loadingTrafficFine);
+
     DateTime? since = createdSince.text != ""
         ? DateFormat('dd/MM/yyyy').parse(createdSince.text)
         : null;
@@ -121,14 +127,14 @@ class CopTrafficFineController extends GetxController {
 
     Result result = await getTrafficFines(
       TrafficFineFilterDto(
-        createdSince: since,
-        createdUntil: until,
-        licensePlate: licensePlate,
-      ),
+          createdSince: since,
+          createdUntil: until,
+          licensePlate: licensePlate,
+          pagination: pagination),
     );
-
+    LoadingHandler.stopLoading();
     result.when(
-      (success) => TrafficFineStates.trafficFines.value = success,
+      (trafficFines) => handlePaginationResult(trafficFines),
       (error) => utils.callSnackBar(
         title: "Falha ao carregar multas",
         message: error.message,
@@ -137,11 +143,23 @@ class CopTrafficFineController extends GetxController {
     );
   }
 
-  void nextPage() => TrafficFineStates.pagination.value =
-      pagination.copyWith(pageNumber: pagination.pageNumber + 1);
+  void handlePaginationResult(List<ListedTrafficFineInfo> fines) {
+    if (trafficFines.isEmpty) {
+      TrafficFineStates.trafficFines.value = fines;
+    }
 
-  void previousPage() => TrafficFineStates.pagination.value =
-      pagination.copyWith(pageNumber: pagination.pageNumber - 1);
+    if (trafficFines.isNotEmpty &&
+        pagination.pageNumber > trafficFines.last.pageNumber) {
+      TrafficFineStates.trafficFines.addAll(fines);
+    }
+  }
+
+  void nextPage() async {
+    TrafficFineStates.pagination.value =
+        pagination.copyWith(pageNumber: pagination.pageNumber + 1);
+
+    await fetchAllTrafficFines();
+  }
 
   Future<void> debounceSearchByLicensePlate(String licensePlate) async {
     // if (_debounce != null && _debounce!.isActive) _debounce!.cancel();

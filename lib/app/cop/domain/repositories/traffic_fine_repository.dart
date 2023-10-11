@@ -9,6 +9,8 @@ abstract class TrafficFineRepository {
     String? licensePlate,
     String? createdSince,
     String? createdUntil,
+    required int size,
+    required int pageNumber,
   });
 
   Future<Result<int, Failure>> createTrafficFine({

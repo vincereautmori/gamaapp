@@ -6,6 +6,8 @@ abstract class TrafficFineDatasource {
     String? licensePlate,
     String? createdSince,
     String? createdUntil,
+    required int size,
+    required int pageNumber,
   });
 
   Future<int> createTrafficFine({
