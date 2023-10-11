@@ -78,6 +78,13 @@ class CopTrafficFineController extends GetxController {
     scroll = ScrollController();
     scroll.addListener(scrollListener);
 
+    createdSince.addListener(() async {
+      await search();
+    });
+    createdUntil.addListener(() async {
+      await search();
+    });
+
     fetchAllTrafficFines();
   }
 
@@ -86,6 +93,11 @@ class CopTrafficFineController extends GetxController {
     _debounce?.cancel();
     clearFields();
     super.onClose();
+  }
+
+  Future<void> search() async {
+    clearTrafficFines();
+    await fetchAllTrafficFines();
   }
 
   void clearTrafficFines() {
@@ -167,7 +179,7 @@ class CopTrafficFineController extends GetxController {
     //   await fetchAllTrafficFines();
     // });
     if (licensePlate.length == 8) {
-      await fetchAllTrafficFines();
+      await search();
     }
   }
 
