@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gamaapp/app/cop/domain/entities/trafficFine/listed_traffic_fine_info.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:gamaapp/app/cop/presenter/widgets/filter_header.dart';
 import 'package:gamaapp/app/routes/routes_name.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
+import 'package:gamaapp/shared/themes/images.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:get/get.dart';
@@ -32,10 +34,18 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Obx(() {
-                  if (controller.trafficFines.isEmpty &&
-                      controller.isFetchLoading) {
+                  if (controller.isFetchLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if (controller.trafficFines.isEmpty) {
+                    return Center(
+                      child: SizedBox(
+                          height: 300,
+                          width: 300,
+                          child: SvgPicture.asset(Images.emptyState)),
                     );
                   }
 

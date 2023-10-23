@@ -18,7 +18,7 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     required int pageNumber,
   }) async {
     Map<String, dynamic>? params = {
-      "licensePlate": licensePlate?.toLowerCase(),
+      "licensePlate": licensePlate,
       "size": size,
       "pageNumber": pageNumber,
     };

@@ -1,4 +1,3 @@
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
@@ -11,6 +10,7 @@ import 'package:get/get.dart';
 import '../../../../../shared/widgets/square_line.dart';
 import '../../../domain/entities/trafficViolations/traffic_violation_info.dart';
 import '../../controllers/cop_traffic_violation_controller.dart';
+import '../../formatters/placa_formatter.dart';
 
 class NewTrafficFinePage extends GetView<CopTrafficFineController> {
   const NewTrafficFinePage({Key? key}) : super(key: key);
@@ -86,7 +86,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                 controller: controller.licensePlateCreate,
                 label: 'Placa',
                 placeholder: "Informe o número da placa",
-                masks: [PlacaVeiculoInputFormatter()],
+                masks: [GamaPlacaVeiculoInputFormatter()],
               ),
             ),
             const SizedBox(height: 16),

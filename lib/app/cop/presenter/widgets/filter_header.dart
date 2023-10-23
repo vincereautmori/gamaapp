@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../../../shared/themes/palette.dart';
 import '../../../../shared/widgets/square_line.dart';
+import '../formatters/placa_formatter.dart';
 
 class FilterHeader extends GetView<CopTrafficFineController> {
   const FilterHeader({super.key});
@@ -23,7 +24,7 @@ class FilterHeader extends GetView<CopTrafficFineController> {
             child: TextFormField(
               controller: controller.licensePlateFilter,
               onChanged: controller.debounceSearchByLicensePlate,
-              inputFormatters: [PlacaVeiculoInputFormatter()],
+              inputFormatters: [GamaPlacaVeiculoInputFormatter()],
               decoration: const InputDecoration(
                 isDense: true,
                 hintText: 'Busque pela placa',

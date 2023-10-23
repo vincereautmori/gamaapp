@@ -178,7 +178,12 @@ class CopTrafficFineController extends GetxController {
     // _debounce = Timer(const Duration(milliseconds: 500), () async {
     //   await fetchAllTrafficFines();
     // });
-    if (licensePlate.length == 8) {
+    int maxLength = 7;
+
+    if (licensePlate.contains('-')) {
+      maxLength = 8;
+    }
+    if (licensePlate.length == maxLength || licensePlate.isEmpty) {
       await search();
     }
   }
