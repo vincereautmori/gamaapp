@@ -34,24 +34,39 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Obx(() {
-                  if (controller.isFetchLoading) {
+                  if (controller.isFetchLoading &&
+                      controller.trafficFines.isEmpty) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
 
                   if (controller.trafficFines.isEmpty) {
-                    return Center(
-                      child: SizedBox(
-                          height: 300,
-                          width: 300,
-                          child: SvgPicture.asset(Images.emptyState)),
+                    return SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 300,
+                            width: 300,
+                            child: SvgPicture.asset(Images.emptyState),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Nenhuma multa no periodo',
+                            style: Texts.subtitle,
+                          )
+                        ],
+                      ),
                     );
                   }
 
                   return ListView.builder(
                     controller: controller.scroll,
                     itemCount: controller.trafficFines.length,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       ListedTrafficFineInfo listedItem =
                           controller.trafficFines[index];

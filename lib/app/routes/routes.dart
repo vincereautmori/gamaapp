@@ -6,6 +6,7 @@ import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_traffic_fine_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/new_traffic_fine_page.dart';
+import 'package:gamaapp/app/locations/presenter/bindings/location_binding.dart';
 import 'package:gamaapp/app/main_bind.dart';
 import 'package:get/get.dart';
 
@@ -45,6 +46,7 @@ class Routes {
         CopHomeBinding(),
         CopTrafficFineBinding(),
         CopTrafficViolationBinding(),
+        LocationBinding(),
       ],
       page: () => const CopHomePage(),
       children: [

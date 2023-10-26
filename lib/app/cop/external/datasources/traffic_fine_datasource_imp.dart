@@ -35,6 +35,9 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
 
     int pageAt = res.data['pageNumber'];
 
+    TrafficFineStates.pagination.value =
+        TrafficFineStates.pagination.value.copyWith(count: res.data['count']);
+
     List<ListedTrafficFineModel> trafficModels = res.data['results']
         .map<ListedTrafficFineModel>(
           (trafficFine) => ListedTrafficFineModel(

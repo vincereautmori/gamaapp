@@ -10,6 +10,7 @@ import 'package:gamaapp/app/cop/domain/usecases/uploadFile/upload_file_usecase.d
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -18,9 +19,11 @@ import 'package:multiple_result/multiple_result.dart';
 import '/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '/app/cop/presenter/states/traffic_fine_states.dart';
 import '../../../camera/presenter/controllers/camera_controller.dart';
+import '../../../locations/presenter/states/location_states.dart';
 import '../../domain/entities/dtos/traffic_fine_filter_dto.dart';
 import '../../domain/entities/dtos/traffic_fine_input_dto.dart';
 import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
+import '../states/traffic_violation_states.dart';
 
 class CopTrafficFineController extends GetxController {
   final GetTrafficFineUsecase getTrafficFines;
@@ -69,6 +72,8 @@ class CopTrafficFineController extends GetxController {
 
   String get trafficFineImageURL => TrafficFineStates.trafficFineImageURL.value;
 
+  Position? get position => LocationStates.position.value;
+
   late ScrollController scroll;
 
   @override
@@ -76,7 +81,9 @@ class CopTrafficFineController extends GetxController {
     super.onInit();
     cameraController = Get.find<CameraController>();
     scroll = ScrollController();
-    scroll.addListener(scrollListener);
+    if (!scroll.hasClients) {
+      scroll.addListener(scrollListener);
+    }
 
     createdSince.addListener(() async {
       await search();
@@ -84,14 +91,15 @@ class CopTrafficFineController extends GetxController {
     createdUntil.addListener(() async {
       await search();
     });
-
     fetchAllTrafficFines();
   }
 
   @override
   void onClose() {
     _debounce?.cancel();
+    scroll.dispose();
     clearFields();
+    clearInputs();
     super.onClose();
   }
 
@@ -101,7 +109,8 @@ class CopTrafficFineController extends GetxController {
   }
 
   void clearTrafficFines() {
-    TrafficFineStates.pagination.value = pagination.copyWith(pageNumber: 1);
+    TrafficFineStates.pagination.value =
+        pagination.copyWith(pageNumber: 1, count: 0);
     TrafficFineStates.trafficFines.clear();
   }
 
@@ -126,7 +135,22 @@ class CopTrafficFineController extends GetxController {
     TrafficFineStates.licensePlateCreate.value.text = "";
   }
 
+  void clearInputs() {
+    licensePlateCreate.text = '';
+    TrafficViolationStates.selectedTrafficViolations.clear();
+    TrafficFineStates.trafficFineImageURL.value = "";
+    TrafficFineStates.trafficFineImageBytesCount.value = 0;
+  }
+
   Future<void> fetchAllTrafficFines() async {
+    if (pagination.count == trafficFines.length && trafficFines.isNotEmpty) {
+      return utils.callSnackBar(
+        title: 'Nenhuma multa nova',
+        message: "Parece que você carregou todas as multas",
+        snackStyle: SnackBarStyles.warning,
+      );
+    }
+
     LoadingHandler.setLoading(LoadingStates.loadingTrafficFine);
 
     DateTime? since = createdSince.text != ""
@@ -214,26 +238,32 @@ class CopTrafficFineController extends GetxController {
     LoadingHandler.setLoading(LoadingStates.createTrafficFine);
 
     String licensePlate = licensePlateCreate.text;
+    List<Map<String, int>> violationIds = TrafficViolationStates
+        .selectedTrafficViolations
+        .map((violation) => {"id": violation.id})
+        .toList();
 
     Result result = await saveTrafficFine(
       TrafficFineInputDto(
-        licensePlate: licensePlate.replaceAll(RegExp(r'\W+'), ''),
-        latitude: 41.1425,
-        longitude: -41.1425,
-        trafficViolations: [
-          {"id": 1}
-        ],
+        licensePlate: licensePlate,
+        latitude: position?.latitude ?? 0,
+        longitude: position?.longitude ?? 0,
+        trafficViolations: violationIds,
         imageUrl: trafficFineImageURL,
       ),
     );
     LoadingHandler.stopLoading();
 
     result.when(
-      (success) => utils.callSnackBar(
-        title: "Multa salva com sucesso",
-        message: "Multa salva com sucesso",
-        snackStyle: SnackBarStyles.success,
-      ),
+      (success) {
+        Get.back();
+        utils.callSnackBar(
+          title: "Multa salva com sucesso",
+          message: "Multa salva com sucesso",
+          snackStyle: SnackBarStyles.success,
+        );
+        clearInputs();
+      },
       (error) => utils.callSnackBar(
         title: "Falha ao salvar multas",
         message: error.message,

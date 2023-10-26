@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
+import 'package:gamaapp/app/locations/presenter/controllers/location_controller.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:gamaapp/shared/extensions/set_extension.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
@@ -18,6 +19,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
   @override
   Widget build(BuildContext context) {
     CopTrafficViolationController violationsController = Get.find();
+    LocationController locationController = Get.find();
 
     return Scaffold(
       appBar: AppBar(
@@ -56,9 +58,9 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     title: const Text(
                       'Local da ocorrência',
                     ),
-                    subtitle: Text(
-                      DateTime.now().formatDate('dd/MM/yy - hh:mm:ss')!,
-                    ),
+                    subtitle: Obx(() => Text(
+                          locationController.place?.street ?? "OOps",
+                        )),
                   ),
                   const SizedBox(height: 4),
                   const ListTile(
@@ -104,7 +106,9 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ),
                   ),
                   onTap: controller.uploadImage,
-                  title: const Text('Nenhuma imagem'),
+                  title: Obx(() => Text(controller.imageBytesCount == 0
+                      ? 'Nenhuma imagem'
+                      : "Imagem carregada!")),
                   trailing: Obx(() {
                     if (controller.imageBytesCount == 0) {
                       return const Icon(Icons.add);
