@@ -70,47 +70,83 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                     itemBuilder: (context, index) {
                       ListedTrafficFineInfo listedItem =
                           controller.trafficFines[index];
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  listedItem.licensePlate.toUpperCase(),
-                                  style: Texts.cardTitle,
+                      return InkWell(
+                        onTap: () => Get.dialog(AlertDialog(
+                          title: Text(listedItem.licensePlate),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                listedItem.createdAt
+                                    .formatDate('dd/MM/yyyy - hh:mm')!,
+                                style: Texts.body.copyWith(
+                                  color: Palette.grey,
                                 ),
-                                Text(
-                                  listedItem.createdAt
-                                      .formatDate('dd/MM/yyyy - hh:mm')!,
-                                  style: Texts.body.copyWith(
-                                    color: Palette.grey,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: listedItem.computed
+                                      ? Colors.green
+                                      : Palette.red,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  listedItem.computed
+                                      ? "Computado"
+                                      : "Não computado",
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 12,
+                                    color: Palette.white,
                                   ),
                                 ),
-                              ],
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: listedItem.computed
-                                    ? Colors.green
-                                    : Palette.red,
-                                borderRadius: BorderRadius.circular(4),
                               ),
-                              padding: const EdgeInsets.all(8),
-                              child: Text(
-                                listedItem.computed
-                                    ? "Computado"
-                                    : "Não computado",
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 12,
-                                  color: Palette.white,
+                            ],
+                          ),
+                        )),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    listedItem.licensePlate.toUpperCase(),
+                                    style: Texts.cardTitle,
+                                  ),
+                                  Text(
+                                    listedItem.createdAt
+                                        .formatDate('dd/MM/yyyy - hh:mm')!,
+                                    style: Texts.body.copyWith(
+                                      color: Palette.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: listedItem.computed
+                                      ? Colors.green
+                                      : Palette.red,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  listedItem.computed
+                                      ? "Computado"
+                                      : "Não computado",
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 12,
+                                    color: Palette.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

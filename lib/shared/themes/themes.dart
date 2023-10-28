@@ -48,6 +48,5 @@ class GamaThemes {
         fontWeight: FontWeight.normal,
       ),
     ),
-    splashColor: Palette.primary,
   );
 }
