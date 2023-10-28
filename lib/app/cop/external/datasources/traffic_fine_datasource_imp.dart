@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:gamaapp/app/cop/infra/models/traffic_fine_model.dart';
 import 'package:gamaapp/app/cop/presenter/states/traffic_fine_states.dart';
 
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
@@ -8,6 +9,13 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
   final Dio dio;
 
   TrafficFineDatasourceImp(this.dio);
+
+  @override
+  Future<TrafficFineModel?> getTrafficFine(int id) async {
+    Response res = await dio.get('/traffic-fines/$id');
+    if (res.statusCode != 200) return null;
+    return TrafficFineModel.fromJson(res.data);
+  }
 
   @override
   Future<List<ListedTrafficFineModel>> fetchTrafficFines({

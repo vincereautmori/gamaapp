@@ -16,24 +16,28 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-import '/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '/app/cop/presenter/states/traffic_fine_states.dart';
 import '../../../camera/presenter/controllers/camera_controller.dart';
 import '../../../locations/presenter/states/location_states.dart';
 import '../../domain/entities/dtos/traffic_fine_filter_dto.dart';
 import '../../domain/entities/dtos/traffic_fine_input_dto.dart';
 import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
+import '../../domain/entities/trafficFine/traffic_fine_info.dart';
+import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase.dart';
+import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '../states/traffic_violation_states.dart';
 
 class CopTrafficFineController extends GetxController {
-  final GetTrafficFineUsecase getTrafficFines;
+  final GetAllTrafficFineUsecase getAllTrafficFines;
+  final GetTrafficFineUsecase getTrafficFine;
   final SaveTrafficUsecase saveTrafficFine;
   final UploadFileUsecase uploadFile;
 
   late CameraController cameraController;
 
   CopTrafficFineController({
-    required this.getTrafficFines,
+    required this.getAllTrafficFines,
+    required this.getTrafficFine,
     required this.saveTrafficFine,
     required this.uploadFile,
   });
@@ -47,11 +51,16 @@ class CopTrafficFineController extends GetxController {
   bool get isCreateLoading =>
       LoadingHandler.loadingState.value == LoadingStates.createTrafficFine;
 
-  bool get isFetchLoading =>
+  bool get isFetchAllLoading =>
+      LoadingHandler.loadingState.value == LoadingStates.loadingAllTrafficFines;
+
+  bool get isFetchLoaging =>
       LoadingHandler.loadingState.value == LoadingStates.loadingTrafficFine;
 
-  List<ListedTrafficFineInfo> get trafficFines =>
+  List<ListedTrafficFineInfo> get allTrafficFines =>
       TrafficFineStates.trafficFines;
+
+  TrafficFineInfo? get trafficFine => TrafficFineStates.openedTrafficFine.value;
 
   TextEditingController get createdSince =>
       TrafficFineStates.createdSince.value;
@@ -143,7 +152,8 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> fetchAllTrafficFines() async {
-    if (pagination.count == trafficFines.length && trafficFines.isNotEmpty) {
+    if (pagination.count == allTrafficFines.length &&
+        allTrafficFines.isNotEmpty) {
       return utils.callSnackBar(
         title: 'Nenhuma multa nova',
         message: "Parece que você carregou todas as multas",
@@ -151,7 +161,7 @@ class CopTrafficFineController extends GetxController {
       );
     }
 
-    LoadingHandler.setLoading(LoadingStates.loadingTrafficFine);
+    LoadingHandler.setLoading(LoadingStates.loadingAllTrafficFines);
 
     DateTime? since = createdSince.text != ""
         ? DateFormat('dd/MM/yyyy').parse(createdSince.text)
@@ -161,7 +171,7 @@ class CopTrafficFineController extends GetxController {
         : null;
     String licensePlate = licensePlateFilter.text;
 
-    Result result = await getTrafficFines(
+    Result result = await getAllTrafficFines(
       TrafficFineFilterDto(
           createdSince: since,
           createdUntil: until,
@@ -179,13 +189,29 @@ class CopTrafficFineController extends GetxController {
     );
   }
 
+  Future<void> getTrafficFineById(int id) async {
+    LoadingHandler.setLoading(LoadingStates.loadingTrafficFine);
+
+    Result<TrafficFineInfo, Failure> result = await getTrafficFine(id);
+    LoadingHandler.stopLoading();
+    result.when(
+      (trafficFine) {
+        TrafficFineStates.openedTrafficFine.value = trafficFine;
+      },
+      (error) => utils.callSnackBar(
+        title: "Falha ao carregar multa",
+        message: error.message,
+      ),
+    );
+  }
+
   void handlePaginationResult(List<ListedTrafficFineInfo> fines) {
-    if (trafficFines.isEmpty) {
+    if (allTrafficFines.isEmpty) {
       TrafficFineStates.trafficFines.value = fines;
     }
 
-    if (trafficFines.isNotEmpty &&
-        pagination.pageNumber > trafficFines.last.pageNumber) {
+    if (allTrafficFines.isNotEmpty &&
+        pagination.pageNumber > allTrafficFines.last.pageNumber) {
       TrafficFineStates.trafficFines.addAll(fines);
     }
   }

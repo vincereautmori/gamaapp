@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gamaapp/app/auth/external/providers/auth_provider.dart';
+import 'package:gamaapp/app/cop/domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/uploadFile/upload_file_usecase_imp.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/config/config.dart';
 import '../../domain/repositories/traffic_fine_repository.dart';
-import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
+import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase.dart';
+import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase_imp.dart';
 import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase_imp.dart';
 import '../../domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 import '../../domain/usecases/saveTrafficFine/save_traffic_usecase_imp.dart';
@@ -41,15 +43,19 @@ class CopTrafficFineBinding implements Bindings {
 
     TrafficFineDatasource tfDatasource = TrafficFineDatasourceImp(_dio);
     TrafficFineRepository tfRepository = TrafficFineRepositoryImp(tfDatasource);
-    GetTrafficFineUsecase getTfUseCase = GetTrafficFineUsecaseImp(tfRepository);
+    GetAllTrafficFineUsecase getTfUseCase =
+        GetAllTrafficFineUsecaseImp(tfRepository);
     SaveTrafficUsecase saveTfUseCase = SaveTrafficUsecaseImp(tfRepository);
     UploadFileUsecase uploadFileUseCase = UploadFileUsecaseImp(tfRepository);
+    GetTrafficFineUsecase getTrafficFine =
+        GetTrafficFineUsecaseImp(tfRepository);
 
     Get.put(
       CopTrafficFineController(
-        getTrafficFines: getTfUseCase,
+        getAllTrafficFines: getTfUseCase,
         saveTrafficFine: saveTfUseCase,
         uploadFile: uploadFileUseCase,
+        getTrafficFine: getTrafficFine,
       ),
     );
   }

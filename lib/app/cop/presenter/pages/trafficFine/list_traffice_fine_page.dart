@@ -11,6 +11,8 @@ import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../widgets/opened_traffic_fine.dart';
+
 class TrafficFineList extends GetView<CopTrafficFineController> {
   const TrafficFineList({super.key});
 
@@ -34,14 +36,14 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Obx(() {
-                  if (controller.isFetchLoading &&
-                      controller.trafficFines.isEmpty) {
+                  if (controller.isFetchAllLoading &&
+                      controller.allTrafficFines.isEmpty) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
 
-                  if (controller.trafficFines.isEmpty) {
+                  if (controller.allTrafficFines.isEmpty) {
                     return SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
@@ -65,46 +67,18 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
 
                   return ListView.builder(
                     controller: controller.scroll,
-                    itemCount: controller.trafficFines.length,
+                    itemCount: controller.allTrafficFines.length,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       ListedTrafficFineInfo listedItem =
-                          controller.trafficFines[index];
+                          controller.allTrafficFines[index];
                       return InkWell(
-                        onTap: () => Get.dialog(AlertDialog(
-                          title: Text(listedItem.licensePlate),
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                listedItem.createdAt
-                                    .formatDate('dd/MM/yyyy - hh:mm')!,
-                                style: Texts.body.copyWith(
-                                  color: Palette.grey,
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: listedItem.computed
-                                      ? Colors.green
-                                      : Palette.red,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  listedItem.computed
-                                      ? "Computado"
-                                      : "Não computado",
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 12,
-                                    color: Palette.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )),
+                        onTap: () async {
+                          Get.dialog(
+                            const OpenedTrafficFine(),
+                          );
+                          await controller.getTrafficFineById(listedItem.id);
+                        },
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 16),
                           child: Row(
@@ -155,8 +129,8 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
               ),
             ),
             Obx(() {
-              if (controller.isFetchLoading &&
-                  controller.trafficFines.isNotEmpty) {
+              if (controller.isFetchAllLoading &&
+                  controller.allTrafficFines.isNotEmpty) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Center(

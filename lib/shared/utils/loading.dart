@@ -10,6 +10,7 @@ class LoadingHandler {
 
 enum LoadingStates {
   createTrafficFine,
+  loadingAllTrafficFines,
   loadingTrafficFine,
   loadingTrafficViolations,
   uploadingTrafficFineImage,

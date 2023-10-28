@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:gamaapp/app/cop/domain/entities/trafficFine/traffic_fine_info.dart';
 import 'package:gamaapp/app/cop/domain/errors/error.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -7,11 +8,31 @@ import '/app/auth/domain/errors/errors.dart';
 import '/app/cop/domain/repositories/traffic_fine_repository.dart';
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
 import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
+import '../models/traffic_fine_model.dart';
 
 class TrafficFineRepositoryImp implements TrafficFineRepository {
   final TrafficFineDatasource datasource;
 
   TrafficFineRepositoryImp(this.datasource);
+
+  @override
+  Future<Result<TrafficFineInfo, Failure>> getTrafficFine(int id) async {
+    try {
+      TrafficFineModel? trafficFine = await datasource.getTrafficFine(id);
+
+      if (trafficFine == null) {
+        return Error(
+          TrafficFineError(message: "Multa não encontrada"),
+        );
+      }
+
+      return Success(trafficFine);
+    } catch (e) {
+      return Error(
+        TrafficFineError(message: "Falha ao carregar multa"),
+      );
+    }
+  }
 
   @override
   Future<Result<List<ListedTrafficFineInfo>, Failure>> fetchTrafficFine({

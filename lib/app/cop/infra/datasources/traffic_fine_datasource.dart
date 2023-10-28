@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
+import 'package:gamaapp/app/cop/infra/models/traffic_fine_model.dart';
 
 abstract class TrafficFineDatasource {
+  Future<TrafficFineModel?> getTrafficFine(int id);
+
   Future<List<ListedTrafficFineModel>> fetchTrafficFines({
     String? licensePlate,
     String? createdSince,
