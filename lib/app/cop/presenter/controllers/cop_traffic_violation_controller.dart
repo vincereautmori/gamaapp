@@ -1,6 +1,7 @@
 import 'package:gamaapp/app/cop/domain/entities/trafficViolations/traffic_violation_info.dart';
 import 'package:gamaapp/app/cop/domain/usecases/getTrafficViolations/get_traffic_violations_usecase.dart';
 import 'package:gamaapp/app/cop/presenter/states/traffic_violation_states.dart';
+import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:get/get.dart';
 import 'package:multiple_result/multiple_result.dart';
 
@@ -16,10 +17,19 @@ class CopTrafficViolationController extends GetxController {
   Set<TrafficViolationInfo> get selectedTrafficViolations =>
       TrafficViolationStates.selectedTrafficViolations;
 
+  bool get allViolationsChecked => TrafficViolationStates.allChecked.value;
+
+  bool get isLoading =>
+      LoadingHandler.loadingState.value ==
+      LoadingStates.loadingTrafficViolations;
+
   CopTrafficViolationController(this.getTrafficViolations);
 
   Future<void> getAllViolations() async {
+    LoadingHandler.setLoading(LoadingStates.loadingTrafficViolations);
     Result result = await getTrafficViolations();
+    LoadingHandler.stopLoading();
+
     result.when((violations) {
       TrafficViolationStates.trafficViolations.value = violations;
     }, (error) {
@@ -31,9 +41,22 @@ class CopTrafficViolationController extends GetxController {
     });
   }
 
-  void selectViolation(TrafficViolationInfo violation) =>
-      TrafficViolationStates.selectedTrafficViolations.add(violation);
+  void handleCheckAll() {
+    if (allViolationsChecked) {
+      selectedTrafficViolations.clear();
+    } else {
+      selectedTrafficViolations.addAll(trafficViolations);
+    }
+    TrafficViolationStates.allChecked.toggle();
+  }
 
-  void unselectViolation(TrafficViolationInfo violation) =>
-      TrafficViolationStates.selectedTrafficViolations.remove(violation);
+  void selectViolation(TrafficViolationInfo violation) =>
+      selectedTrafficViolations.add(violation);
+
+  void unselectViolation(TrafficViolationInfo violation) {
+    selectedTrafficViolations.remove(violation);
+    if (selectedTrafficViolations.isEmpty) {
+      TrafficViolationStates.allChecked.value = false;
+    }
+  }
 }

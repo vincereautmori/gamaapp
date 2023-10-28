@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
+import 'package:gamaapp/app/cop/presenter/widgets/violations_bottom_sheet.dart';
 import 'package:gamaapp/app/locations/presenter/controllers/location_controller.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
-import 'package:gamaapp/shared/extensions/set_extension.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:gamaapp/shared/widgets/textfield.dart';
 import 'package:get/get.dart';
 
 import '../../../../../shared/widgets/square_line.dart';
-import '../../../domain/entities/trafficViolations/traffic_violation_info.dart';
 import '../../controllers/cop_traffic_violation_controller.dart';
 import '../../formatters/placa_formatter.dart';
 
@@ -149,41 +148,8 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     onPressed: () {
                       violationsController.getAllViolations();
                       showModalBottomSheet(
-                        context: context,
-                        builder: (context) => BottomSheet(
-                          enableDrag: false,
-                          showDragHandle: true,
-                          onClosing: () {},
-                          builder: (context) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text("Clique na infração"),
-                                ListView.builder(
-                                  itemCount: violationsController
-                                      .trafficViolations.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    TrafficViolationInfo violation =
-                                        violationsController
-                                            .trafficViolations[index];
-                                    return ListTile(
-                                      leading: Text(violation.code),
-                                      title: Text(violation.name),
-                                      onTap: () {
-                                        violationsController
-                                            .selectViolation(violation);
-                                        Get.back();
-                                      },
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                          context: context,
+                          builder: (context) => const ViolationsBottomSheet());
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Adicionar infração'),
@@ -193,33 +159,48 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
             ),
             const SizedBox(height: 8),
             Obx(() {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount:
-                    violationsController.selectedTrafficViolations.length,
-                itemBuilder: (context, index) {
-                  TrafficViolationInfo violation =
-                      violationsController.selectedTrafficViolations[index];
-                  return ListTile(
-                    title: Text(violation.name),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => violationsController.unselectViolation(
-                        violation,
-                      ),
-                    ),
-                  );
-                },
+              if (violationsController.selectedTrafficViolations.isEmpty) {
+                return const Center(
+                  child: Text("Nenhuma infração selecionada"),
+                );
+              }
+
+              return Wrap(
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                spacing: 8,
+                children: List.from(
+                  violationsController.selectedTrafficViolations.map(
+                    (violation) {
+                      return Chip(
+                        label: Text(violation.name),
+                        onDeleted: () {
+                          violationsController.unselectViolation(violation);
+                        },
+                        labelStyle: const TextStyle(color: Palette.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: const BorderSide(color: Palette.primary),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               );
-            })
+            }),
+            const SizedBox(height: 80),
           ],
         ),
       ),
       floatingActionButton: Obx(
         () {
+          bool isDisabled = controller.isCreateLoading ||
+              violationsController.selectedTrafficViolations.isEmpty ||
+              controller.licensePlateCreate.text.isEmpty;
           return FloatingActionButton.extended(
-            onPressed:
-                controller.isCreateLoading ? null : controller.addTrafficFine,
+            backgroundColor: isDisabled ? Palette.lightGrey : null,
+            foregroundColor: isDisabled ? Palette.grey : null,
+            onPressed: isDisabled ? null : controller.addTrafficFine,
             icon: controller.isCreateLoading
                 ? const SizedBox(
                     height: 24,

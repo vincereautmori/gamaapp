@@ -11,6 +11,19 @@ class GamaThemes {
       backgroundColor: Palette.primary,
       foregroundColor: Palette.white,
     ),
+    chipTheme: ChipThemeData(
+        checkmarkColor: Colors.white,
+        color: MaterialStateProperty.resolveWith(
+          (states) {
+            if (states.contains(MaterialState.selected)) {
+              return Palette.primary;
+            }
+            return Colors.transparent;
+          },
+        )),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Colors.white,
+    ),
     textTheme: TextTheme(
       titleLarge: Texts.title,
       titleSmall: Texts.subtitle,

@@ -8,4 +8,6 @@ class TrafficViolationStates {
 
   static final RxSet<TrafficViolationInfo> selectedTrafficViolations =
       <TrafficViolationInfo>{}.obs;
+
+  static final RxBool allChecked = false.obs;
 }
