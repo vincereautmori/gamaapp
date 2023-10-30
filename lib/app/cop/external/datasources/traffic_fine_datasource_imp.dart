@@ -93,4 +93,13 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
 
     return response.data;
   }
+
+  @override
+  Future<List<int>> loadImage(String url) async {
+    Response response = await dio.get(
+      '/files?path=$url',
+      options: Options(responseType: ResponseType.bytes),
+    );
+    return response.data;
+  }
 }

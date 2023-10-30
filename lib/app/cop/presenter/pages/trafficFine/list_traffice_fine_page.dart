@@ -94,7 +94,7 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                                   ),
                                   Text(
                                     listedItem.createdAt
-                                        .formatDate('dd/MM/yyyy - hh:mm')!,
+                                        .formatDate('dd/MM/yyyy - HH:mm')!,
                                     style: Texts.body.copyWith(
                                       color: Palette.grey,
                                     ),

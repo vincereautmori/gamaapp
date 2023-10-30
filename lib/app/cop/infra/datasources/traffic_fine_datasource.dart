@@ -22,4 +22,6 @@ abstract class TrafficFineDatasource {
   });
 
   Future<String> uploadImage(FormData fileFormData);
+
+  Future<List<int>> loadImage(String url);
 }

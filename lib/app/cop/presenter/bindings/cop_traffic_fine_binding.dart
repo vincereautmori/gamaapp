@@ -11,6 +11,8 @@ import '../../domain/repositories/traffic_fine_repository.dart';
 import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase.dart';
 import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase_imp.dart';
 import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase_imp.dart';
+import '../../domain/usecases/loadFile/load_file_usecase.dart';
+import '../../domain/usecases/loadFile/load_file_usecase_imp.dart';
 import '../../domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 import '../../domain/usecases/saveTrafficFine/save_traffic_usecase_imp.dart';
 import '../../domain/usecases/uploadFile/upload_file_usecase.dart';
@@ -42,11 +44,18 @@ class CopTrafficFineBinding implements Bindings {
     ));
 
     TrafficFineDatasource tfDatasource = TrafficFineDatasourceImp(_dio);
+
     TrafficFineRepository tfRepository = TrafficFineRepositoryImp(tfDatasource);
+
     GetAllTrafficFineUsecase getTfUseCase =
         GetAllTrafficFineUsecaseImp(tfRepository);
+
     SaveTrafficUsecase saveTfUseCase = SaveTrafficUsecaseImp(tfRepository);
+
     UploadFileUsecase uploadFileUseCase = UploadFileUsecaseImp(tfRepository);
+
+    LoadFileUsecase loadFileUseCase = LoadFileUsecaseImp(tfRepository);
+
     GetTrafficFineUsecase getTrafficFine =
         GetTrafficFineUsecaseImp(tfRepository);
 
@@ -55,6 +64,7 @@ class CopTrafficFineBinding implements Bindings {
         getAllTrafficFines: getTfUseCase,
         saveTrafficFine: saveTfUseCase,
         uploadFile: uploadFileUseCase,
+        loadFile: loadFileUseCase,
         getTrafficFine: getTrafficFine,
       ),
     );

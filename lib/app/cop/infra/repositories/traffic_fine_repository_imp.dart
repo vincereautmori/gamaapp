@@ -136,4 +136,18 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
       );
     }
   }
+
+  @override
+  Future<Result<List<int>, Failure>> loadFile(String url) async {
+    try {
+      List<int> fileBytes = await datasource.loadImage(url);
+      return Success(fileBytes);
+    } catch (e) {
+      return Error(
+        UploadImageError(
+          message: 'Falha ao carregar imagem',
+        ),
+      );
+    }
+  }
 }

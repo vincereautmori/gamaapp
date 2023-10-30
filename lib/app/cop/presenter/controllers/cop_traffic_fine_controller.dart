@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
 import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
+import 'package:gamaapp/app/cop/domain/usecases/loadFile/load_file_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/uploadFile/upload_file_usecase.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
@@ -32,6 +33,7 @@ class CopTrafficFineController extends GetxController {
   final GetTrafficFineUsecase getTrafficFine;
   final SaveTrafficUsecase saveTrafficFine;
   final UploadFileUsecase uploadFile;
+  final LoadFileUsecase loadFile;
 
   late CameraController cameraController;
 
@@ -40,6 +42,7 @@ class CopTrafficFineController extends GetxController {
     required this.getTrafficFine,
     required this.saveTrafficFine,
     required this.uploadFile,
+    required this.loadFile,
   });
 
   Timer? _debounce;
@@ -258,6 +261,15 @@ class CopTrafficFineController extends GetxController {
         snackStyle: SnackBarStyles.error,
       ),
     );
+  }
+
+  Future<List<int>?> loadImage(String url) async {
+    Result<List<int>, Failure> result = await loadFile(url);
+    return result.when((file) {
+      return file;
+    }, (error) {
+      return null;
+    });
   }
 
   Future<void> addTrafficFine() async {

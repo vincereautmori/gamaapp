@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
+import 'package:gamaapp/app/cop/presenter/widgets/fine_image.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,12 +32,22 @@ class OpenedTrafficFine extends GetView<CopTrafficFineController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text("Situação:"),
+            trafficFine.active
+                ? const Row(
+                    children: [Text("Ativa"), Icon(Icons.check)],
+                  )
+                : const Row(
+                    children: [Text("Inativa"), Icon(Icons.close)],
+                  ),
             Text(
-              trafficFine.createdAt.formatDate('dd/MM/yyyy - hh:mm')!,
+              trafficFine.createdAt.formatDate('dd/MM/yyyy - HH:mm')!,
               style: Texts.body.copyWith(
                 color: Palette.grey,
               ),
             ),
+            FineImage(imageUrl: trafficFine.imageUrl),
+            const Text("Integração:"),
             Container(
               decoration: BoxDecoration(
                 color: trafficFine.computed ? Colors.green : Palette.red,

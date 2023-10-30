@@ -25,4 +25,7 @@ abstract class TrafficFineRepository {
   });
 
   Future<Result<String, Failure>> uploadFile(FormData fileFormData);
+
+  // Future<Result<List<int>, Failure>> loadFile(String url);
+  Future<Result<List<int>, Failure>> loadFile(String url);
 }

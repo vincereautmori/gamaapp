@@ -20,7 +20,6 @@ class TrafficViolationRepositoryImp implements TrafficViolationRepository {
           await datasource.fetchTrafficViolations();
       return Success(trafficViolations);
     } catch (e) {
-      print(e);
       return Error(
         TrafficViolationError(message: "Falha ao carregar tipos de multa"),
       );
