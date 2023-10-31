@@ -44,7 +44,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                       'Hora da ocorrência',
                     ),
                     subtitle: Text(
-                      DateTime.now().formatDate('dd/MM/yy - hh:mm:ss')!,
+                      DateTime.now().formatDate('dd/MM/yy - HH:mm:ss')!,
                     ),
                   ),
                   const SizedBox(height: 4),

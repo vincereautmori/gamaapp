@@ -11,8 +11,6 @@ import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../widgets/opened_traffic_fine.dart';
-
 class TrafficFineList extends GetView<CopTrafficFineController> {
   const TrafficFineList({super.key});
 
@@ -74,9 +72,7 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                           controller.allTrafficFines[index];
                       return InkWell(
                         onTap: () async {
-                          Get.dialog(
-                            const OpenedTrafficFine(),
-                          );
+                          Get.toNamed(RoutesNames.viewTrafficFine);
                           await controller.getTrafficFineById(listedItem.id);
                         },
                         child: Container(
