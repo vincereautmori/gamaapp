@@ -122,6 +122,26 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                   ),
                 ),
                 const SizedBox(height: 16),
+                Text(
+                  "Infrações",
+                  style: Texts.subtitle,
+                ),
+                const SizedBox(height: 4),
+                Wrap(
+                  spacing: 8,
+                  children: List.from(
+                    trafficFine.trafficViolations.map(
+                      (violation) => Chip(
+                        label: Text(
+                          violation.name,
+                          style: const TextStyle(color: Palette.white),
+                        ),
+                        color: const MaterialStatePropertyAll(Palette.red),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -144,7 +164,7 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                   ],
                 ),
                 Container(
-                  height: 184,
+                  height: 160,
                   clipBehavior: Clip.antiAlias,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(8)),
@@ -192,6 +212,7 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 24),
               ],
             ),
           );

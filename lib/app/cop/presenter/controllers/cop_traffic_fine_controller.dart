@@ -120,6 +120,10 @@ class CopTrafficFineController extends GetxController {
     await fetchAllTrafficFines();
   }
 
+  void clearOpenedTrafficFine() {
+    TrafficFineStates.openedTrafficFine.value = null;
+  }
+
   void clearTrafficFines() {
     TrafficFineStates.pagination.value =
         pagination.copyWith(pageNumber: 1, count: 0);

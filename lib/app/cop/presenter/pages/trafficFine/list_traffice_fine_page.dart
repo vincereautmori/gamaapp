@@ -72,6 +72,7 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
                           controller.allTrafficFines[index];
                       return InkWell(
                         onTap: () async {
+                          controller.clearOpenedTrafficFine();
                           Get.toNamed(RoutesNames.viewTrafficFine);
                           await controller.getTrafficFineById(listedItem.id);
                         },
