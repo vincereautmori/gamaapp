@@ -21,8 +21,7 @@ class MapPage extends GetView<MapPageController> {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-        zoom: 13.0,
-        minZoom: 12.0,
+        zoom: 15.0,
         interactiveFlags: canMove ? InteractiveFlag.all : InteractiveFlag.none,
         center: LatLng(latitude, longitude),
       ),

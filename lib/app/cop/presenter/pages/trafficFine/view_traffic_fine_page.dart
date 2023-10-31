@@ -159,18 +159,13 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                             trafficFine.latitude,
                             trafficFine.longitude,
                           ),
-                          anchorPos: AnchorPos.align(AnchorAlign.center),
-                          height: 80,
-                          width: 80,
-                          builder: (context) => Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(999),
-                                color: Palette.primary.withOpacity(.2),
-                                border: Border.all(
-                                  color: Palette.primary.withOpacity(.7),
-                                )),
+                          anchorPos: AnchorPos.align(AnchorAlign.top),
+                          height: 40,
+                          width: 40,
+                          builder: (context) => const Icon(
+                            Icons.place,
+                            color: Palette.red,
+                            size: 40,
                           ),
                         )
                       ],
