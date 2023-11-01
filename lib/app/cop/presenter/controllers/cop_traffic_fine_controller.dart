@@ -260,6 +260,10 @@ class CopTrafficFineController extends GetxController {
           String url = uploadResult.tryGetSuccess();
 
           TrafficFineStates.trafficFineImageURL.value = url;
+          TrafficFineStates.loadedImage.clear();
+          TrafficFineStates.loadedImage.addAll(await file.readAsBytes());
+        } else {
+          TrafficFineStates.trafficFineImageBytesCount.value = 0;
         }
       },
       (error) => utils.callSnackBar(

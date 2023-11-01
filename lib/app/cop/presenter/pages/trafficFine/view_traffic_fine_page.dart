@@ -151,61 +151,65 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                           borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(8),
                               bottomRight: Radius.circular(8)),
-                          onTap: () async {
-                            await Future.wait([
-                              controller.loadImage(trafficFine.imageUrl),
-                              Get.dialog(
-                                Obx(
-                                  () {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: IconButton(
-                                            onPressed: Get.back,
-                                            icon: const Icon(
-                                              Icons.close,
-                                              color: Palette.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Center(
-                                            child: controller
-                                                    .loadedImage.isEmpty
-                                                ? const CircularProgressIndicator(
+                          onTap: trafficFine.imageUrl.isEmpty
+                              ? null
+                              : () async {
+                                  await Future.wait([
+                                    controller.loadImage(trafficFine.imageUrl),
+                                    Get.dialog(
+                                      Obx(
+                                        () {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  onPressed: Get.back,
+                                                  icon: const Icon(
+                                                    Icons.close,
                                                     color: Palette.white,
-                                                  )
-                                                : Image.memory(
-                                                    Uint8List.fromList(
-                                                      controller.loadedImage,
-                                                    ),
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width -
-                                                            48,
                                                   ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ).then((_) => controller.loadedImage.clear()),
-                            ]);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Center(
+                                                  child: controller
+                                                          .loadedImage.isEmpty
+                                                      ? const CircularProgressIndicator(
+                                                          color: Palette.white,
+                                                        )
+                                                      : Image.memory(
+                                                          Uint8List.fromList(
+                                                            controller
+                                                                .loadedImage,
+                                                          ),
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width -
+                                                              48,
+                                                        ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ).then(
+                                        (_) => controller.loadedImage.clear()),
+                                  ]);
+                                },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 24.0,
                               vertical: 16,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                const Text(
                                   "Imagem",
                                   style: TextStyle(
                                     color: Palette.darkGrey,
@@ -213,8 +217,10 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                                   ),
                                 ),
                                 Text(
-                                  "Visualizar",
-                                  style: TextStyle(
+                                  trafficFine.imageUrl.isEmpty
+                                      ? "Sem imagem"
+                                      : "Visualizar",
+                                  style: const TextStyle(
                                     color: Palette.primary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,

@@ -36,7 +36,6 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
     }
 
     if (createdUntil != null) {
-      print(createdUntil);
       params["createdUntil"] = createdUntil;
     }
 

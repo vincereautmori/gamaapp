@@ -16,7 +16,7 @@ class GetAllTrafficFineUsecaseImp implements GetAllTrafficFineUsecase {
   Future<Result<List<ListedTrafficFineInfo>, Failure>> call(
     TrafficFineFilterDto dto,
   ) async {
-    String? createdSince = dto.createdSince.formatDate('yyyy-MM-dd');
+    String? createdSince = dto.createdSince.formatDate('yyyy-MM-ddT00:00:01');
     String? createdUntil = dto.createdUntil.formatDate('yyyy-MM-ddT23:59:59');
 
     final Result<List<ListedTrafficFineInfo>, Failure> result =

@@ -20,7 +20,7 @@ class TrafficFineEntity extends Equatable {
     required this.longitude,
     required this.active,
     required this.computed,
-    required this.imageUrl,
+    this.imageUrl = "",
     required this.deleted,
     required this.createdAt,
     this.trafficViolations = const [],

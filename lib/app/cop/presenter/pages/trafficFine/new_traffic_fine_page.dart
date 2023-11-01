@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:gamaapp/app/cop/presenter/widgets/violations_bottom_sheet.dart';
@@ -99,37 +101,78 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                   border: Border.all(color: Palette.greyBackground),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    child: Icon(
-                      Icons.photo_outlined,
-                    ),
-                  ),
-                  onTap: controller.uploadImage,
-                  title: Obx(() => Text(controller.imageBytesCount == 0
-                      ? 'Nenhuma imagem'
-                      : "Imagem carregada!")),
-                  trailing: Obx(() {
-                    if (controller.imageBytesCount == 0) {
-                      return const Icon(Icons.add);
-                    }
-
-                    if (controller.isUploading) {
-                      return SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Palette.primary,
-                          value: controller.imageBytesCount /
-                              controller.imageBytesTotal,
-                          strokeWidth: 2,
+                child: Obx(() => ListTile(
+                      leading: const CircleAvatar(
+                        child: Icon(
+                          Icons.photo_outlined,
                         ),
-                      );
-                    }
-
-                    return const Icon(Icons.check);
-                  }),
-                ),
+                      ),
+                      onTap: controller.imageBytesCount == 0
+                          ? controller.uploadImage
+                          : !controller.isUploading
+                              ? () {
+                                  Get.dialog(
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: IconButton(
+                                            onPressed: Get.back,
+                                            icon: const Icon(
+                                              Icons.close,
+                                              color: Palette.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Obx(() => Center(
+                                                child: controller
+                                                        .loadedImage.isEmpty
+                                                    ? const CircularProgressIndicator(
+                                                        color: Palette.white,
+                                                      )
+                                                    : Image.memory(
+                                                        Uint8List.fromList(
+                                                          controller
+                                                              .loadedImage,
+                                                        ),
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width -
+                                                            48,
+                                                      ),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              : null,
+                      title: Text(
+                        controller.imageBytesCount == 0
+                            ? 'Nenhuma imagem'
+                            : controller.isUploading
+                                ? "Carregando..."
+                                : "Imagem carregada!",
+                      ),
+                      trailing: controller.imageBytesCount == 0
+                          ? const Icon(Icons.add)
+                          : controller.isUploading
+                              ? SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Palette.primary,
+                                    value: controller.imageBytesCount /
+                                        controller.imageBytesTotal,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(Icons.check),
+                    )),
               ),
             ),
             const SizedBox(height: 16),
