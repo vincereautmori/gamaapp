@@ -9,6 +9,7 @@ import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:gamaapp/shared/widgets/textfield.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widgets/square_line.dart';
 import '../../controllers/cop_traffic_violation_controller.dart';
@@ -138,6 +139,48 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                                                           controller
                                                               .loadedImage,
                                                         ),
+                                                        frameBuilder: (context,
+                                                            child,
+                                                            frame,
+                                                            wasSynchronouslyLoaded) {
+                                                          if (wasSynchronouslyLoaded) {
+                                                            return child;
+                                                          }
+                                                          return AnimatedSwitcher(
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        200),
+                                                            child: frame != null
+                                                                ? child
+                                                                : SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width -
+                                                                        48,
+                                                                    height: 500,
+                                                                    child: Shimmer.fromColors(
+                                                                        baseColor: Colors.grey.shade300,
+                                                                        highlightColor: Colors.grey.shade100,
+                                                                        child: Container(
+                                                                          width:
+                                                                              double.infinity,
+                                                                          height:
+                                                                              500.0,
+                                                                          margin: const EdgeInsets
+                                                                              .all(
+                                                                              16.0),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(12.0),
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        )),
+                                                                  ),
+                                                          );
+                                                        },
                                                         width: MediaQuery.of(
                                                                     context)
                                                                 .size

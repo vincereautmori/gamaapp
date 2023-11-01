@@ -10,6 +10,7 @@ import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../shared/themes/palette.dart';
@@ -190,6 +191,47 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                                                                   .size
                                                                   .width -
                                                               48,
+                                                          frameBuilder: (context,
+                                                              child,
+                                                              frame,
+                                                              wasSynchronouslyLoaded) {
+                                                            if (wasSynchronouslyLoaded) {
+                                                              return child;
+                                                            }
+                                                            return AnimatedSwitcher(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          200),
+                                                              child: frame !=
+                                                                      null
+                                                                  ? child
+                                                                  : SizedBox(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width -
+                                                                          48,
+                                                                      height:
+                                                                          500,
+                                                                      child: Shimmer.fromColors(
+                                                                          baseColor: Colors.grey.shade300,
+                                                                          highlightColor: Colors.grey.shade100,
+                                                                          child: Container(
+                                                                            width:
+                                                                                double.infinity,
+                                                                            height:
+                                                                                500.0,
+                                                                            margin:
+                                                                                const EdgeInsets.all(16.0),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              borderRadius: BorderRadius.circular(12.0),
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                          )),
+                                                                    ),
+                                                            );
+                                                          },
                                                         ),
                                                 ),
                                               ),
