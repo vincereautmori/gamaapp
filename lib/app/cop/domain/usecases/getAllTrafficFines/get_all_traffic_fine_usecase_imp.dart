@@ -17,7 +17,7 @@ class GetAllTrafficFineUsecaseImp implements GetAllTrafficFineUsecase {
     TrafficFineFilterDto dto,
   ) async {
     String? createdSince = dto.createdSince.formatDate('yyyy-MM-dd');
-    String? createdUntil = dto.createdUntil.formatDate('yyyy-MM-dd');
+    String? createdUntil = dto.createdUntil.formatDate('yyyy-MM-ddT23:59:59');
 
     final Result<List<ListedTrafficFineInfo>, Failure> result =
         await repository.fetchTrafficFine(
