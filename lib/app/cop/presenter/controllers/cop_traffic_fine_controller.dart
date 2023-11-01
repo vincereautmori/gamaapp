@@ -86,6 +86,8 @@ class CopTrafficFineController extends GetxController {
 
   Position? get position => LocationStates.position.value;
 
+  List<int> get loadedImage => TrafficFineStates.loadedImage;
+
   late ScrollController scroll;
 
   @override
@@ -122,6 +124,7 @@ class CopTrafficFineController extends GetxController {
 
   void clearOpenedTrafficFine() {
     TrafficFineStates.openedTrafficFine.value = null;
+    loadedImage.clear();
   }
 
   void clearTrafficFines() {
@@ -267,12 +270,13 @@ class CopTrafficFineController extends GetxController {
     );
   }
 
-  Future<List<int>?> loadImage(String url) async {
+  Future<void> loadImage(String url) async {
     Result<List<int>, Failure> result = await loadFile(url);
-    return result.when((file) {
-      return file;
+    return result.when((fileBytes) {
+      TrafficFineStates.loadedImage.addAll(fileBytes);
     }, (error) {
-      return null;
+      utils.callSnackBar(
+          title: "Falha ao carregar imagem", message: error.message);
     });
   }
 

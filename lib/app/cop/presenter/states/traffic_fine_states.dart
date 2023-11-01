@@ -36,4 +36,6 @@ class TrafficFineStates {
   static final RxInt trafficFineImageBytesTotal = 1.obs;
 
   static final Rx<PaginationDto> pagination = Rx(const PaginationDto());
+
+  static final RxList<int> loadedImage = RxList();
 }

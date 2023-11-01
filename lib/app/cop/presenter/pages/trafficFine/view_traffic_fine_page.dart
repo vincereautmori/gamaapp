@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/map_page.dart';
@@ -67,8 +69,21 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Situação"),
-                            Text(trafficFine.active ? "Ativa" : "Inativa")
+                            const Text(
+                              "Situação",
+                              style: TextStyle(
+                                color: Palette.darkGrey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              trafficFine.active ? "Ativa" : "Inativa",
+                              style: const TextStyle(
+                                color: Palette.darkGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -81,10 +96,23 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Aberto em"),
-                            Text(trafficFine.createdAt
-                                    .formatDate("dd/MM/yyyy - HH:mm") ??
-                                "")
+                            const Text(
+                              "Aberto em",
+                              style: TextStyle(
+                                color: Palette.darkGrey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              trafficFine.createdAt
+                                      .formatDate("dd/MM/yyyy - HH:mm") ??
+                                  "",
+                              style: const TextStyle(
+                                color: Palette.darkGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -97,25 +125,104 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Integração"),
-                            Text(trafficFine.computed == true
-                                ? "Computado"
-                                : "Não computado")
+                            const Text(
+                              "Integração",
+                              style: TextStyle(
+                                color: Palette.darkGrey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              trafficFine.computed == true
+                                  ? "Computado"
+                                  : "Não computado",
+                              style: const TextStyle(
+                                color: Palette.darkGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
                           ],
                         ),
                       ),
-                      Container(
+                      Ink(
                         color: Palette.greyBackground,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0,
-                          vertical: 16,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Imagem"),
-                            Text("trafficFine.imageUrl")
-                          ],
+                        child: InkWell(
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(8),
+                              bottomRight: Radius.circular(8)),
+                          onTap: () async {
+                            await Future.wait([
+                              controller.loadImage(trafficFine.imageUrl),
+                              Get.dialog(
+                                Obx(
+                                  () {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: IconButton(
+                                            onPressed: Get.back,
+                                            icon: const Icon(
+                                              Icons.close,
+                                              color: Palette.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: controller
+                                                    .loadedImage.isEmpty
+                                                ? const CircularProgressIndicator(
+                                                    color: Palette.white,
+                                                  )
+                                                : Image.memory(
+                                                    Uint8List.fromList(
+                                                      controller.loadedImage,
+                                                    ),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width -
+                                                            48,
+                                                  ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ).then((_) => controller.loadedImage.clear()),
+                            ]);
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                              vertical: 16,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Imagem",
+                                  style: TextStyle(
+                                    color: Palette.darkGrey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "Visualizar",
+                                  style: TextStyle(
+                                    color: Palette.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ],

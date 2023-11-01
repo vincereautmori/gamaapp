@@ -58,7 +58,8 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                       'Local da ocorrência',
                     ),
                     subtitle: Obx(() => Text(
-                          locationController.place?.street ?? "OOps",
+                          locationController.place?.street ??
+                              "Carregando localização...",
                         )),
                   ),
                   const SizedBox(height: 4),
