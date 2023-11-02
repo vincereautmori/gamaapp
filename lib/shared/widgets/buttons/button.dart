@@ -7,7 +7,7 @@ class GamaButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onPressed,
-    required this.isLoading,
+    this.isLoading = false,
   }) : super(key: key);
   final String text;
   final VoidCallback? onPressed;

@@ -9,6 +9,7 @@ import 'package:gamaapp/app/cop/presenter/pages/trafficFine/new_traffic_fine_pag
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/view_traffic_fine_page.dart';
 import 'package:gamaapp/app/locations/presenter/bindings/location_binding.dart';
 import 'package:gamaapp/app/main_bind.dart';
+import 'package:gamaapp/shared/apagar_depois/warning_page.dart';
 import 'package:get/get.dart';
 
 import '../auth/presenter/pages/sign_in_page.dart';
@@ -62,6 +63,11 @@ class Routes {
           page: () => const TrafficFineList(),
         ),
       ]);
+
+  static GetPage get warningPage => GetPage(
+        name: '/warning',
+        page: () => const WarningPage(),
+      );
 
   static GetPage get viewTrafficFine => GetPage(
         name: RoutesNames.viewTrafficFine,

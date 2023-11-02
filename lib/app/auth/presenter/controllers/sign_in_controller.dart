@@ -52,8 +52,19 @@ class AuthenticationController extends GetxController {
     SignInFormStates.isLoading.toggle();
     result.when(
       (authInfo) async {
-        await saveSecureToken.save(authInfo as AuthEntity);
-        Get.offAllNamed('/${SplashScreenStates.successRoutes[authInfo.role]}');
+        if (authInfo.role == 'Citizen') {
+          utils.callSnackBar(
+            title: "Login desabilitado",
+            message:
+                "Acessar o sistema como cidadão está desabilitado nessa versão.",
+            snackStyle: SnackBarStyles.warning,
+            isFloating: true,
+          );
+        } else {
+          await saveSecureToken.save(authInfo as AuthEntity);
+          Get.offAllNamed(
+              '/${SplashScreenStates.successRoutes[authInfo.role]}');
+        }
       },
       (error) => utils.callSnackBar(
         title: "Falha na autenticação",

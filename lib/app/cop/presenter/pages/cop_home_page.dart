@@ -52,10 +52,13 @@ class CopHomePage extends GetView<CopHomeController> {
                     isLoading: false,
                   ),
                   const SizedBox(height: 16),
-                  GamaButton(
-                    text: 'Cadastro de Denúncias',
-                    onPressed: controller.goToOcurrence,
-                    isLoading: false,
+                  const Tooltip(
+                    message: "Módulo em desenvolvimento",
+                    child: GamaButton(
+                      text: 'Cadastro de Denúncias',
+                      onPressed: null,
+                      isLoading: false,
+                    ),
                   ),
                   const SizedBox(height: 64),
                   GamaOutlinedButton(
