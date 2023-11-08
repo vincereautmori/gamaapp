@@ -5,6 +5,7 @@ import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
+import '../../../locations/presenter/controllers/location_controller.dart';
 import '../../../ocurrences/domain/entities/ocurrences/ocurrences_model.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
@@ -13,6 +14,7 @@ class CopHomeController extends GetxController {
   late HubConnection hubConnection;
   final OcurrencesController _ocurrenceController =
       Get.find<OcurrencesController>();
+  final LocationController _locationController = Get.find<LocationController>();
 
   @override
   void onInit() {
@@ -52,7 +54,7 @@ class CopHomeController extends GetxController {
         snackStyle: SnackBarStyles.success,
       );
 
-      subscribeWithinRadius(-47.332322, -22.736491, 20000);
+      subscribeWithinRadius(-22.736491, -47.332322, 20000);
     }).catchError((error) {
       utils.callSnackBar(
         title: "Error starting SignalR connection",
@@ -77,6 +79,10 @@ class CopHomeController extends GetxController {
     super.onClose();
   }
 
-  void goToOcurrence() => Get.toNamed('/cop/${RoutesNames.ocurrence}');
+  Future<void> goToOcurrence() async {
+    await _locationController.determinePlace();
+    Get.toNamed('/cop/${RoutesNames.ocurrence}');
+  }
+
   void goToTrafficFine() => Get.toNamed('/cop${RoutesNames.trafficFine}');
 }

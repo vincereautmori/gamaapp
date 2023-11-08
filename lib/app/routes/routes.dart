@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:gamaapp/app/citizen/presenter/binds/home_bind.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/home_page.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/new_ocurrence_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_traffic_fine_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
+import 'package:gamaapp/app/cop/presenter/pages/map_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/new_traffic_fine_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/view_traffic_fine_page.dart';
 import 'package:gamaapp/app/locations/presenter/bindings/location_binding.dart';
@@ -54,9 +54,7 @@ class Routes {
       children: [
         GetPage(
           name: RoutesNames.ocurrence,
-          page: () => const Center(
-            child: Text(''),
-          ),
+          page: () => const MapPage(),
         ),
         GetPage(
           name: RoutesNames.trafficFine,
