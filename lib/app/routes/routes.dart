@@ -7,6 +7,7 @@ import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/map_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/new_traffic_fine_page.dart';
 import 'package:gamaapp/app/cop/presenter/pages/trafficFine/view_traffic_fine_page.dart';
+import 'package:gamaapp/app/cop/presenter/pages/view_ocurrence_page.dart';
 import 'package:gamaapp/app/locations/presenter/bindings/location_binding.dart';
 import 'package:gamaapp/app/main_bind.dart';
 import 'package:gamaapp/shared/apagar_depois/warning_page.dart';
@@ -40,6 +41,11 @@ class Routes {
   static GetPage get newOcurrence => GetPage(
         name: RoutesNames.newOcurrence,
         page: () => const NewOcurrencePage<OcurrenceController>(),
+      );
+
+  static GetPage get viewOcurrence => GetPage(
+        name: RoutesNames.viewOcurrence,
+        page: () => const ViewOcurrencePage(),
       );
 
   static GetPage get cop => GetPage(

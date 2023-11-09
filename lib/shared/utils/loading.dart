@@ -14,4 +14,5 @@ enum LoadingStates {
   loadingTrafficFine,
   loadingTrafficViolations,
   uploadingTrafficFineImage,
+  occurrencesMap,
 }

@@ -1,6 +1,7 @@
 import 'package:gamaapp/app/routes/routes_name.dart';
 import 'package:gamaapp/shared/config/config.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
+import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:signalr_netcore/signalr_client.dart';
@@ -15,6 +16,9 @@ class CopHomeController extends GetxController {
   final OcurrencesController _ocurrenceController =
       Get.find<OcurrencesController>();
   final LocationController _locationController = Get.find<LocationController>();
+
+  bool get goingToOccurrences =>
+      LoadingHandler.loadingState.value == LoadingStates.occurrencesMap;
 
   @override
   void onInit() {
@@ -32,7 +36,7 @@ class CopHomeController extends GetxController {
             OcurrencesModel.fromJsonList(messages.first),
           );
         } else {
-          _ocurrenceController.notifyNewOcurrency(
+          _ocurrenceController.notifyNewOcurrence(
             OcurrencesModel.fromJson(messages.first),
           );
         }
@@ -80,8 +84,10 @@ class CopHomeController extends GetxController {
   }
 
   Future<void> goToOcurrence() async {
+    LoadingHandler.setLoading(LoadingStates.occurrencesMap);
     await _locationController.determinePlace();
     Get.toNamed('/cop/${RoutesNames.ocurrence}');
+    LoadingHandler.stopLoading();
   }
 
   void goToTrafficFine() => Get.toNamed('/cop${RoutesNames.trafficFine}');

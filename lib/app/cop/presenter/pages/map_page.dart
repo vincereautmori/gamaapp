@@ -8,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../shared/themes/palette.dart';
 import '../../../locations/presenter/controllers/location_controller.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
+import '../widgets/status_chips.dart';
 
 class MapPage extends GetView<LocationController> {
   const MapPage({
@@ -19,21 +20,10 @@ class MapPage extends GetView<LocationController> {
     Position? position = controller.position;
     final OcurrencesController ocurrenceController =
         Get.find<OcurrencesController>();
-
+    print(Config.mapBoxBaseUrl);
     return Scaffold(
       appBar: AppBar(
-        title: Chip(
-          label: const Text(
-            'Em atendimento',
-            style: TextStyle(
-              color: Palette.white,
-            ),
-          ),
-          deleteIcon: const Icon(Icons.taxi_alert),
-          onDeleted: () {},
-          deleteIconColor: Palette.white,
-          color: const MaterialStatePropertyAll(Palette.warning),
-        ),
+        title: StatusChips(isInOccurence: ocurrenceController.isInOccurrence),
         centerTitle: true,
       ),
       body: FlutterMap(
@@ -55,10 +45,14 @@ class MapPage extends GetView<LocationController> {
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     height: 40,
                     width: 40,
-                    builder: (context) => const Icon(
-                      Icons.place,
-                      color: Palette.red,
-                      size: 40,
+                    builder: (context) => IconButton(
+                      onPressed: () =>
+                          ocurrenceController.viewOcurrence(ocurrence),
+                      icon: const Icon(
+                        Icons.place,
+                        color: Palette.red,
+                        size: 40,
+                      ),
                     ),
                   ),
                 )

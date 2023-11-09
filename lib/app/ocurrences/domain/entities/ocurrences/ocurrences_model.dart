@@ -23,16 +23,16 @@ class OcurrencesModel extends OcurrencesEntity implements OcurrencesInfo {
         latitude: json['point']['latitude'],
         longitude: json['point']['longitude'],
         createdAt: DateTime.parse(json['message']['createdAt']),
-        name: json['message']['name'],
+        name: json['message']['name'] ?? "",
         occurrenceId: json['message']['occurrenceId'],
-        location: json['message']['location'],
+        location: json['message']['location'] ?? "",
         occurrenceName: json['message']['occurrenceName'],
-        statusName: json['message']['statusName'],
-        occurrenceUrgencyLevelName: json['message']
-            ['occurrenceUrgencyLevelName'],
-        occurrenceTypeName: json['message']['occurrenceTypeName'],
+        statusName: json['message']['statusName'] ?? "",
+        occurrenceUrgencyLevelName:
+            json['message']['occurrenceUrgencyLevelName'] ?? "",
+        occurrenceTypeName: json['message']['occurrenceTypeName'] ?? "",
         userId: json['message']['userId'],
-        userName: json['message']['userName'],
+        userName: json['message']['userName'] ?? "",
         active: json['message']['active'],
       );
 
