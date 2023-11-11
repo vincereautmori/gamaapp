@@ -1,10 +1,10 @@
 import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import 'package:get/get.dart';
 
-class OcurrenceStates {
-  static RxList<OcurrencesInfo> ocurrences = RxList<OcurrencesInfo>([]);
+class OccurrenceStates {
+  static RxList<OccurrencesInfo> ocurrences = RxList<OccurrencesInfo>([]);
 
-  static Rx<OcurrencesInfo?> openedOcurrence = Rx<OcurrencesInfo?>(null);
+  static Rx<OccurrencesInfo?> openedOcurrence = Rx<OccurrencesInfo?>(null);
 
-  static final RxBool isInOccurrence = RxBool(false);
+  static Rx<OccurrencesInfo?> startedOccurrence = Rx<OccurrencesInfo?>(null);
 }

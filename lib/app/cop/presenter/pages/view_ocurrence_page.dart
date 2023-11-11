@@ -3,6 +3,7 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
+import 'package:gamaapp/shared/widgets/buttons/button.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,14 +18,15 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Ocorrência'),
-          foregroundColor: Palette.white,
-          backgroundColor: Palette.primary,
-        ),
-        body: Obx(() {
-          OcurrencesInfo? ocurrence = controller.openedOcurrence;
-          if (ocurrence == null) {
+      appBar: AppBar(
+        title: const Text('Ocorrência'),
+        foregroundColor: Palette.white,
+        backgroundColor: Palette.primary,
+      ),
+      body: Obx(
+        () {
+          OccurrencesInfo? occurrence = controller.openedOccurrence;
+          if (occurrence == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -65,7 +67,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              "#${ocurrence.occurrenceId}",
+                              "#${occurrence.occurrenceId}",
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -92,7 +94,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              ocurrence.occurrenceName,
+                              occurrence.occurrenceName,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -119,7 +121,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              ocurrence.active ? "Ativa" : "Inativa",
+                              occurrence.active ? "Ativa" : "Inativa",
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -146,7 +148,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              ocurrence.createdAt
+                              occurrence.createdAt
                                       .formatDate("dd/MM/yyyy - HH:mm") ??
                                   "",
                               style: const TextStyle(
@@ -175,7 +177,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              ocurrence.statusName,
+                              occurrence.statusName,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -202,7 +204,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              ocurrence.occurrenceTypeName,
+                              occurrence.occurrenceTypeName,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -229,7 +231,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              ocurrence.occurrenceUrgencyLevelName,
+                              occurrence.occurrenceUrgencyLevelName,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -381,7 +383,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                       child: const Text("Ver no Google Maps"),
                       onPressed: () async {
                         String urlMap =
-                            "https://www.google.com/maps/search/?api=1&query=${ocurrence.latitude},${ocurrence.longitude}";
+                            "https://www.google.com/maps/search/?api=1&query=${occurrence.latitude},${occurrence.longitude}";
                         if (await canLaunchUrl(Uri.parse(urlMap))) {
                           await launchUrl(Uri.parse(urlMap));
                         } else {
@@ -397,15 +399,15 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(8)),
                   child: MapboxMap(
-                    latitude: ocurrence.latitude,
-                    longitude: ocurrence.longitude,
+                    latitude: occurrence.latitude,
+                    longitude: occurrence.longitude,
                     canMove: false,
                     initialMark: MarkerLayer(
                       markers: [
                         Marker(
                           point: LatLng(
-                            ocurrence.latitude,
-                            ocurrence.longitude,
+                            occurrence.latitude,
+                            occurrence.longitude,
                           ),
                           anchorPos: AnchorPos.align(AnchorAlign.top),
                           height: 40,
@@ -424,7 +426,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                 Row(
                   children: [
                     Text(
-                      "${ocurrence.latitude}",
+                      "${occurrence.latitude}",
                       style: Texts.subtitle.copyWith(
                         fontSize: 14,
                         color: Palette.grey,
@@ -432,7 +434,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      "${ocurrence.longitude}",
+                      "${occurrence.longitude}",
                       style: Texts.subtitle.copyWith(
                         fontSize: 14,
                         color: Palette.grey,
@@ -440,10 +442,23 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                GamaButton(
+                  text: controller.startedOccurrence?.occurrenceId ==
+                          occurrence.occurrenceId
+                      ? "Finalizar Ocorrência"
+                      : "Iniciar Ocorrência",
+                  onPressed: controller.startedOccurrence?.occurrenceId ==
+                          occurrence.occurrenceId
+                      ? () => controller.stop(occurrence)
+                      : () => controller.start(occurrence),
+                ),
                 const SizedBox(height: 24),
               ],
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 }

@@ -1,7 +1,7 @@
-import 'ocurrences_entity.dart';
-import 'ocurrences_info.dart';
+import '../../../domain/entities/ocurrences/ocurrences_entity.dart';
+import '../../../domain/entities/ocurrences/ocurrences_info.dart';
 
-class OcurrencesModel extends OcurrencesEntity implements OcurrencesInfo {
+class OcurrencesModel extends OcurrencesEntity implements OccurrencesInfo {
   const OcurrencesModel({
     required super.createdAt,
     required super.name,

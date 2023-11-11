@@ -25,7 +25,7 @@ class GamaApp extends StatelessWidget {
         Routes.newTrafficFine,
         Routes.viewTrafficFine,
         Routes.warningPage,
-        Routes.viewOcurrence,
+        Routes.viewOccurrence,
       ],
       debugShowCheckedModeBanner: false,
     );

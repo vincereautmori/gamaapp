@@ -20,10 +20,19 @@ class MapPage extends GetView<LocationController> {
     Position? position = controller.position;
     final OcurrencesController ocurrenceController =
         Get.find<OcurrencesController>();
-    print(Config.mapBoxBaseUrl);
     return Scaffold(
       appBar: AppBar(
-        title: StatusChips(isInOccurence: ocurrenceController.isInOccurrence),
+        title: Obx(() {
+          bool isOccurrenceStarted =
+              ocurrenceController.startedOccurrence != null;
+          return StatusChips(
+            isInOccurence: isOccurrenceStarted,
+            openOccurrenceAction: isOccurrenceStarted
+                ? () => ocurrenceController
+                    .viewOccurrence(ocurrenceController.startedOccurrence!)
+                : null,
+          );
+        }),
         centerTitle: true,
       ),
       body: FlutterMap(
@@ -38,7 +47,7 @@ class MapPage extends GetView<LocationController> {
             urlTemplate: Config.mapBoxBaseUrl,
           ),
           Obx(() {
-            List<Marker> markers = ocurrenceController.ocurrences
+            List<Marker> markers = ocurrenceController.occurrences
                 .map<Marker>(
                   (ocurrence) => Marker(
                     point: LatLng(ocurrence.latitude, ocurrence.longitude),
@@ -47,10 +56,14 @@ class MapPage extends GetView<LocationController> {
                     width: 40,
                     builder: (context) => IconButton(
                       onPressed: () =>
-                          ocurrenceController.viewOcurrence(ocurrence),
-                      icon: const Icon(
+                          ocurrenceController.viewOccurrence(ocurrence),
+                      icon: Icon(
                         Icons.place,
-                        color: Palette.red,
+                        color: ocurrence.occurrenceId ==
+                                ocurrenceController
+                                    .startedOccurrence?.occurrenceId
+                            ? Palette.warning
+                            : Palette.red,
                         size: 40,
                       ),
                     ),

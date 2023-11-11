@@ -3,22 +3,30 @@ import 'package:flutter/material.dart';
 import '../../../../shared/themes/palette.dart';
 
 class StatusChips extends StatelessWidget {
-  const StatusChips({super.key, required this.isInOccurence});
+  const StatusChips({
+    super.key,
+    required this.isInOccurence,
+    this.openOccurrenceAction,
+  });
   final bool isInOccurence;
+  final VoidCallback? openOccurrenceAction;
 
   @override
   Widget build(BuildContext context) {
     if (isInOccurence) {
-      return Chip(
+      return ActionChip(
         label: const Text(
           'Em atendimento',
           style: TextStyle(
             color: Palette.white,
           ),
         ),
-        deleteIcon: const Icon(Icons.taxi_alert),
-        onDeleted: () {},
-        deleteIconColor: Palette.white,
+        avatar: const Icon(
+          Icons.taxi_alert,
+          color: Colors.white,
+        ),
+        onPressed: openOccurrenceAction,
+        surfaceTintColor: Colors.white,
         color: const MaterialStatePropertyAll(Palette.warning),
       );
     }

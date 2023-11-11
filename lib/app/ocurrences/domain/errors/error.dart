@@ -1,7 +1,7 @@
 import '../../../auth/domain/errors/errors.dart';
 
-class OcurrenceError extends Failure {
+class OccurrenceError extends Failure {
   @override
   final String message;
-  OcurrenceError({required this.message});
+  OccurrenceError({required this.message});
 }

@@ -43,8 +43,8 @@ class Routes {
         page: () => const NewOcurrencePage<OcurrenceController>(),
       );
 
-  static GetPage get viewOcurrence => GetPage(
-        name: RoutesNames.viewOcurrence,
+  static GetPage get viewOccurrence => GetPage(
+        name: RoutesNames.viewOccurrence,
         page: () => const ViewOcurrencePage(),
       );
 

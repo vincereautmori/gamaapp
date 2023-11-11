@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 import '../../../locations/presenter/controllers/location_controller.dart';
-import '../../../ocurrences/domain/entities/ocurrences/ocurrences_model.dart';
+import '../../../ocurrences/infra/models/occurrences/ocurrences_model.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
 class CopHomeController extends GetxController {
@@ -32,11 +32,11 @@ class CopHomeController extends GetxController {
     hubConnection.on("ReceiveMessage", (messages) {
       if (messages != null) {
         if (messages.first is List) {
-          _ocurrenceController.fillOcurrences(
+          _ocurrenceController.fillOccurrences(
             OcurrencesModel.fromJsonList(messages.first),
           );
         } else {
-          _ocurrenceController.notifyNewOcurrence(
+          _ocurrenceController.notifyNewOccurrence(
             OcurrencesModel.fromJson(messages.first),
           );
         }

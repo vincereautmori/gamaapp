@@ -1,4 +1,4 @@
-abstract class OcurrencesInfo {
+abstract class OccurrencesInfo {
   DateTime get createdAt;
   String get name;
   int get occurrenceId;
