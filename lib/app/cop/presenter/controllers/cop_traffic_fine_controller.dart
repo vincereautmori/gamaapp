@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
 import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
@@ -17,7 +18,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-import '/app/cop/presenter/states/traffic_fine_states.dart';
 import '../../../camera/presenter/controllers/camera_controller.dart';
 import '../../../locations/presenter/states/location_states.dart';
 import '../../domain/entities/dtos/traffic_fine_filter_dto.dart';
@@ -27,6 +27,7 @@ import '../../domain/entities/trafficFine/traffic_fine_info.dart';
 import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase.dart';
 import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '../states/traffic_violation_states.dart';
+import '/app/cop/presenter/states/traffic_fine_states.dart';
 
 class CopTrafficFineController extends GetxController {
   final GetAllTrafficFineUsecase getAllTrafficFines;
@@ -82,6 +83,9 @@ class CopTrafficFineController extends GetxController {
   int get imageBytesCount => TrafficFineStates.trafficFineImageBytesCount.value;
   int get imageBytesTotal => TrafficFineStates.trafficFineImageBytesTotal.value;
 
+  bool get hideAddButton =>
+      TrafficFineStates.scrollDirection.value == ScrollDirection.reverse;
+
   String get trafficFineImageURL => TrafficFineStates.trafficFineImageURL.value;
 
   Position? get position => LocationStates.position.value;
@@ -134,6 +138,8 @@ class CopTrafficFineController extends GetxController {
   }
 
   void scrollListener() {
+    print(scroll.position.userScrollDirection);
+
     if (scroll.offset >= scroll.position.maxScrollExtent &&
         !scroll.position.outOfRange) {
       nextPage();

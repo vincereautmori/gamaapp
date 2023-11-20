@@ -141,13 +141,15 @@ class TrafficFineList extends GetView<CopTrafficFineController> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Get.toNamed(RoutesNames.createTrafficFine);
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Nova multa'),
-      ),
+      floatingActionButton: Obx(() => controller.hideAddButton
+          ? const SizedBox()
+          : FloatingActionButton.extended(
+              onPressed: () {
+                Get.toNamed(RoutesNames.createTrafficFine);
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Nova multa'),
+            )),
     );
   }
 }
