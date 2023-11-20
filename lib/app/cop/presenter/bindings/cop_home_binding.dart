@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
+import '../../../ocurrences/domain/usecases/create_occurrence/create_occurrence_usecase.dart';
+import '../../../ocurrences/domain/usecases/create_occurrence/create_occurrence_usecase_imp.dart';
 import '/app/cop/presenter/controllers/cop_home_controller.dart';
 import '/app/ocurrences/domain/repositories/occurrences_repository.dart';
 import '/app/ocurrences/domain/usecases/start_occurrence/start_occurrence_usecase.dart';
@@ -25,12 +27,15 @@ class CopHomeBinding extends Bindings {
     StartOccurrenceUsecase startOccurrence =
         StartOccurrenceUsecaseImp(repository);
     StopOccurrenceUsecase stopOccurrence = StopOccurrenceUsecaseImp(repository);
+    CreateOccurrenceUsecase createOccurrence =
+        CreateOccurrenceUsecaseImp(repository);
 
     Get.lazyPut(() => CopHomeController(), fenix: true);
     Get.lazyPut(
       () => OcurrencesController(
         startOccurrence: startOccurrence,
         stopOccurrence: stopOccurrence,
+        createOccurrence: createOccurrence,
       ),
       fenix: true,
     );

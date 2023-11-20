@@ -15,4 +15,13 @@ enum LoadingStates {
   loadingTrafficViolations,
   uploadingTrafficFineImage,
   occurrencesMap,
+  createOccurrence,
+}
+
+mixin Loading {
+  Rx<LoadingStates?> loadingState = Rx(null);
+
+  void setLoading(LoadingStates state) => loadingState.value = state;
+
+  void stopLoading() => loadingState.value = null;
 }

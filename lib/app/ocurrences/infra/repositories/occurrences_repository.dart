@@ -2,10 +2,11 @@ import 'package:gamaapp/app/ocurrences/domain/errors/error.dart';
 import 'package:gamaapp/app/ocurrences/infra/datasources/occurrences_datasource.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../../../shared/utils/loading.dart';
 import '../../../auth/domain/errors/errors.dart';
 import '../../domain/repositories/occurrences_repository.dart';
 
-class OccurrencesRepositoryImp implements OccurrencesRepository {
+class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
   final OccurrencesDatasource datasource;
 
   OccurrencesRepositoryImp(this.datasource);
@@ -27,6 +28,39 @@ class OccurrencesRepositoryImp implements OccurrencesRepository {
       return Success.unit();
     } catch (e) {
       return Error(OccurrenceError(message: "$e"));
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> createOccurrence(
+    double latitude,
+    double longitude,
+    String location,
+    String name,
+    String description,
+    int occurrenceStatusId,
+    int occurrenceTypeId,
+    int occurrenceUrgencyLevelId,
+    String imageUrl,
+  ) async {
+    try {
+      setLoading(LoadingStates.createOccurrence);
+      await datasource.createOccurrence(
+        latitude,
+        longitude,
+        location,
+        name,
+        description,
+        occurrenceStatusId,
+        occurrenceTypeId,
+        occurrenceUrgencyLevelId,
+        imageUrl,
+      );
+      return Success.unit();
+    } catch (e) {
+      return Error(OccurrenceError(message: "$e"));
+    } finally {
+      stopLoading();
     }
   }
 }

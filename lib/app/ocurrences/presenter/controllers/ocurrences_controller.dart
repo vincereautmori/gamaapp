@@ -2,19 +2,22 @@ import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../domain/usecases/create_occurrence/create_occurrence_usecase.dart';
+import '../../domain/usecases/stop_occurrence/stop_occurrence_usecase.dart';
+import '../states/ocurrences_states.dart';
 import '/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import '/app/ocurrences/domain/usecases/start_occurrence/start_occurrence_usecase.dart';
 import '/app/routes/routes_name.dart';
-import '../../domain/usecases/stop_occurrence/stop_occurrence_usecase.dart';
-import '../states/ocurrences_states.dart';
 
 class OcurrencesController extends GetxController {
   final StartOccurrenceUsecase startOccurrence;
   final StopOccurrenceUsecase stopOccurrence;
+  final CreateOccurrenceUsecase createOccurrence;
 
   OcurrencesController({
     required this.startOccurrence,
     required this.stopOccurrence,
+    required this.createOccurrence,
   });
 
   List<OccurrencesInfo> get occurrences => OccurrenceStates.ocurrences;

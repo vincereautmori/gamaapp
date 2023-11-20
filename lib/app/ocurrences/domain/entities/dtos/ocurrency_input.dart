@@ -1,4 +1,4 @@
-class OcurrenceInput {
+class OccurrenceInput {
   final double latitude;
   final double longitude;
   final String location;
@@ -9,7 +9,7 @@ class OcurrenceInput {
   final int occurrenceUrgencyLevelId;
   final String imageUrl;
 
-  OcurrenceInput({
+  OccurrenceInput({
     required this.latitude,
     required this.longitude,
     required this.location,
