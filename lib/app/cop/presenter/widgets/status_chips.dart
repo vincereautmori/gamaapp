@@ -31,17 +31,15 @@ class StatusChips extends StatelessWidget {
       );
     }
 
-    return Chip(
-      label: const Text(
+    return const Chip(
+      label: Text(
         'Disponível',
         style: TextStyle(
           color: Palette.white,
         ),
       ),
-      deleteIcon: const Icon(Icons.person),
-      onDeleted: () {},
-      deleteIconColor: Palette.white,
-      color: const MaterialStatePropertyAll(Colors.green),
+      avatar: Icon(Icons.person, color: Palette.white),
+      color: MaterialStatePropertyAll(Colors.green),
     );
   }
 }

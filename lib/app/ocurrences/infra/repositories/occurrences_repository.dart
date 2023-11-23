@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:gamaapp/app/ocurrences/domain/errors/error.dart';
 import 'package:gamaapp/app/ocurrences/infra/datasources/occurrences_datasource.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -57,8 +58,11 @@ class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
         imageUrl,
       );
       return Success.unit();
-    } catch (e) {
-      return Error(OccurrenceError(message: "$e"));
+    } on DioException catch (e) {
+      String errorMessage =
+          e.response?.data["createOccurrenceCommand.Location"]?.first ??
+              "Algo deu errado";
+      return Error(OccurrenceError(message: errorMessage));
     } finally {
       stopLoading();
     }

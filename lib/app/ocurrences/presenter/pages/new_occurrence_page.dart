@@ -1,31 +1,29 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
-import 'package:gamaapp/app/cop/presenter/widgets/violations_bottom_sheet.dart';
-import 'package:gamaapp/app/locations/presenter/controllers/location_controller.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
-import 'package:gamaapp/shared/themes/palette.dart';
-import 'package:gamaapp/shared/themes/text_theme.dart';
-import 'package:gamaapp/shared/widgets/textfield.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../shared/widgets/square_line.dart';
-import '../../controllers/cop_traffic_violation_controller.dart';
-import '../../formatters/placa_formatter.dart';
+import '../../../../shared/themes/palette.dart';
+import '../../../../shared/themes/text_theme.dart';
+import '../../../../shared/widgets/square_line.dart';
+import '../../../../shared/widgets/textfield.dart';
+import '../../../locations/presenter/controllers/location_controller.dart';
+import '../../domain/entities/properties/properties_info.dart';
+import '../controllers/ocurrences_controller.dart';
 
-class NewTrafficFinePage extends GetView<CopTrafficFineController> {
-  const NewTrafficFinePage({Key? key}) : super(key: key);
+class NewOccurrencePage extends GetView<OcurrencesController> {
+  const NewOccurrencePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    CopTrafficViolationController violationsController = Get.find();
     LocationController locationController = Get.find();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastrar multa'),
+        title: const Text('Cadastrar ocorrência'),
         foregroundColor: Palette.white,
         backgroundColor: Palette.primary,
       ),
@@ -44,7 +42,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ),
                     textColor: Palette.white,
                     title: const Text(
-                      'Hora da multa',
+                      'Hora da ocorrência',
                     ),
                     subtitle: Text(
                       DateTime.now().formatDate('dd/MM/yy - HH:mm:ss')!,
@@ -58,26 +56,12 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ),
                     textColor: Palette.white,
                     title: const Text(
-                      'Local da multa',
+                      'Local da ocorrência',
                     ),
                     subtitle: Obx(() => Text(
                           locationController.place?.street ??
                               "Carregando localização...",
                         )),
-                  ),
-                  const SizedBox(height: 4),
-                  const ListTile(
-                    leading: Icon(
-                      Icons.person_pin_outlined,
-                      color: Palette.white,
-                    ),
-                    textColor: Palette.white,
-                    title: Text(
-                      'Oficial responsável',
-                    ),
-                    subtitle: Text(
-                      "Policial Dev",
-                    ),
                   ),
                   const SizedBox(height: 24),
                   const SquaresLines(),
@@ -88,10 +72,75 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: GamaTextField(
-                controller: controller.licensePlateCreate,
-                label: 'Placa',
-                placeholder: "Informe o número da placa",
-                masks: [GamaPlacaVeiculoInputFormatter()],
+                label: 'Título',
+                placeholder: "Dê uma breve descrição da ocorrência",
+                onChange: controller.setOccurrenceTitle,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Autocomplete<PropertiesInfo>(
+                fieldViewBuilder:
+                    (context, controller, focusNode, onFieldSubmitted) {
+                  return TextFormField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      labelText: 'Tipo',
+                      hintText: 'Selecione o tipo da ocorrência',
+                    ),
+                    onFieldSubmitted: (_) => onFieldSubmitted(),
+                  );
+                },
+                onSelected: (type) => controller.setType(type.id),
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  return controller.occurrenceTypes
+                      .where((PropertiesInfo option) {
+                    return option.name
+                        .contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Urgência",
+                    style: Texts.subtitle,
+                  ),
+                  Obx(() => ToggleButtons(
+                        onPressed: (int index) {
+                          controller.setUrgencyLevel(index + 1);
+                        },
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        isSelected: [1, 2, 3]
+                            .map<bool>((id) =>
+                                controller
+                                    .occurrenceInput.occurrenceUrgencyLevelId ==
+                                id)
+                            .toList(),
+                        children: const [
+                          Icon(
+                            PhosphorIcons.caret_double_down_bold,
+                            color: Palette.primary,
+                          ),
+                          Icon(
+                            PhosphorIcons.equals_bold,
+                            color: Palette.grey,
+                          ),
+                          Icon(
+                            PhosphorIcons.caret_double_up_bold,
+                            color: Palette.red,
+                          ),
+                        ],
+                      )),
+                ],
               ),
             ),
             const SizedBox(height: 16),
@@ -219,75 +268,26 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
               ),
             ),
             const SizedBox(height: 16),
-            const Divider(
-              color: Palette.lightGrey,
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Infrações',
-                    style: Texts.cardTitle,
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      violationsController.getAllViolations();
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) => const ViolationsBottomSheet());
-                    },
-                    icon: const Icon(Icons.add),
-                    label: const Text('Adicionar infração'),
-                  ),
-                ],
+              child: GamaTextField(
+                label: "Descrição",
+                placeholder: "Dê mais detalhes sobre o ocorrido",
+                maxLines: 5,
+                onChange: controller.setOccurrenceDescription,
               ),
             ),
-            const SizedBox(height: 8),
-            Obx(() {
-              if (violationsController.selectedTrafficViolations.isEmpty) {
-                return const Center(
-                  child: Text("Nenhuma infração selecionada"),
-                );
-              }
-
-              return Wrap(
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                spacing: 8,
-                children: List.from(
-                  violationsController.selectedTrafficViolations.map(
-                    (violation) {
-                      return Chip(
-                        label: Text(violation.name),
-                        onDeleted: () {
-                          violationsController.unselectViolation(violation);
-                        },
-                        labelStyle: const TextStyle(color: Palette.primary),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: Palette.primary),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-            }),
-            const SizedBox(height: 80),
+            const SizedBox(height: 88),
           ],
         ),
       ),
       floatingActionButton: Obx(
         () {
-          bool isDisabled = controller.isCreateLoading ||
-              violationsController.selectedTrafficViolations.isEmpty ||
-              controller.licensePlateCreate.text.isEmpty;
+          bool isDisabled = controller.isCreateLoading;
           return FloatingActionButton.extended(
             backgroundColor: isDisabled ? Palette.lightGrey : null,
             foregroundColor: isDisabled ? Palette.grey : null,
-            onPressed: isDisabled ? null : controller.addTrafficFine,
+            onPressed: isDisabled ? null : controller.newOccurrence,
             icon: controller.isCreateLoading
                 ? const SizedBox(
                     height: 24,
@@ -298,7 +298,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ))
                 : const Icon(Icons.save_outlined),
             label: Text(
-              controller.isCreateLoading ? "Gravando..." : 'Gravar multa',
+              controller.isCreateLoading ? "Gravando..." : 'Gravar ocorrência',
             ),
           );
         },

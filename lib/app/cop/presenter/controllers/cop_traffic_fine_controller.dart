@@ -29,7 +29,7 @@ import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '../states/traffic_violation_states.dart';
 import '/app/cop/presenter/states/traffic_fine_states.dart';
 
-class CopTrafficFineController extends GetxController {
+class CopTrafficFineController extends GetxController with Loading {
   final GetAllTrafficFineUsecase getAllTrafficFines;
   final GetTrafficFineUsecase getTrafficFine;
   final SaveTrafficUsecase saveTrafficFine;
@@ -49,17 +49,16 @@ class CopTrafficFineController extends GetxController {
   Timer? _debounce;
 
   bool get isUploading =>
-      LoadingHandler.loadingState.value ==
-      LoadingStates.uploadingTrafficFineImage;
+      loadingState.value == LoadingStates.uploadingTrafficFineImage;
 
   bool get isCreateLoading =>
-      LoadingHandler.loadingState.value == LoadingStates.createTrafficFine;
+      loadingState.value == LoadingStates.createTrafficFine;
 
   bool get isFetchAllLoading =>
-      LoadingHandler.loadingState.value == LoadingStates.loadingAllTrafficFines;
+      loadingState.value == LoadingStates.loadingAllTrafficFines;
 
   bool get isFetchLoaging =>
-      LoadingHandler.loadingState.value == LoadingStates.loadingTrafficFine;
+      loadingState.value == LoadingStates.loadingTrafficFine;
 
   List<ListedTrafficFineInfo> get allTrafficFines =>
       TrafficFineStates.trafficFines;
@@ -177,7 +176,7 @@ class CopTrafficFineController extends GetxController {
       );
     }
 
-    LoadingHandler.setLoading(LoadingStates.loadingAllTrafficFines);
+    setLoading(LoadingStates.loadingAllTrafficFines);
 
     DateTime? since = createdSince.text != ""
         ? DateFormat('dd/MM/yyyy').parse(createdSince.text)
@@ -194,7 +193,7 @@ class CopTrafficFineController extends GetxController {
           licensePlate: licensePlate,
           pagination: pagination),
     );
-    LoadingHandler.stopLoading();
+    stopLoading();
     result.when(
       (trafficFines) => handlePaginationResult(trafficFines),
       (error) => utils.callSnackBar(
@@ -206,10 +205,10 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> getTrafficFineById(int id) async {
-    LoadingHandler.setLoading(LoadingStates.loadingTrafficFine);
+    setLoading(LoadingStates.loadingTrafficFine);
 
     Result<TrafficFineInfo, Failure> result = await getTrafficFine(id);
-    LoadingHandler.stopLoading();
+    stopLoading();
     result.when(
       (trafficFine) {
         TrafficFineStates.openedTrafficFine.value = trafficFine;
@@ -255,14 +254,14 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> uploadImage() async {
-    LoadingHandler.setLoading(LoadingStates.uploadingTrafficFineImage);
+    setLoading(LoadingStates.uploadingTrafficFineImage);
     Result<XFile?, Failure> result = await cameraController.getFileFromCamera();
     result.when(
       (file) async {
         if (file != null) {
           Dio.FormData? formData = await file.toFormData('fileName');
           Result uploadResult = await uploadFile(formData!);
-          LoadingHandler.stopLoading();
+          stopLoading();
           String url = uploadResult.tryGetSuccess();
 
           TrafficFineStates.trafficFineImageURL.value = url;
@@ -291,7 +290,7 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> addTrafficFine() async {
-    LoadingHandler.setLoading(LoadingStates.createTrafficFine);
+    setLoading(LoadingStates.createTrafficFine);
 
     String licensePlate = licensePlateCreate.text;
     List<Map<String, int>> violationIds = TrafficViolationStates
@@ -308,7 +307,7 @@ class CopTrafficFineController extends GetxController {
         imageUrl: trafficFineImageURL,
       ),
     );
-    LoadingHandler.stopLoading();
+    stopLoading();
 
     result.when(
       (success) {

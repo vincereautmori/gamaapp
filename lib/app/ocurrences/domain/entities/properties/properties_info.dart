@@ -11,6 +11,17 @@ class PropertiesInfo {
         id: json['id'],
         name: json['name'],
       );
+
+  static List<PropertiesInfo> fromListJson(List jsonList) => List.from(
+        jsonList.map(
+          (json) => PropertiesInfo.fromJson(json),
+        ),
+      );
+
+  @override
+  String toString() {
+    return name;
+  }
 }
 
 abstract class OccurrencePropertiesInfo {

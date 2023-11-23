@@ -11,9 +11,9 @@ class OccurrencePropertiesModel extends OccurrencePropertiesEntity
 
   factory OccurrencePropertiesModel.fromJson(Map<String, dynamic> json) =>
       OccurrencePropertiesModel(
-        status: json['a'],
-        types: json['a'],
-        urgencyLevels: json['a'],
+        status: PropertiesInfo.fromListJson(json['status']),
+        types: PropertiesInfo.fromListJson(json['types']),
+        urgencyLevels: PropertiesInfo.fromListJson(json['urgencyLevels']),
       );
 
   List<PropertiesInfo> resolveProperties(List propertiesJsonList) => List.from(

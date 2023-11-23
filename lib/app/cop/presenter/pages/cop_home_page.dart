@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../../shared/themes/images.dart';
 import '../../../../shared/themes/palette.dart';
 import '../../../../shared/widgets/square_line.dart';
+import '../widgets/started_occurrence_card.dart';
 
 class CopHomePage extends GetView<CopHomeController> {
   const CopHomePage({super.key});
@@ -30,17 +31,7 @@ class CopHomePage extends GetView<CopHomeController> {
                       width: 164,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Palette.white,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 30),
-                    child: const Text(
-                        "Nenhuma ocorrência em atendimento no momento"),
-                  ),
+                  const StartedOccurrenceCard(),
                   const SizedBox(height: 24),
                   const SquaresLines(),
                 ],

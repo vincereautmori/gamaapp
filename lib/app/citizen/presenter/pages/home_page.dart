@@ -30,7 +30,7 @@ class HomePage extends GetView<NavigationController> {
       floatingActionButton: Obx(
         () => controller.pageIndex.isEqual(1)
             ? FloatingActionButton(
-                onPressed: () => Get.toNamed(RoutesNames.newOcurrence),
+                onPressed: () => Get.toNamed(RoutesNames.newOccurrence),
                 child: const Icon(
                   Icons.add,
                 ),

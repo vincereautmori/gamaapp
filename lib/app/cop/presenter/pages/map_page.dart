@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:gamaapp/app/ocurrences/presenter/controllers/occurrences_properties_controller.dart';
 import 'package:gamaapp/shared/config/config.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,8 @@ class MapPage extends GetView<LocationController> {
     Position? position = controller.position;
     final OcurrencesController ocurrenceController =
         Get.find<OcurrencesController>();
+    final OccurrencesPropertiesController propertiesController =
+        Get.find<OccurrencesPropertiesController>();
     return Scaffold(
       appBar: AppBar(
         title: Obx(() {
@@ -92,6 +96,11 @@ class MapPage extends GetView<LocationController> {
             );
           })
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: propertiesController.fetchProperties,
+        icon: const Icon(PhosphorIcons.plus),
+        label: const Text("Nova ocorrência"),
       ),
     );
   }

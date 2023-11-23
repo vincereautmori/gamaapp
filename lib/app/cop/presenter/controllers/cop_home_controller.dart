@@ -10,7 +10,7 @@ import '../../../locations/presenter/controllers/location_controller.dart';
 import '../../../ocurrences/infra/models/occurrences/ocurrences_model.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
-class CopHomeController extends GetxController {
+class CopHomeController extends GetxController with Loading {
   final String serverUrl = Config.socketUrl;
   late HubConnection hubConnection;
   final OcurrencesController _ocurrenceController =
@@ -18,7 +18,7 @@ class CopHomeController extends GetxController {
   final LocationController _locationController = Get.find<LocationController>();
 
   bool get goingToOccurrences =>
-      LoadingHandler.loadingState.value == LoadingStates.occurrencesMap;
+      loadingState.value == LoadingStates.occurrencesMap;
 
   @override
   void onInit() {
@@ -84,10 +84,10 @@ class CopHomeController extends GetxController {
   }
 
   Future<void> goToOcurrence() async {
-    LoadingHandler.setLoading(LoadingStates.occurrencesMap);
+    setLoading(LoadingStates.occurrencesMap);
     await _locationController.determinePlace();
-    Get.toNamed('/cop/${RoutesNames.ocurrence}');
-    LoadingHandler.stopLoading();
+    Get.toNamed('/cop/${RoutesNames.occurrence}');
+    stopLoading();
   }
 
   void goToTrafficFine() => Get.toNamed('/cop${RoutesNames.trafficFine}');

@@ -1,6 +1,5 @@
 import 'package:gamaapp/app/citizen/presenter/binds/home_bind.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/home_page.dart';
-import 'package:gamaapp/app/citizen/presenter/pages/new_ocurrence_page.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_home_binding.dart';
 import 'package:gamaapp/app/cop/presenter/bindings/cop_traffic_fine_binding.dart';
 import 'package:gamaapp/app/cop/presenter/pages/cop_home_page.dart';
@@ -15,9 +14,9 @@ import 'package:get/get.dart';
 
 import '../auth/presenter/pages/sign_in_page.dart';
 import '../auth/presenter/pages/splashscreen_page.dart';
-import '../citizen/presenter/controllers/new_ocurrence_controller.dart';
 import '../cop/presenter/bindings/cop_traffic_violation_binding.dart';
 import '../cop/presenter/pages/trafficFine/list_traffice_fine_page.dart';
+import '../ocurrences/presenter/pages/new_occurrence_page.dart';
 import 'routes_name.dart';
 
 class Routes {
@@ -38,9 +37,9 @@ class Routes {
         binding: HomeBinding(),
       );
 
-  static GetPage get newOcurrence => GetPage(
-        name: RoutesNames.newOcurrence,
-        page: () => const NewOcurrencePage<OcurrenceController>(),
+  static GetPage get newOccurrence => GetPage(
+        name: RoutesNames.newOccurrence,
+        page: () => const NewOccurrencePage(),
       );
 
   static GetPage get viewOccurrence => GetPage(
@@ -59,7 +58,7 @@ class Routes {
       page: () => const CopHomePage(),
       children: [
         GetPage(
-          name: RoutesNames.ocurrence,
+          name: RoutesNames.occurrence,
           page: () => const MapPage(),
         ),
         GetPage(

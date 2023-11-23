@@ -27,7 +27,7 @@ class OccurrencesDatasourceImp implements OccurrencesDatasource {
     int occurrenceUrgencyLevelId,
     String imageUrl,
   ) =>
-      dio.post('occurrences', data: {
+      dio.post('/occurrences', data: {
         "latitude": latitude,
         "longitude": longitude,
         "location": location,
