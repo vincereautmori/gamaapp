@@ -80,27 +80,29 @@ class NewOccurrencePage extends GetView<OcurrencesController> {
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Autocomplete<PropertiesInfo>(
-                fieldViewBuilder:
-                    (context, controller, focusNode, onFieldSubmitted) {
-                  return TextFormField(
-                    controller: controller,
-                    focusNode: focusNode,
-                    decoration: const InputDecoration(
-                      labelText: 'Tipo',
-                      hintText: 'Selecione o tipo da ocorrência',
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Tipo",
+                    style: Texts.subtitle,
+                  ),
+                  Obx(
+                    () => DropdownMenu<PropertiesInfo>(
+                      initialSelection: controller.occurrenceTypes.first,
+                      dropdownMenuEntries: List.from(
+                        controller.occurrenceTypes
+                            .map<DropdownMenuEntry<PropertiesInfo>>(
+                          (occurrenceType) => DropdownMenuEntry<PropertiesInfo>(
+                            value: occurrenceType,
+                            label: "$occurrenceType",
+                          ),
+                        ),
+                      ),
+                      onSelected: (type) => controller.setType(type?.id ?? 0),
                     ),
-                    onFieldSubmitted: (_) => onFieldSubmitted(),
-                  );
-                },
-                onSelected: (type) => controller.setType(type.id),
-                optionsBuilder: (TextEditingValue textEditingValue) {
-                  return controller.occurrenceTypes
-                      .where((PropertiesInfo option) {
-                    return option.name
-                        .contains(textEditingValue.text.toLowerCase());
-                  });
-                },
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 16),
