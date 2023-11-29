@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' as dio_package;
+import 'package:flutter/material.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
 import 'package:gamaapp/app/ocurrences/domain/entities/dtos/ocurrency_input.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
@@ -43,11 +44,15 @@ class OcurrencesController extends GetxController with Loading {
       OccurrenceStates.startedOccurrence.value;
 
   int get imageBytesCount => OccurrenceStates.trafficFineImageBytesCount.value;
+
   int get imageBytesTotal => OccurrenceStates.trafficFineImageBytesTotal.value;
 
   List<int> get loadedImage => OccurrenceStates.loadedImage;
 
   OccurrenceInput get occurrenceInput => OccurrenceStates.occurrenceInput.value;
+
+  TextEditingController title = TextEditingController();
+  TextEditingController description = TextEditingController();
 
   List<PropertiesInfo> get occurrenceTypes =>
       OccurrenceStates.occurrenceTypes.value;
@@ -62,6 +67,12 @@ class OcurrencesController extends GetxController with Loading {
   void onInit() {
     super.onInit();
     cameraController = Get.find<CameraController>();
+    title.addListener(() {
+      setOccurrenceTitle(title.text);
+    });
+    description.addListener(() {
+      setOccurrenceDescription(description.text);
+    });
   }
 
   Future<void> uploadImage() async {
@@ -119,18 +130,23 @@ class OcurrencesController extends GetxController with Loading {
         occurrenceInput.copyWith(description: description);
   }
 
-  void clearOccurrenceData() =>
-      OccurrenceStates.occurrenceInput.value = OccurrenceInput(
-        latitude: -22.7704398,
-        longitude: -47.3310491,
-        location: "",
-        name: "",
-        description: "",
-        occurrenceStatusId: 1,
-        occurrenceUrgencyLevelId: 1,
-        occurrenceTypeId: 1,
-        imageUrl: "",
-      );
+  void clearOccurrenceData() {
+    OccurrenceStates.occurrenceInput.value = OccurrenceInput(
+      latitude: -22.7704398,
+      longitude: -47.3310491,
+      location: "",
+      name: "",
+      description: "",
+      occurrenceStatusId: 1,
+      occurrenceUrgencyLevelId: 1,
+      occurrenceTypeId: 1,
+      imageUrl: "",
+    );
+    loadedImage.clear();
+    OccurrenceStates.trafficFineImageBytesCount.value = 0;
+    title.clear();
+    description.clear();
+  }
 
   void setOccurrenceLocation() {
     Placemark? place = LocationStates.place.value;
@@ -200,11 +216,13 @@ class OcurrencesController extends GetxController with Loading {
   }
 
   void newOccurrence() async {
+    setLoading(LoadingStates.createOccurrence);
+
     setOccurrenceLocation();
     Result<Unit, Failure> result = await createOccurrence(
       occurrenceInput,
     );
-
+    stopLoading();
     result.when(
       (success) {
         utils.callSnackBar(

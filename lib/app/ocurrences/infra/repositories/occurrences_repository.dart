@@ -45,7 +45,6 @@ class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
     String imageUrl,
   ) async {
     try {
-      setLoading(LoadingStates.createOccurrence);
       await datasource.createOccurrence(
         latitude,
         longitude,
@@ -63,8 +62,6 @@ class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
           e.response?.data["createOccurrenceCommand.Location"]?.first ??
               "Algo deu errado";
       return Error(OccurrenceError(message: errorMessage));
-    } finally {
-      stopLoading();
     }
   }
 }

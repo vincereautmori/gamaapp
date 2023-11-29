@@ -34,7 +34,6 @@ class NewOccurrencePage extends GetView<OcurrencesController> {
               color: Palette.primary,
               child: Column(
                 children: [
-                  const SizedBox(height: 24),
                   ListTile(
                     leading: const Icon(
                       Icons.access_time,
@@ -74,7 +73,7 @@ class NewOccurrencePage extends GetView<OcurrencesController> {
               child: GamaTextField(
                 label: 'Título',
                 placeholder: "Dê uma breve descrição da ocorrência",
-                onChange: controller.setOccurrenceTitle,
+                controller: controller.title,
               ),
             ),
             const SizedBox(height: 16),
@@ -276,7 +275,7 @@ class NewOccurrencePage extends GetView<OcurrencesController> {
                 label: "Descrição",
                 placeholder: "Dê mais detalhes sobre o ocorrido",
                 maxLines: 5,
-                onChange: controller.setOccurrenceDescription,
+                controller: controller.description,
               ),
             ),
             const SizedBox(height: 88),
@@ -285,7 +284,9 @@ class NewOccurrencePage extends GetView<OcurrencesController> {
       ),
       floatingActionButton: Obx(
         () {
-          bool isDisabled = controller.isCreateLoading;
+          bool isDisabled = controller.isCreateLoading ||
+              controller.title.text.isEmpty ||
+              controller.loadedImage.isEmpty;
           return FloatingActionButton.extended(
             backgroundColor: isDisabled ? Palette.lightGrey : null,
             foregroundColor: isDisabled ? Palette.grey : null,
