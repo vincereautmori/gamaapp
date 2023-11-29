@@ -3,6 +3,7 @@ import 'package:gamaapp/shared/config/config.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
@@ -28,7 +29,6 @@ class CopHomeController extends GetxController with Loading {
   Future<void> startSignalRConnection() async {
     hubConnection.on("ReceiveMessage", (messages) {
       if (messages != null) {
-        print(messages);
         if (messages.first is List) {
           _ocurrenceController.fillOccurrences(
             OcurrencesModel.fromJsonList(messages.first),
@@ -49,14 +49,20 @@ class CopHomeController extends GetxController with Loading {
       );
     });
 
-    hubConnection.start().then((_) {
+    hubConnection.start().then((_) async {
+      await _locationController.determinePlace();
+
+      Position? position = _locationController.position;
+
       utils.callSnackBar(
         title: "Ocorrências",
         message: "Conectado ao servidor de ocorrências com sucesso",
         snackStyle: SnackBarStyles.success,
       );
 
-      subscribeWithinRadius(-22.736491, -47.332322, 20000);
+      if (position != null) {
+        subscribeWithinRadius(position.latitude, position.longitude, 60);
+      }
     }).catchError((error) {
       utils.callSnackBar(
         title: "Error starting SignalR connection",
@@ -68,7 +74,7 @@ class CopHomeController extends GetxController with Loading {
 
   void subscribeWithinRadius(double latitude, double longitude, double radius) {
     hubConnection
-        .invoke("Subscribe", args: <double>[latitude, longitude, radius]);
+        .invoke("Subscribe", args: <double>[longitude, latitude, radius]);
   }
 
   void unsubscribe() {
