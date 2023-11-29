@@ -24,6 +24,7 @@ class MapPage extends GetView<LocationController> {
         Get.find<OcurrencesController>();
     final OccurrencesPropertiesController propertiesController =
         Get.find<OccurrencesPropertiesController>();
+
     return Scaffold(
       appBar: AppBar(
         title: Obx(() {
@@ -39,43 +40,48 @@ class MapPage extends GetView<LocationController> {
         }),
         centerTitle: true,
       ),
-      body: FlutterMap(
-        options: MapOptions(
-          zoom: 15.0,
-          maxZoom: 22,
-          center: LatLng(
-              position?.latitude ?? -22.7467, position?.longitude ?? -47.3311),
-        ),
-        children: [
-          TileLayer(
-            urlTemplate: Config.mapBoxBaseUrl,
-          ),
-          Obx(() {
-            List<Marker> markers = ocurrenceController.occurrences
-                .map<Marker>(
-                  (ocurrence) => Marker(
-                    point: LatLng(ocurrence.latitude, ocurrence.longitude),
-                    anchorPos: AnchorPos.align(AnchorAlign.top),
-                    height: 40,
-                    width: 40,
-                    builder: (context) => IconButton(
-                      onPressed: () =>
-                          ocurrenceController.viewOccurrence(ocurrence),
-                      icon: Icon(
-                        Icons.place,
-                        color: ocurrence.occurrenceId ==
-                                ocurrenceController
-                                    .startedOccurrence?.occurrenceId
-                            ? Palette.warning
-                            : Palette.red,
-                        size: 40,
-                      ),
-                    ),
+      body: Obx(() {
+        List<Marker> markers = ocurrenceController.occurrences
+            .map<Marker>(
+              (ocurrence) => Marker(
+                point: LatLng(ocurrence.latitude, ocurrence.longitude),
+                anchorPos: AnchorPos.align(AnchorAlign.top),
+                height: 40,
+                width: 40,
+                builder: (context) => IconButton(
+                  onPressed: () =>
+                      ocurrenceController.viewOccurrence(ocurrence),
+                  icon: Icon(
+                    Icons.place,
+                    color: ocurrence.occurrenceId ==
+                            ocurrenceController.startedOccurrence?.occurrenceId
+                        ? Palette.warning
+                        : Palette.red,
+                    size: 40,
                   ),
-                )
-                .toList();
+                ),
+              ),
+            )
+            .toList();
 
-            return MarkerLayer(
+        if (controller.isLocationLoading) {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        }
+
+        return FlutterMap(
+          options: MapOptions(
+            zoom: 15.0,
+            maxZoom: 22,
+            center: LatLng(position?.latitude ?? -22.7467,
+                position?.longitude ?? -47.3311),
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: Config.mapBoxBaseUrl,
+            ),
+            MarkerLayer(
               markers: [
                 Marker(
                   point: LatLng(
@@ -93,10 +99,10 @@ class MapPage extends GetView<LocationController> {
                 ),
                 ...markers,
               ],
-            );
-          })
-        ],
-      ),
+            )
+          ],
+        );
+      }),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: propertiesController.fetchProperties,
         icon: const Icon(PhosphorIcons.plus),

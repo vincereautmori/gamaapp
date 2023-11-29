@@ -17,9 +17,6 @@ class CopHomeController extends GetxController with Loading {
       Get.find<OcurrencesController>();
   final LocationController _locationController = Get.find<LocationController>();
 
-  bool get goingToOccurrences =>
-      loadingState.value == LoadingStates.occurrencesMap;
-
   @override
   void onInit() {
     super.onInit();
@@ -31,6 +28,7 @@ class CopHomeController extends GetxController with Loading {
   Future<void> startSignalRConnection() async {
     hubConnection.on("ReceiveMessage", (messages) {
       if (messages != null) {
+        print(messages);
         if (messages.first is List) {
           _ocurrenceController.fillOccurrences(
             OcurrencesModel.fromJsonList(messages.first),
@@ -85,7 +83,7 @@ class CopHomeController extends GetxController with Loading {
 
   Future<void> goToOcurrence() async {
     setLoading(LoadingStates.occurrencesMap);
-    await _locationController.determinePlace();
+    _locationController.determinePlace();
     Get.toNamed('/cop/${RoutesNames.occurrence}');
     stopLoading();
   }

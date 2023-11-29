@@ -7,7 +7,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-class LocationController extends GetxController {
+import '../../../../shared/utils/loading.dart';
+
+class LocationController extends GetxController with Loading {
   final GetPositionUsecase getPosition;
   final GetPlaceUsecase getPlace;
 
@@ -15,6 +17,9 @@ class LocationController extends GetxController {
 
   Placemark? get place => LocationStates.place.value;
   Position? get position => LocationStates.position.value;
+
+  bool get isLocationLoading =>
+      loadingState.value == LoadingStates.occurrencesMap;
 
   @override
   void onInit() async {
