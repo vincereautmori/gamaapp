@@ -79,27 +79,4 @@ class TrafficFineDatasourceImp implements TrafficFineDatasource {
 
     return res.statusCode ?? 500;
   }
-
-  @override
-  Future<String> uploadImage(FormData fileFormData) async {
-    Response response = await dio.post(
-      '/files',
-      data: fileFormData,
-      onSendProgress: (count, total) {
-        TrafficFineStates.trafficFineImageBytesCount.value = count;
-        TrafficFineStates.trafficFineImageBytesTotal.value = total;
-      },
-    );
-
-    return response.data;
-  }
-
-  @override
-  Future<List<int>> loadImage(String url) async {
-    Response response = await dio.get(
-      '/files?path=$url',
-      options: Options(responseType: ResponseType.bytes),
-    );
-    return response.data;
-  }
 }

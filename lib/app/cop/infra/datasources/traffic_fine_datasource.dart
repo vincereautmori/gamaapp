@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:gamaapp/app/cop/infra/models/traffic_fine_model.dart';
 
@@ -20,8 +19,4 @@ abstract class TrafficFineDatasource {
     required List<Map<String, int>> trafficViolations,
     required String imageUrl,
   });
-
-  Future<String> uploadImage(FormData fileFormData);
-
-  Future<List<int>> loadImage(String url);
 }

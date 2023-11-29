@@ -11,5 +11,5 @@ class StopOccurrenceUsecaseImp implements StopOccurrenceUsecase {
 
   @override
   Future<Result<Unit, Failure>> call(int occurrenceId) =>
-      repository.startOccurrence(occurrenceId);
+      repository.stopOccurrence(occurrenceId);
 }

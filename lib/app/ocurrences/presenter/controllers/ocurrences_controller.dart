@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart' as dio_package;
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
-import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:gamaapp/app/ocurrences/domain/entities/dtos/ocurrency_input.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:geocoding/geocoding.dart';
@@ -28,9 +27,6 @@ class OcurrencesController extends GetxController with Loading {
   final CreateOccurrenceUsecase createOccurrence;
 
   late CameraController cameraController;
-
-  //TODO remover o método uploadImage e loadImage daqui e abstrair para um módulo correto
-  late CopTrafficFineController fileController;
 
   OcurrencesController({
     required this.startOccurrence,
@@ -66,7 +62,6 @@ class OcurrencesController extends GetxController with Loading {
   void onInit() {
     super.onInit();
     cameraController = Get.find<CameraController>();
-    fileController = Get.find<CopTrafficFineController>();
   }
 
   Future<void> uploadImage() async {
@@ -76,7 +71,11 @@ class OcurrencesController extends GetxController with Loading {
       (file) async {
         if (file != null) {
           dio_package.FormData? formData = await file.toFormData('fileName');
-          Result uploadResult = await fileController.uploadFile(formData!);
+          Result uploadResult = await cameraController.uploadFile(formData!,
+              onSendProgress: (count, total) {
+            OccurrenceStates.trafficFineImageBytesCount.value = count;
+            OccurrenceStates.trafficFineImageBytesTotal.value = total;
+          });
           stopLoading();
           String url = uploadResult.tryGetSuccess();
 
@@ -186,7 +185,6 @@ class OcurrencesController extends GetxController with Loading {
   }
 
   void stop(OccurrencesInfo occurrence) async {
-    print("STOP OCCURRENCE ID = ${occurrence.occurrenceId}");
     Result result = await stopOccurrence(occurrence.occurrenceId);
     result.when((_) {
       OccurrenceStates.startedOccurrence.value = null;
