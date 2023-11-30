@@ -1,50 +1,47 @@
 import 'package:equatable/equatable.dart';
 
 class OcurrencesEntity extends Equatable {
-  final DateTime createdAt;
-  final String name;
-  final int occurrenceId;
+  final int id;
+  final int userId;
   final double latitude;
   final double longitude;
   final String location;
-  final String occurrenceName;
-  final String statusName;
-  final String occurrenceUrgencyLevelName;
-  final String occurrenceTypeName;
-  final int userId;
-  final String userName;
+  final String name;
+  final String description;
   final bool active;
+  final String urgencyLevel;
+  final String occurrenceType;
+  final String status;
+  final String imageUrl;
 
   const OcurrencesEntity({
-    required this.createdAt,
-    required this.name,
-    required this.occurrenceId,
+    required this.id,
+    required this.userId,
     required this.latitude,
     required this.longitude,
     required this.location,
-    required this.occurrenceName,
-    required this.statusName,
-    required this.occurrenceUrgencyLevelName,
-    required this.occurrenceTypeName,
-    required this.userId,
-    required this.userName,
+    required this.name,
+    required this.description,
     required this.active,
+    required this.urgencyLevel,
+    required this.occurrenceType,
+    required this.status,
+    required this.imageUrl,
   });
 
   @override
   List<Object> get props => [
-        createdAt,
-        name,
-        occurrenceId,
+        id,
+        userId,
         latitude,
         longitude,
         location,
-        occurrenceName,
-        statusName,
-        occurrenceUrgencyLevelName,
-        occurrenceTypeName,
-        userId,
-        userName,
+        name,
+        description,
         active,
+        urgencyLevel,
+        occurrenceType,
+        status,
+        imageUrl,
       ];
 }

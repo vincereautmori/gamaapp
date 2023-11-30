@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 import '../../../locations/presenter/controllers/location_controller.dart';
-import '../../../ocurrences/infra/models/occurrences/ocurrences_model.dart';
+import '../../../ocurrences/infra/models/occurrences/ocurrences_list_model.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
 class CopHomeController extends GetxController with Loading {
@@ -31,11 +31,11 @@ class CopHomeController extends GetxController with Loading {
       if (messages != null) {
         if (messages.first is List) {
           _ocurrenceController.fillOccurrences(
-            OcurrencesModel.fromJsonList(messages.first),
+            OcurrencesListModel.fromJsonList(messages.first),
           );
         } else {
           _ocurrenceController.notifyNewOccurrence(
-            OcurrencesModel.fromJson(messages.first),
+            OcurrencesListModel.fromJson(messages.first),
           );
         }
       }
@@ -74,7 +74,7 @@ class CopHomeController extends GetxController with Loading {
 
   void subscribeWithinRadius(double latitude, double longitude, double radius) {
     hubConnection
-        .invoke("Subscribe", args: <double>[longitude, latitude, radius]);
+        .invoke("Subscribe", args: <double>[latitude, longitude, radius]);
   }
 
   void unsubscribe() {

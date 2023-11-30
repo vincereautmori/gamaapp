@@ -21,7 +21,7 @@ class StartedOccurrenceCard extends GetView<OcurrencesController> {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
               child: Text(
-                  "Ocorrência ${controller.startedOccurrence!.occurrenceId} está ativa no momento"),
+                  "Ocorrência ${controller.startedOccurrence!.id} está ativa no momento"),
             ),
             const LinearProgressIndicator()
           ],

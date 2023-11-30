@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import 'package:gamaapp/app/ocurrences/domain/errors/error.dart';
 import 'package:gamaapp/app/ocurrences/infra/datasources/occurrences_datasource.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -62,6 +63,16 @@ class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
           e.response?.data["createOccurrenceCommand.Location"]?.first ??
               "Algo deu errado";
       return Error(OccurrenceError(message: errorMessage));
+    }
+  }
+
+  @override
+  Future<Result<OccurrencesInfo, Failure>> getOccurrenceById(int id) async {
+    try {
+      OccurrencesInfo info = await datasource.getOccurrenceById(id);
+      return Success(info);
+    } catch (e) {
+      return Error(OccurrenceError(message: '$e'));
     }
   }
 }

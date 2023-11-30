@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 
 import '../../infra/datasources/occurrences_datasource.dart';
+import '../../infra/models/occurrences/ocurrences_model.dart';
 
 class OccurrencesDatasourceImp implements OccurrencesDatasource {
   final Dio dio;
@@ -38,4 +40,11 @@ class OccurrencesDatasourceImp implements OccurrencesDatasource {
         "occurrenceUrgencyLevelId": occurrenceUrgencyLevelId,
         "imageUrl": imageUrl,
       });
+
+  @override
+  Future<OccurrencesInfo> getOccurrenceById(int occurrenceId) async {
+    Response res = await dio.get('/occurrences/$occurrenceId');
+    OccurrencesInfo info = OcurrencesModel.fromJson(res.data);
+    return info;
+  }
 }

@@ -1,15 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
-import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:gamaapp/shared/widgets/buttons/button.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../shared/themes/palette.dart';
 import '../../../../../shared/widgets/mapbox_map.dart';
+import '../../../ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
 class ViewOcurrencePage extends GetView<OcurrencesController> {
@@ -51,7 +53,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                   child: Column(
                     children: [
                       Container(
-                        color: Palette.lightGrey,
+                        color: Palette.greyBackground,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24.0,
                           vertical: 16,
@@ -67,7 +69,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              "#${occurrence.occurrenceId}",
+                              "#${occurrence.id}",
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -94,7 +96,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              occurrence.occurrenceName,
+                              occurrence.name,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -105,7 +107,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                         ),
                       ),
                       Container(
-                        color: Palette.lightGrey,
+                        color: Palette.greyBackground,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24.0,
                           vertical: 16,
@@ -132,35 +134,6 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                         ),
                       ),
                       Container(
-                        color: Palette.greyBackground,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0,
-                          vertical: 16,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Aberto em",
-                              style: TextStyle(
-                                color: Palette.darkGrey,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Text(
-                              occurrence.createdAt
-                                      .formatDate("dd/MM/yyyy - HH:mm") ??
-                                  "",
-                              style: const TextStyle(
-                                color: Palette.darkGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
                         color: Palette.lightGrey,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24.0,
@@ -177,7 +150,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              occurrence.statusName,
+                              occurrence.status,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -188,7 +161,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                         ),
                       ),
                       Container(
-                        color: Palette.lightGrey,
+                        color: Palette.greyBackground,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24.0,
                           vertical: 16,
@@ -204,7 +177,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              occurrence.occurrenceTypeName,
+                              occurrence.occurrenceType,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -231,7 +204,7 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                               ),
                             ),
                             Text(
-                              occurrence.occurrenceUrgencyLevelName,
+                              occurrence.urgencyLevel,
                               style: const TextStyle(
                                 color: Palette.darkGrey,
                                 fontSize: 16,
@@ -241,133 +214,133 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                           ],
                         ),
                       ),
-                      // Ink(
-                      //   color: Palette.greyBackground,
-                      //   child: InkWell(
-                      //     borderRadius: const BorderRadius.only(
-                      //         bottomLeft: Radius.circular(8),
-                      //         bottomRight: Radius.circular(8)),
-                      //     onTap: ocurrence.imageUrl.isEmpty
-                      //         ? null
-                      //         : () async {
-                      //             await Future.wait([
-                      //               controller.loadImage(ocurrence.imageUrl),
-                      //               Get.dialog(
-                      //                 Obx(
-                      //                   () {
-                      //                     return Column(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.center,
-                      //                       children: [
-                      //                         Align(
-                      //                           alignment: Alignment.topRight,
-                      //                           child: IconButton(
-                      //                             onPressed: Get.back,
-                      //                             icon: const Icon(
-                      //                               Icons.close,
-                      //                               color: Palette.white,
-                      //                             ),
-                      //                           ),
-                      //                         ),
-                      //                         Expanded(
-                      //                           child: Center(
-                      //                             child: controller
-                      //                                     .loadedImage.isEmpty
-                      //                                 ? const CircularProgressIndicator(
-                      //                                     color: Palette.white,
-                      //                                   )
-                      //                                 : Image.memory(
-                      //                                     Uint8List.fromList(
-                      //                                       controller
-                      //                                           .loadedImage,
-                      //                                     ),
-                      //                                     width: MediaQuery.of(
-                      //                                                 context)
-                      //                                             .size
-                      //                                             .width -
-                      //                                         48,
-                      //                                     frameBuilder: (context,
-                      //                                         child,
-                      //                                         frame,
-                      //                                         wasSynchronouslyLoaded) {
-                      //                                       if (wasSynchronouslyLoaded) {
-                      //                                         return child;
-                      //                                       }
-                      //                                       return AnimatedSwitcher(
-                      //                                         duration:
-                      //                                             const Duration(
-                      //                                                 milliseconds:
-                      //                                                     200),
-                      //                                         child: frame !=
-                      //                                                 null
-                      //                                             ? child
-                      //                                             : SizedBox(
-                      //                                                 width: MediaQuery.of(context)
-                      //                                                         .size
-                      //                                                         .width -
-                      //                                                     48,
-                      //                                                 height:
-                      //                                                     500,
-                      //                                                 child: Shimmer.fromColors(
-                      //                                                     baseColor: Colors.grey.shade300,
-                      //                                                     highlightColor: Colors.grey.shade100,
-                      //                                                     child: Container(
-                      //                                                       width:
-                      //                                                           double.infinity,
-                      //                                                       height:
-                      //                                                           500.0,
-                      //                                                       margin:
-                      //                                                           const EdgeInsets.all(16.0),
-                      //                                                       decoration:
-                      //                                                           BoxDecoration(
-                      //                                                         borderRadius: BorderRadius.circular(12.0),
-                      //                                                         color: Colors.white,
-                      //                                                       ),
-                      //                                                     )),
-                      //                                               ),
-                      //                                       );
-                      //                                     },
-                      //                                   ),
-                      //                           ),
-                      //                         ),
-                      //                       ],
-                      //                     );
-                      //                   },
-                      //                 ),
-                      //               ).then(
-                      //                   (_) => controller.loadedImage.clear()),
-                      //             ]);
-                      //           },
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.symmetric(
-                      //         horizontal: 24.0,
-                      //         vertical: 16,
-                      //       ),
-                      //       child: Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           const Text(
-                      //             "Imagem",
-                      //             style: TextStyle(
-                      //               color: Palette.darkGrey,
-                      //               fontSize: 14,
-                      //             ),
-                      //           ),
-                      //           Text(
-                      //             ocurrence.imageUrl.isEmpty
-                      //                 ? "Sem imagem"
-                      //                 : "Visualizar",
-                      //             style: const TextStyle(
-                      //               color: Palette.primary,
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w600,
-                      //             ),
-                      //           )
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Ink(
+                        color: Palette.greyBackground,
+                        child: InkWell(
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(8),
+                              bottomRight: Radius.circular(8)),
+                          onTap: occurrence.imageUrl.isEmpty
+                              ? null
+                              : () async {
+                                  await Future.wait([
+                                    // controller.loadImage(occurrence.imageUrl),
+                                    Get.dialog(
+                                      Obx(
+                                        () {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  onPressed: Get.back,
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                    color: Palette.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Center(
+                                                  child: controller
+                                                          .loadedImage.isEmpty
+                                                      ? const CircularProgressIndicator(
+                                                          color: Palette.white,
+                                                        )
+                                                      : Image.memory(
+                                                          Uint8List.fromList(
+                                                            controller
+                                                                .loadedImage,
+                                                          ),
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width -
+                                                              48,
+                                                          frameBuilder: (context,
+                                                              child,
+                                                              frame,
+                                                              wasSynchronouslyLoaded) {
+                                                            if (wasSynchronouslyLoaded) {
+                                                              return child;
+                                                            }
+                                                            return AnimatedSwitcher(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          200),
+                                                              child: frame !=
+                                                                      null
+                                                                  ? child
+                                                                  : SizedBox(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width -
+                                                                          48,
+                                                                      height:
+                                                                          500,
+                                                                      child: Shimmer.fromColors(
+                                                                          baseColor: Colors.grey.shade300,
+                                                                          highlightColor: Colors.grey.shade100,
+                                                                          child: Container(
+                                                                            width:
+                                                                                double.infinity,
+                                                                            height:
+                                                                                500.0,
+                                                                            margin:
+                                                                                const EdgeInsets.all(16.0),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              borderRadius: BorderRadius.circular(12.0),
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                          )),
+                                                                    ),
+                                                            );
+                                                          },
+                                                        ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ).then(
+                                        (_) => controller.loadedImage.clear()),
+                                  ]);
+                                },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                              vertical: 16,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Imagem",
+                                  style: TextStyle(
+                                    color: Palette.darkGrey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  occurrence.imageUrl.isEmpty
+                                      ? "Sem imagem"
+                                      : "Visualizar",
+                                  style: const TextStyle(
+                                    color: Palette.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -444,13 +417,11 @@ class ViewOcurrencePage extends GetView<OcurrencesController> {
                 ),
                 const SizedBox(height: 16),
                 GamaButton(
-                  text: controller.startedOccurrence?.occurrenceId ==
-                          occurrence.occurrenceId
+                  text: controller.startedOccurrence?.id == occurrence.id
                       ? "Finalizar Ocorrência"
                       : "Iniciar Ocorrência",
-                  onPressed: controller.startedOccurrence?.occurrenceId ==
-                          occurrence.occurrenceId
-                      ? () => controller.stop(occurrence)
+                  onPressed: controller.startedOccurrence?.id == occurrence.id
+                      ? () => controller.stop(occurrence.id)
                       : () => controller.start(occurrence),
                 ),
                 const SizedBox(height: 24),

@@ -1,3 +1,4 @@
+import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../../auth/domain/errors/errors.dart';
@@ -16,4 +17,6 @@ abstract class OccurrencesRepository {
     int occurrenceUrgencyLevelId,
     String imageUrl,
   );
+
+  Future<Result<OccurrencesInfo, Failure>> getOccurrenceById(int id);
 }

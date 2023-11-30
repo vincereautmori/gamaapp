@@ -34,7 +34,7 @@ class MapPage extends GetView<LocationController> {
             isInOccurence: isOccurrenceStarted,
             openOccurrenceAction: isOccurrenceStarted
                 ? () => ocurrenceController
-                    .viewOccurrence(ocurrenceController.startedOccurrence!)
+                    .viewOccurrence(ocurrenceController.startedOccurrence!.id)
                 : null,
           );
         }),
@@ -49,12 +49,12 @@ class MapPage extends GetView<LocationController> {
                 height: 40,
                 width: 40,
                 builder: (context) => IconButton(
-                  onPressed: () =>
-                      ocurrenceController.viewOccurrence(ocurrence),
+                  onPressed: () => ocurrenceController
+                      .viewOccurrence(ocurrence.occurrenceId),
                   icon: Icon(
                     Icons.place,
                     color: ocurrence.occurrenceId ==
-                            ocurrenceController.startedOccurrence?.occurrenceId
+                            ocurrenceController.startedOccurrence?.id
                         ? Palette.warning
                         : Palette.red,
                     size: 40,

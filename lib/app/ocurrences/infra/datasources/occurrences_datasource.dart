@@ -1,3 +1,5 @@
+import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
+
 abstract class OccurrencesDatasource {
   Future<void> startOccurrence(int occurrenceId);
   Future<void> stopOccurrence(int occurrenceId);
@@ -12,4 +14,5 @@ abstract class OccurrencesDatasource {
     int occurrenceUrgencyLevelId,
     String imageUrl,
   );
+  Future<OccurrencesInfo> getOccurrenceById(int occurrenceId);
 }

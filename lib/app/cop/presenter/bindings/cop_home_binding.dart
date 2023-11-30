@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:gamaapp/app/ocurrences/domain/usecases/get_properties/get_properties_usecase.dart';
+import 'package:gamaapp/app/ocurrences/domain/usecases/load_occurrence_data/load_occurrence_data_usecase.dart';
 import 'package:gamaapp/app/ocurrences/infra/datasources/occurrence_properties_datasource.dart';
 import 'package:gamaapp/app/ocurrences/infra/repositories/occurrences_properties_repository.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import '../../../ocurrences/domain/repositories/occurrences_properties_repositor
 import '../../../ocurrences/domain/usecases/create_occurrence/create_occurrence_usecase.dart';
 import '../../../ocurrences/domain/usecases/create_occurrence/create_occurrence_usecase_imp.dart';
 import '../../../ocurrences/domain/usecases/get_properties/get_properties_usecase_imp.dart';
+import '../../../ocurrences/domain/usecases/load_occurrence_data/load_occurrence_data_usecase_imp.dart';
 import '../../../ocurrences/external/datasources/occurrences_properties_datasource_imp.dart';
 import '../../../ocurrences/presenter/controllers/occurrences_properties_controller.dart';
 import '/app/cop/presenter/controllers/cop_home_controller.dart';
@@ -44,6 +46,9 @@ class CopHomeBinding extends Bindings {
     GetPropertiesUsecase getPropertiesUsecase =
         GetPropertiesUsecaseImp(propertiesRepository);
 
+    LoadOccurrenceDataUsecase loadOccurrenceData =
+        LoadOccurrenceDataUsecaseImp(repository);
+
     Get.lazyPut(() => CopHomeController(), fenix: true);
     Get.lazyPut(() => OccurrencesPropertiesController(getPropertiesUsecase),
         fenix: true);
@@ -52,6 +57,7 @@ class CopHomeBinding extends Bindings {
         startOccurrence: startOccurrence,
         stopOccurrence: stopOccurrence,
         createOccurrence: createOccurrence,
+        loadOccurrenceData: loadOccurrenceData,
       ),
       fenix: true,
     );

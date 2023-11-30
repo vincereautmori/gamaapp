@@ -3,43 +3,33 @@ import '../../../domain/entities/ocurrences/ocurrences_info.dart';
 
 class OcurrencesModel extends OcurrencesEntity implements OccurrencesInfo {
   const OcurrencesModel({
-    required super.createdAt,
+    required super.id,
     required super.name,
-    required super.occurrenceId,
     required super.latitude,
     required super.longitude,
     required super.location,
-    required super.occurrenceName,
-    required super.statusName,
-    required super.occurrenceUrgencyLevelName,
-    required super.occurrenceTypeName,
+    required super.status,
+    required super.urgencyLevel,
+    required super.occurrenceType,
     required super.userId,
-    required super.userName,
+    required super.description,
+    required super.imageUrl,
     required super.active,
   });
 
   factory OcurrencesModel.fromJson(Map<String, dynamic> json) =>
       OcurrencesModel(
-        latitude: json['point']['latitude'],
-        longitude: json['point']['longitude'],
-        createdAt: DateTime.parse(json['message']['createdAt']),
-        name: json['message']['name'] ?? "",
-        occurrenceId: json['message']['occurrenceId'],
-        location: json['message']['location'] ?? "",
-        occurrenceName: json['message']['occurrenceName'],
-        statusName: json['message']['statusName'] ?? "",
-        occurrenceUrgencyLevelName:
-            json['message']['occurrenceUrgencyLevelName'] ?? "",
-        occurrenceTypeName: json['message']['occurrenceTypeName'] ?? "",
-        userId: json['message']['userId'],
-        userName: json['message']['userName'] ?? "",
-        active: json['message']['active'],
-      );
-
-  static List<OcurrencesModel> fromJsonList(List jsonList) =>
-      List<OcurrencesModel>.from(
-        jsonList.map(
-          (json) => OcurrencesModel.fromJson(json),
-        ),
+        id: json['id'],
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+        name: json['name'] ?? "",
+        location: json['location'] ?? "",
+        status: json['status'] ?? "",
+        urgencyLevel: json['urgencyLevel'] ?? "",
+        imageUrl: json['imageUrl'],
+        description: json['description'],
+        occurrenceType: json['occurrenceType'] ?? "",
+        userId: json['userId'],
+        active: json['active'],
       );
 }

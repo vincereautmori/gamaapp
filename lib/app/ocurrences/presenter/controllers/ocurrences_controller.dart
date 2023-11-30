@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio_package;
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
 import 'package:gamaapp/app/ocurrences/domain/entities/dtos/ocurrency_input.dart';
+import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,11 +15,12 @@ import '../../../../shared/utils/loading.dart';
 import '../../../auth/domain/errors/errors.dart';
 import '../../../camera/presenter/controllers/camera_controller.dart';
 import '../../../locations/presenter/states/location_states.dart';
+import '../../domain/entities/ocurrences/ocurrences_list_info.dart';
 import '../../domain/entities/properties/properties_info.dart';
 import '../../domain/usecases/create_occurrence/create_occurrence_usecase.dart';
+import '../../domain/usecases/load_occurrence_data/load_occurrence_data_usecase.dart';
 import '../../domain/usecases/stop_occurrence/stop_occurrence_usecase.dart';
 import '../states/ocurrences_states.dart';
-import '/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import '/app/ocurrences/domain/usecases/start_occurrence/start_occurrence_usecase.dart';
 import '/app/routes/routes_name.dart';
 
@@ -26,6 +28,7 @@ class OcurrencesController extends GetxController with Loading {
   final StartOccurrenceUsecase startOccurrence;
   final StopOccurrenceUsecase stopOccurrence;
   final CreateOccurrenceUsecase createOccurrence;
+  final LoadOccurrenceDataUsecase loadOccurrenceData;
 
   late CameraController cameraController;
 
@@ -33,9 +36,10 @@ class OcurrencesController extends GetxController with Loading {
     required this.startOccurrence,
     required this.stopOccurrence,
     required this.createOccurrence,
+    required this.loadOccurrenceData,
   });
 
-  List<OccurrencesInfo> get occurrences => OccurrenceStates.ocurrences;
+  List<OccurrencesListInfo> get occurrences => OccurrenceStates.ocurrences;
 
   OccurrencesInfo? get openedOccurrence =>
       OccurrenceStates.openedOcurrence.value;
@@ -159,15 +163,16 @@ class OcurrencesController extends GetxController with Loading {
     );
   }
 
-  void fillOccurrences(List<OccurrencesInfo> occurrences) {
+  void fillOccurrences(List<OccurrencesListInfo> occurrences) {
     OccurrenceStates.ocurrences.value = occurrences;
   }
 
-  void notifyNewOccurrence(OccurrencesInfo newOccurrence) {
+  void notifyNewOccurrence(OccurrencesListInfo newOccurrence) {
     bool ocurrenceAlreadyExist = occurrences.any(
       (ocurrence) => ocurrence.occurrenceId == newOccurrence.occurrenceId,
     );
-
+    print(newOccurrence);
+    print("HEEEEY");
     if (!ocurrenceAlreadyExist) {
       occurrences.add(newOccurrence);
 
@@ -180,18 +185,22 @@ class OcurrencesController extends GetxController with Loading {
     }
   }
 
-  void viewOccurrence(OccurrencesInfo ocurrence) {
-    OccurrenceStates.openedOcurrence.value = ocurrence;
-    Get.toNamed(RoutesNames.viewOccurrence);
+  void viewOccurrence(int id) async {
+    Result<OccurrencesInfo, Failure> result = await loadOccurrenceData(id);
+
+    result.when((ocurrence) {
+      OccurrenceStates.openedOcurrence.value = ocurrence;
+      Get.toNamed(RoutesNames.viewOccurrence);
+    }, (error) => print(error));
   }
 
   void start(OccurrencesInfo occurrence) async {
-    Result result = await startOccurrence(occurrence.occurrenceId);
+    Result result = await startOccurrence(occurrence.id);
     result.when((_) {
       OccurrenceStates.startedOccurrence.value = occurrence;
       utils.callSnackBar(
         title: "Iniciado ocorrência",
-        message: "Ocorrência ${occurrence.occurrenceId} iniciada com sucesso",
+        message: "Ocorrência ${occurrence.id} iniciada com sucesso",
       );
     },
         (error) => utils.callSnackBar(
@@ -200,13 +209,13 @@ class OcurrencesController extends GetxController with Loading {
             ));
   }
 
-  void stop(OccurrencesInfo occurrence) async {
-    Result result = await stopOccurrence(occurrence.occurrenceId);
+  void stop(int id) async {
+    Result result = await stopOccurrence(id);
     result.when((_) {
       OccurrenceStates.startedOccurrence.value = null;
       utils.callSnackBar(
         title: "Ocorrência finalizada",
-        message: "Ocorrência ${occurrence.occurrenceId} finalizada com sucesso",
+        message: "Ocorrência $id finalizada com sucesso",
       );
     },
         (error) => utils.callSnackBar(
