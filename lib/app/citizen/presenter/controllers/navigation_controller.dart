@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/citizen_page.dart';
 import 'package:gamaapp/app/citizen/presenter/pages/historic_page.dart';
-import 'package:gamaapp/app/citizen/presenter/pages/map_page.dart';
+import 'package:gamaapp/app/cop/presenter/pages/map_page.dart';
 import 'package:get/get.dart';
 
 class NavigationController extends GetxController {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../shared/themes/images.dart';
 import '../../../../shared/themes/palette.dart';
@@ -58,16 +57,6 @@ class SignInPage extends GetView<AuthenticationController> {
                   const SizedBox(height: 10),
                   PasswordTextField(
                     onChange: controller.setPassword,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Esqueceu sua senha?",
-                    textAlign: TextAlign.right,
-                    style: GoogleFonts.montserrat(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Palette.grey,
-                    ),
                   ),
                   const SizedBox(height: 10),
                   Obx(() => GamaButton(

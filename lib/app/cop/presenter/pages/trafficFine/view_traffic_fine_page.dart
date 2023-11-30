@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:gamaapp/app/citizen/presenter/pages/map_page.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_traffic_fine_controller.dart';
 import 'package:gamaapp/app/cop/presenter/widgets/licensePlates/mercosul_license_plate.dart';
 import 'package:gamaapp/app/cop/presenter/widgets/licensePlates/old_license_plate.dart';
@@ -14,6 +13,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../shared/themes/palette.dart';
+import '../../../../../shared/widgets/mapbox_map.dart';
 import '../../../domain/entities/trafficFine/traffic_fine_info.dart';
 
 class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
@@ -323,7 +323,7 @@ class ViewTrafficFinePage extends GetView<CopTrafficFineController> {
                   clipBehavior: Clip.antiAlias,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  child: MapPage(
+                  child: MapboxMap(
                     latitude: trafficFine.latitude,
                     longitude: trafficFine.longitude,
                     canMove: false,

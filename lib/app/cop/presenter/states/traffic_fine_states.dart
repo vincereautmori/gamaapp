@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,9 @@ import '../../domain/entities/trafficFine/traffic_fine_info.dart';
 class TrafficFineStates {
   static final RxList<ListedTrafficFineInfo> trafficFines =
       <ListedTrafficFineInfo>[].obs;
+
+  static final Rx<ScrollDirection?> scrollDirection =
+      Rx<ScrollDirection?>(null);
 
   static final Rx<TrafficFineInfo?> openedTrafficFine =
       Rx<TrafficFineInfo?>(null);

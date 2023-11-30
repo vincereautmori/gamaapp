@@ -8,10 +8,12 @@ class GamaButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.isLoading = false,
+    this.backgroundColor = Palette.primary,
   }) : super(key: key);
   final String text;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class GamaButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        backgroundColor: Palette.primary,
+        backgroundColor: backgroundColor,
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 16,

@@ -8,11 +8,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../../auth/domain/errors/errors.dart';
+import '../../domain/usecases/loadFile/load_file_usecase.dart';
+import '../../domain/usecases/uploadFile/upload_file_usecase.dart';
 
 class CameraController extends GetxController {
   final GetFileFromCameraUsecase getFileFromCamera;
+  final UploadFileUsecase uploadFile;
+  final LoadFileUsecase loadFile;
 
-  CameraController(this.getFileFromCamera);
+  CameraController({
+    required this.getFileFromCamera,
+    required this.uploadFile,
+    required this.loadFile,
+  });
 
   Future<FormData?> getFormData() async {
     Result<XFile?, Failure> result = await getFileFromCamera();

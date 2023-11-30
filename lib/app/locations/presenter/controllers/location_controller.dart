@@ -3,16 +3,23 @@ import 'package:gamaapp/app/locations/domain/usecases/get_position/get_position_
 import 'package:gamaapp/app/locations/presenter/states/location_states.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-class LocationController extends GetxController {
+import '../../../../shared/utils/loading.dart';
+
+class LocationController extends GetxController with Loading {
   final GetPositionUsecase getPosition;
   final GetPlaceUsecase getPlace;
 
   LocationController({required this.getPosition, required this.getPlace});
 
   Placemark? get place => LocationStates.place.value;
+  Position? get position => LocationStates.position.value;
+
+  bool get isLocationLoading =>
+      loadingState.value == LoadingStates.occurrencesMap;
 
   @override
   void onInit() async {

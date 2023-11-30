@@ -1,17 +1,21 @@
 import 'package:get/get.dart';
 
-class LoadingHandler {
-  static Rx<LoadingStates?> loadingState = Rx(null);
-
-  static void setLoading(LoadingStates state) => loadingState.value = state;
-
-  static void stopLoading() => loadingState.value = null;
-}
-
 enum LoadingStates {
   createTrafficFine,
+  createOccurrence,
   loadingAllTrafficFines,
   loadingTrafficFine,
   loadingTrafficViolations,
   uploadingTrafficFineImage,
+  uploadingOccurrenceImage,
+  occurrencesMap,
+  occurrenceProperties,
+}
+
+mixin Loading {
+  Rx<LoadingStates?> loadingState = Rx(null);
+
+  void setLoading(LoadingStates state) => loadingState.value = state;
+
+  void stopLoading() => loadingState.value = null;
 }

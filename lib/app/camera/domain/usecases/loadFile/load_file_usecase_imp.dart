@@ -1,11 +1,11 @@
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
-import 'package:gamaapp/app/cop/domain/repositories/traffic_fine_repository.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../repositories/camera_repository.dart';
 import 'load_file_usecase.dart';
 
 class LoadFileUsecaseImp implements LoadFileUsecase {
-  final TrafficFineRepository repository;
+  final CameraRepository repository;
 
   LoadFileUsecaseImp(this.repository);
 

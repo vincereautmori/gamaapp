@@ -44,7 +44,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ),
                     textColor: Palette.white,
                     title: const Text(
-                      'Hora da ocorrência',
+                      'Hora da multa',
                     ),
                     subtitle: Text(
                       DateTime.now().formatDate('dd/MM/yy - HH:mm:ss')!,
@@ -58,7 +58,7 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                     ),
                     textColor: Palette.white,
                     title: const Text(
-                      'Local da ocorrência',
+                      'Local da multa',
                     ),
                     subtitle: Obx(() => Text(
                           locationController.place?.street ??
