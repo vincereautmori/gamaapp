@@ -210,6 +210,10 @@ class OcurrencesController extends GetxController with Loading {
     }, (error) => print(error));
   }
 
+  void removeCompletedOccurrence(int id) {
+    occurrences.removeWhere((occurrence) => occurrence.occurrenceId == id);
+  }
+
   void start(OccurrencesInfo occurrence) async {
     Result result = await startOccurrence(occurrence.id);
     result.when((_) {
@@ -234,6 +238,7 @@ class OcurrencesController extends GetxController with Loading {
         title: "Ocorrência finalizada",
         message: "Ocorrência $id finalizada com sucesso",
       );
+      removeCompletedOccurrence(id);
       refreshOccurrence(id);
     },
         (error) => utils.callSnackBar(
