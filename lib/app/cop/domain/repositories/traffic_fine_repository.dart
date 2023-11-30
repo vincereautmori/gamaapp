@@ -1,9 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-import '/app/auth/domain/errors/errors.dart';
 import '../entities/trafficFine/listed_traffic_fine_info.dart';
 import '../entities/trafficFine/traffic_fine_info.dart';
+import '/app/auth/domain/errors/errors.dart';
 
 abstract class TrafficFineRepository {
   Future<Result<TrafficFineInfo, Failure>> getTrafficFine(int id);
@@ -23,9 +22,4 @@ abstract class TrafficFineRepository {
     required List<Map<String, int>> trafficViolations,
     required String imageUrl,
   });
-
-  Future<Result<String, Failure>> uploadFile(FormData fileFormData);
-
-  // Future<Result<List<int>, Failure>> loadFile(String url);
-  Future<Result<List<int>, Failure>> loadFile(String url);
 }

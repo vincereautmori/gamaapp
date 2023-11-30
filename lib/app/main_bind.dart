@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gamaapp/shared/config/dio.dart';
 import 'package:get/get.dart';
 
 import '/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
@@ -8,9 +9,7 @@ import '/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase.dart
 import '/app/auth/domain/usecases/loadSecureToken/load_secure_token_usecase_imp.dart';
 import '/app/auth/domain/usecases/signOut/signout_usecase.dart';
 import '/app/auth/domain/usecases/signOut/signout_usecase_imp.dart';
-import '/app/auth/external/providers/auth_provider.dart';
 import '/app/auth/presenter/controllers/splashscreen_controller.dart';
-import '../shared/config/config.dart';
 import 'auth/domain/repositories/authentication_repository.dart';
 import 'auth/domain/repositories/cache_repository.dart';
 import 'auth/domain/usecases/saveSecureToken/save_secure_token_usecase.dart';
@@ -28,29 +27,11 @@ import 'auth/presenter/controllers/sign_in_controller.dart';
 class MainBind extends Bindings {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  final authorizationProvider =
-      AuthorizationProvider(const FlutterSecureStorage());
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: Config.coreApiUrl,
-      connectTimeout: const Duration(seconds: 60),
-      receiveTimeout: const Duration(seconds: 60),
-    ),
-  );
-
   @override
   void dependencies() {
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final accessToken = await authorizationProvider.getAccessToken();
-        if (accessToken != null) {
-          options.headers['Authorization'] = 'Bearer $accessToken';
-        }
-        handler.next(options);
-      },
-    ));
+    Dio dio = Api().dio;
 
-    AuthenticationDatasource dataSource = AuthenticationDatasourceImp(_dio);
+    AuthenticationDatasource dataSource = AuthenticationDatasourceImp(dio);
     CacheStorageDatasource cacheDataSource =
         CacheStorageDatasourceImp(secureStorage: _secureStorage);
 

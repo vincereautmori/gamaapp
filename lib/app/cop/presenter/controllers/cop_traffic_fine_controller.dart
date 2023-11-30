@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
 import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
-import 'package:gamaapp/app/cop/domain/usecases/loadFile/load_file_usecase.dart';
 import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
-import 'package:gamaapp/app/cop/domain/usecases/uploadFile/upload_file_usecase.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
@@ -17,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:multiple_result/multiple_result.dart';
 
-import '/app/cop/presenter/states/traffic_fine_states.dart';
 import '../../../camera/presenter/controllers/camera_controller.dart';
 import '../../../locations/presenter/states/location_states.dart';
 import '../../domain/entities/dtos/traffic_fine_filter_dto.dart';
@@ -27,13 +25,12 @@ import '../../domain/entities/trafficFine/traffic_fine_info.dart';
 import '../../domain/usecases/getAllTrafficFines/get_all_traffic_fine_usecase.dart';
 import '../../domain/usecases/getTrafficFine/get_traffic_fine_usecase.dart';
 import '../states/traffic_violation_states.dart';
+import '/app/cop/presenter/states/traffic_fine_states.dart';
 
-class CopTrafficFineController extends GetxController {
+class CopTrafficFineController extends GetxController with Loading {
   final GetAllTrafficFineUsecase getAllTrafficFines;
   final GetTrafficFineUsecase getTrafficFine;
   final SaveTrafficUsecase saveTrafficFine;
-  final UploadFileUsecase uploadFile;
-  final LoadFileUsecase loadFile;
 
   late CameraController cameraController;
 
@@ -41,24 +38,21 @@ class CopTrafficFineController extends GetxController {
     required this.getAllTrafficFines,
     required this.getTrafficFine,
     required this.saveTrafficFine,
-    required this.uploadFile,
-    required this.loadFile,
   });
 
   Timer? _debounce;
 
   bool get isUploading =>
-      LoadingHandler.loadingState.value ==
-      LoadingStates.uploadingTrafficFineImage;
+      loadingState.value == LoadingStates.uploadingTrafficFineImage;
 
   bool get isCreateLoading =>
-      LoadingHandler.loadingState.value == LoadingStates.createTrafficFine;
+      loadingState.value == LoadingStates.createTrafficFine;
 
   bool get isFetchAllLoading =>
-      LoadingHandler.loadingState.value == LoadingStates.loadingAllTrafficFines;
+      loadingState.value == LoadingStates.loadingAllTrafficFines;
 
   bool get isFetchLoaging =>
-      LoadingHandler.loadingState.value == LoadingStates.loadingTrafficFine;
+      loadingState.value == LoadingStates.loadingTrafficFine;
 
   List<ListedTrafficFineInfo> get allTrafficFines =>
       TrafficFineStates.trafficFines;
@@ -81,6 +75,9 @@ class CopTrafficFineController extends GetxController {
 
   int get imageBytesCount => TrafficFineStates.trafficFineImageBytesCount.value;
   int get imageBytesTotal => TrafficFineStates.trafficFineImageBytesTotal.value;
+
+  bool get hideAddButton =>
+      TrafficFineStates.scrollDirection.value == ScrollDirection.reverse;
 
   String get trafficFineImageURL => TrafficFineStates.trafficFineImageURL.value;
 
@@ -134,16 +131,13 @@ class CopTrafficFineController extends GetxController {
   }
 
   void scrollListener() {
+    TrafficFineStates.scrollDirection.value =
+        scroll.position.userScrollDirection;
+
     if (scroll.offset >= scroll.position.maxScrollExtent &&
         !scroll.position.outOfRange) {
       nextPage();
     }
-    // if (scroll.offset <= scroll.position.minScrollExtent &&
-    //     !scroll.position.outOfRange &&
-    //     pagination.pageNumber > 1) {
-    //   previousPage();
-    //   //TODO ir retornando até acabar as páginas. Se necessário, fazer um novo fetch e adicionar ao inicio da lista. Ex> Avancei 4 páginas, a página 1 foi removida da lista, ao voltar 3, ele da o fetch novamente na página 1
-    // }
   }
 
   void clearFields() {
@@ -171,7 +165,7 @@ class CopTrafficFineController extends GetxController {
       );
     }
 
-    LoadingHandler.setLoading(LoadingStates.loadingAllTrafficFines);
+    setLoading(LoadingStates.loadingAllTrafficFines);
 
     DateTime? since = createdSince.text != ""
         ? DateFormat('dd/MM/yyyy').parse(createdSince.text)
@@ -188,7 +182,7 @@ class CopTrafficFineController extends GetxController {
           licensePlate: licensePlate,
           pagination: pagination),
     );
-    LoadingHandler.stopLoading();
+    stopLoading();
     result.when(
       (trafficFines) => handlePaginationResult(trafficFines),
       (error) => utils.callSnackBar(
@@ -200,10 +194,10 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> getTrafficFineById(int id) async {
-    LoadingHandler.setLoading(LoadingStates.loadingTrafficFine);
+    setLoading(LoadingStates.loadingTrafficFine);
 
     Result<TrafficFineInfo, Failure> result = await getTrafficFine(id);
-    LoadingHandler.stopLoading();
+    stopLoading();
     result.when(
       (trafficFine) {
         TrafficFineStates.openedTrafficFine.value = trafficFine;
@@ -234,10 +228,6 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> debounceSearchByLicensePlate(String licensePlate) async {
-    // if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
-    // _debounce = Timer(const Duration(milliseconds: 500), () async {
-    //   await fetchAllTrafficFines();
-    // });
     int maxLength = 7;
 
     if (licensePlate.contains('-')) {
@@ -249,14 +239,18 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> uploadImage() async {
-    LoadingHandler.setLoading(LoadingStates.uploadingTrafficFineImage);
+    setLoading(LoadingStates.uploadingTrafficFineImage);
     Result<XFile?, Failure> result = await cameraController.getFileFromCamera();
     result.when(
       (file) async {
         if (file != null) {
           Dio.FormData? formData = await file.toFormData('fileName');
-          Result uploadResult = await uploadFile(formData!);
-          LoadingHandler.stopLoading();
+          Result uploadResult = await cameraController.uploadFile(formData!,
+              onSendProgress: (count, total) {
+            TrafficFineStates.trafficFineImageBytesCount.value = count;
+            TrafficFineStates.trafficFineImageBytesTotal.value = total;
+          });
+          stopLoading();
           String url = uploadResult.tryGetSuccess();
 
           TrafficFineStates.trafficFineImageURL.value = url;
@@ -275,7 +269,7 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> loadImage(String url) async {
-    Result<List<int>, Failure> result = await loadFile(url);
+    Result<List<int>, Failure> result = await cameraController.loadFile(url);
     return result.when((fileBytes) {
       TrafficFineStates.loadedImage.addAll(fileBytes);
     }, (error) {
@@ -285,7 +279,7 @@ class CopTrafficFineController extends GetxController {
   }
 
   Future<void> addTrafficFine() async {
-    LoadingHandler.setLoading(LoadingStates.createTrafficFine);
+    setLoading(LoadingStates.createTrafficFine);
 
     String licensePlate = licensePlateCreate.text;
     List<Map<String, int>> violationIds = TrafficViolationStates
@@ -302,7 +296,7 @@ class CopTrafficFineController extends GetxController {
         imageUrl: trafficFineImageURL,
       ),
     );
-    LoadingHandler.stopLoading();
+    stopLoading();
 
     result.when(
       (success) {

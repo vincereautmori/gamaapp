@@ -4,11 +4,11 @@ import 'package:gamaapp/app/cop/domain/errors/error.dart';
 import 'package:gamaapp/app/cop/infra/models/listed_traffic_fine_model.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
+import '../models/traffic_fine_model.dart';
 import '/app/auth/domain/errors/errors.dart';
 import '/app/cop/domain/repositories/traffic_fine_repository.dart';
 import '/app/cop/infra/datasources/traffic_fine_datasource.dart';
-import '../../domain/entities/trafficFine/listed_traffic_fine_info.dart';
-import '../models/traffic_fine_model.dart';
 
 class TrafficFineRepositoryImp implements TrafficFineRepository {
   final TrafficFineDatasource datasource;
@@ -118,34 +118,6 @@ class TrafficFineRepositoryImp implements TrafficFineRepository {
       return Error(
         TrafficFineError(
           message: 'Falha ao criar multa!',
-        ),
-      );
-    }
-  }
-
-  @override
-  Future<Result<String, Failure>> uploadFile(FormData fileFormData) async {
-    try {
-      String uploadedImageUrl = await datasource.uploadImage(fileFormData);
-      return Success(uploadedImageUrl);
-    } catch (e) {
-      return Error(
-        UploadImageError(
-          message: 'Falha ao fazer upload da imagem',
-        ),
-      );
-    }
-  }
-
-  @override
-  Future<Result<List<int>, Failure>> loadFile(String url) async {
-    try {
-      List<int> fileBytes = await datasource.loadImage(url);
-      return Success(fileBytes);
-    } catch (e) {
-      return Error(
-        UploadImageError(
-          message: 'Falha ao carregar imagem',
         ),
       );
     }

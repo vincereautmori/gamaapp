@@ -8,7 +8,7 @@ import 'package:multiple_result/multiple_result.dart';
 import '../../../../shared/themes/snackbar_styles.dart';
 import '../../../../shared/utils/utils.dart';
 
-class CopTrafficViolationController extends GetxController {
+class CopTrafficViolationController extends GetxController with Loading {
   final GetTrafficViolationsUsecase getTrafficViolations;
 
   List<TrafficViolationInfo> get trafficViolations =>
@@ -20,15 +20,14 @@ class CopTrafficViolationController extends GetxController {
   bool get allViolationsChecked => TrafficViolationStates.allChecked.value;
 
   bool get isLoading =>
-      LoadingHandler.loadingState.value ==
-      LoadingStates.loadingTrafficViolations;
+      loadingState.value == LoadingStates.loadingTrafficViolations;
 
   CopTrafficViolationController(this.getTrafficViolations);
 
   Future<void> getAllViolations() async {
-    LoadingHandler.setLoading(LoadingStates.loadingTrafficViolations);
+    setLoading(LoadingStates.loadingTrafficViolations);
     Result result = await getTrafficViolations();
-    LoadingHandler.stopLoading();
+    stopLoading();
 
     result.when((violations) {
       TrafficViolationStates.trafficViolations.value = violations;

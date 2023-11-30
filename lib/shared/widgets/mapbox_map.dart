@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:gamaapp/app/citizen/presenter/controllers/map_controller.dart';
-import 'package:get/get.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapPage extends GetView<MapPageController> {
-  const MapPage({
+import '../config/config.dart';
+
+class MapboxMap extends StatelessWidget {
+  const MapboxMap({
     super.key,
     this.latitude = -22.7467,
     this.longitude = -47.3311,
@@ -27,7 +27,7 @@ class MapPage extends GetView<MapPageController> {
       ),
       children: [
         TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          urlTemplate: Config.mapBoxBaseUrl,
         ),
         initialMark ?? const SizedBox()
       ],
