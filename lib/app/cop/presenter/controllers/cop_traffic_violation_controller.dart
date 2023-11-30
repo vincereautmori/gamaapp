@@ -40,17 +40,8 @@ class CopTrafficViolationController extends GetxController with Loading {
     });
   }
 
-  void handleCheckAll() {
-    if (allViolationsChecked) {
-      selectedTrafficViolations.clear();
-    } else {
-      selectedTrafficViolations.addAll(trafficViolations);
-    }
-    TrafficViolationStates.allChecked.toggle();
-  }
-
   void selectViolation(TrafficViolationInfo violation) =>
-      selectedTrafficViolations.add(violation);
+      TrafficViolationStates.selectedTrafficViolations.add(violation);
 
   void unselectViolation(TrafficViolationInfo violation) {
     selectedTrafficViolations.remove(violation);

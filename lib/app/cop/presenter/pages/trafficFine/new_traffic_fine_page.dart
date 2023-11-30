@@ -234,9 +234,8 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                   TextButton.icon(
                     onPressed: () {
                       violationsController.getAllViolations();
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) => const ViolationsBottomSheet());
+
+                      Get.dialog(const ListViolationsDialog());
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Adicionar infração'),
@@ -252,25 +251,28 @@ class NewTrafficFinePage extends GetView<CopTrafficFineController> {
                 );
               }
 
-              return Wrap(
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                spacing: 8,
-                children: List.from(
-                  violationsController.selectedTrafficViolations.map(
-                    (violation) {
-                      return Chip(
-                        label: Text(violation.name),
-                        onDeleted: () {
-                          violationsController.unselectViolation(violation);
-                        },
-                        labelStyle: const TextStyle(color: Palette.primary),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: Palette.primary),
-                        ),
-                      );
-                    },
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  spacing: 8,
+                  children: List.from(
+                    violationsController.selectedTrafficViolations.map(
+                      (violation) {
+                        return Chip(
+                          label: Text(violation.name),
+                          onDeleted: () {
+                            violationsController.unselectViolation(violation);
+                          },
+                          labelStyle: const TextStyle(color: Palette.primary),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(color: Palette.primary),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               );
