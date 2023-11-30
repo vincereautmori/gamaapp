@@ -25,7 +25,7 @@ class OcurrencesModel extends OcurrencesEntity implements OccurrencesInfo {
         name: json['name'] ?? "",
         location: json['location'] ?? "",
         status: json['status'] ?? "",
-        urgencyLevel: json['urgencyLevel'] ?? "",
+        urgencyLevel: json['occurrenceUrgencyLevel'] ?? "",
         imageUrl: json['imageUrl'],
         description: json['description'],
         occurrenceType: json['occurrenceType'] ?? "",

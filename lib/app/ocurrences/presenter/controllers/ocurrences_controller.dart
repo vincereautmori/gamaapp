@@ -79,6 +79,16 @@ class OcurrencesController extends GetxController with Loading {
     });
   }
 
+  Future<void> loadImage(String url) async {
+    Result<List<int>, Failure> result = await cameraController.loadFile(url);
+    return result.when((fileBytes) {
+      OccurrenceStates.loadedImage.addAll(fileBytes);
+    }, (error) {
+      utils.callSnackBar(
+          title: "Falha ao carregar imagem", message: error.message);
+    });
+  }
+
   Future<void> uploadImage() async {
     setLoading(LoadingStates.uploadingOccurrenceImage);
     Result<XFile?, Failure> result = await cameraController.getFileFromCamera();
@@ -171,8 +181,6 @@ class OcurrencesController extends GetxController with Loading {
     bool ocurrenceAlreadyExist = occurrences.any(
       (ocurrence) => ocurrence.occurrenceId == newOccurrence.occurrenceId,
     );
-    print(newOccurrence);
-    print("HEEEEY");
     if (!ocurrenceAlreadyExist) {
       occurrences.add(newOccurrence);
 
@@ -194,6 +202,14 @@ class OcurrencesController extends GetxController with Loading {
     }, (error) => print(error));
   }
 
+  void refreshOccurrence(int id) async {
+    Result<OccurrencesInfo, Failure> result = await loadOccurrenceData(id);
+
+    result.when((ocurrence) {
+      OccurrenceStates.openedOcurrence.value = ocurrence;
+    }, (error) => print(error));
+  }
+
   void start(OccurrencesInfo occurrence) async {
     Result result = await startOccurrence(occurrence.id);
     result.when((_) {
@@ -202,6 +218,7 @@ class OcurrencesController extends GetxController with Loading {
         title: "Iniciado ocorrência",
         message: "Ocorrência ${occurrence.id} iniciada com sucesso",
       );
+      refreshOccurrence(occurrence.id);
     },
         (error) => utils.callSnackBar(
               title: "Falha ao iniciar ocorrência",
@@ -217,6 +234,7 @@ class OcurrencesController extends GetxController with Loading {
         title: "Ocorrência finalizada",
         message: "Ocorrência $id finalizada com sucesso",
       );
+      refreshOccurrence(id);
     },
         (error) => utils.callSnackBar(
               title: "Falha ao finalizar ocorrência",
