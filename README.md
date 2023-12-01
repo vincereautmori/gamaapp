@@ -12,8 +12,8 @@ Nosso objetivo √© criar um aplicativo que facilite o registro de multas e ocorr√
 
 #### Requisitos
 
-- Flutter: 3.10.#
-- Dart 3.00.#
+- Flutter: 3.16.#
+- Dart 3.2.#
 
 #### Para executar o projeto pela primeira vez:
 
