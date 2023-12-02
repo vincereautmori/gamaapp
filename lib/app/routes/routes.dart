@@ -9,6 +9,8 @@ import 'package:gamaapp/app/cop/presenter/pages/trafficFine/view_traffic_fine_pa
 import 'package:gamaapp/app/cop/presenter/pages/view_ocurrence_page.dart';
 import 'package:gamaapp/app/locations/presenter/bindings/location_binding.dart';
 import 'package:gamaapp/app/main_bind.dart';
+import 'package:gamaapp/app/ocurrences/presenter/binds/occurrence_binding.dart';
+import 'package:gamaapp/app/ocurrences/presenter/binds/occurrence_properties_binding.dart';
 import 'package:gamaapp/shared/apagar_depois/warning_page.dart';
 import 'package:get/get.dart';
 
@@ -35,12 +37,12 @@ class Routes {
   static GetPage get citizen => GetPage(
         name: RoutesNames.citizen,
         page: () => const HomePage(),
-        binding: HomeBinding(),
-      );
-
-  static GetPage get newOccurrence => GetPage(
-        name: RoutesNames.newOccurrence,
-        page: () => const NewOccurrencePage(),
+        bindings: [
+          OccurrenceBinding(),
+          OccurrencePropertiesBinding(),
+          HomeBinding(),
+          LocationBinding(),
+        ],
       );
 
   static GetPage get viewOccurrence => GetPage(
@@ -48,9 +50,16 @@ class Routes {
         page: () => const ViewOcurrencePage(),
       );
 
+  static GetPage get newOccurrence => GetPage(
+        name: RoutesNames.newOccurrence,
+        page: () => const NewOccurrencePage(),
+      );
+
   static GetPage get cop => GetPage(
       name: RoutesNames.cop,
       bindings: [
+        OccurrenceBinding(),
+        OccurrencePropertiesBinding(),
         CopHomeBinding(),
         CopTrafficFineBinding(),
         CopTrafficViolationBinding(),
@@ -93,11 +102,11 @@ class Routes {
         Routes.splash,
         Routes.cop,
         Routes.citizen,
-        Routes.newOccurrence,
         Routes.newTrafficFine,
         Routes.viewTrafficFine,
         Routes.warningPage,
         Routes.viewOccurrence,
+        Routes.newOccurrence,
         Routes.signUp,
       ];
 }
