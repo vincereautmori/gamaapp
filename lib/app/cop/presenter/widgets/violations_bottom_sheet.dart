@@ -40,26 +40,28 @@ class ListViolationsDialog extends GetView<CopTrafficViolationController> {
                   itemCount: controller.trafficViolations.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    TrafficViolationInfo violation =
-                        controller.trafficViolations[index];
+                    return Obx(() {
+                      TrafficViolationInfo violation =
+                          controller.trafficViolations[index];
 
-                    bool selected = controller.selectedTrafficViolations
-                        .contains(violation);
+                      bool selected = controller.selectedTrafficViolations
+                          .contains(violation);
 
-                    return ListTile(
-                      leading:
-                          selected ? const Icon(PhosphorIcons.check) : null,
-                      title: Text('Cód. ${violation.code}'),
-                      subtitle: Text(violation.name),
-                      selected: selected,
-                      onTap: () {
-                        if (selected) {
-                          controller.unselectViolation(violation);
-                        } else {
-                          controller.selectViolation(violation);
-                        }
-                      },
-                    );
+                      return ListTile(
+                        leading:
+                            selected ? const Icon(PhosphorIcons.check) : null,
+                        title: Text('Cód. ${violation.code}'),
+                        subtitle: Text(violation.name),
+                        selected: selected,
+                        onTap: () {
+                          if (selected) {
+                            controller.unselectViolation(violation);
+                          } else {
+                            controller.selectViolation(violation);
+                          }
+                        },
+                      );
+                    });
                   },
                 ),
               ),
