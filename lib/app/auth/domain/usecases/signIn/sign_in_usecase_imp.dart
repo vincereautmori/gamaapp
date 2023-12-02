@@ -14,8 +14,9 @@ class SignInUseCaseImp implements SignInUseCase {
   Future<Result<AuthInfo, Failure>> signIn(
     CredentialsEntity credentials,
   ) async {
-    if (!credentials.isEmailValid) {
-      return Error(CredentialsError(message: "E-mail inválido"));
+    if (!credentials.isCredentialsValid) {
+      return Error(
+          CredentialsError(message: "Usuário e senha são obrigatórios"));
     }
 
     final result = await repository.signIn(

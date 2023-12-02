@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../extensions/string_extension.dart';
-
 class CredentialsEntity extends Equatable {
   final String email;
   final String password;
@@ -11,7 +9,7 @@ class CredentialsEntity extends Equatable {
     required this.password,
   });
 
-  bool get isEmailValid => email.isEmailValid();
+  bool get isEmailValid => email.isNotEmpty;
 
   bool get isPasswordValid => password.isNotEmpty;
 

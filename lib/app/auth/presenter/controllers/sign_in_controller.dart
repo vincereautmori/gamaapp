@@ -77,6 +77,7 @@ class AuthenticationController extends GetxController {
   }
 
   Future<void> signOut() async {
+    SignInFormStates.clear();
     await clearSecureStorage.clear();
     await logoutUseCase.signOut();
   }
