@@ -10,6 +10,8 @@ enum LoadingStates {
   uploadingOccurrenceImage,
   occurrencesMap,
   occurrenceProperties,
+  creteUser,
+  login,
 }
 
 mixin Loading {

@@ -1,5 +1,6 @@
 class RoutesNames {
   static String get login => '/login';
+  static String get signup => '/signup';
   static String get splash => '/splash';
   static String get citizen => '/citizen';
   static String get cop => '/cop';

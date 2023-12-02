@@ -17,6 +17,7 @@ import '../auth/presenter/pages/splashscreen_page.dart';
 import '../cop/presenter/bindings/cop_traffic_violation_binding.dart';
 import '../cop/presenter/pages/trafficFine/list_traffice_fine_page.dart';
 import '../ocurrences/presenter/pages/new_occurrence_page.dart';
+import '../signup/presenter/pages/signup_page.dart';
 import 'routes_name.dart';
 
 class Routes {
@@ -81,4 +82,22 @@ class Routes {
         name: RoutesNames.createTrafficFine,
         page: () => const NewTrafficFinePage(),
       );
+
+  static GetPage get signUp => GetPage(
+        name: RoutesNames.signup,
+        page: () => const SignupPage(),
+      );
+
+  static List<GetPage> get pages => [
+        Routes.login,
+        Routes.splash,
+        Routes.cop,
+        Routes.citizen,
+        Routes.newOccurrence,
+        Routes.newTrafficFine,
+        Routes.viewTrafficFine,
+        Routes.warningPage,
+        Routes.viewOccurrence,
+        Routes.signUp,
+      ];
 }

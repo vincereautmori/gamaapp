@@ -16,7 +16,8 @@ class SignInUseCaseImp implements SignInUseCase {
   ) async {
     if (!credentials.isCredentialsValid) {
       return Error(
-          CredentialsError(message: "Usuário e senha são obrigatórios"));
+        CredentialsError(message: "Usuário e senha são obrigatórios"),
+      );
     }
 
     final result = await repository.signIn(

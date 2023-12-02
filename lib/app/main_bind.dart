@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gamaapp/app/signup/domain/usecases/create_account_usecase.dart';
+import 'package:gamaapp/app/signup/presenter/controllers/signup_controller.dart';
 import 'package:gamaapp/shared/config/dio.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +25,11 @@ import 'auth/infra/datasources/cache_datasource.dart';
 import 'auth/infra/repositories/authentication_repository.dart';
 import 'auth/infra/repositories/cache_storage_repository_imp.dart';
 import 'auth/presenter/controllers/sign_in_controller.dart';
+import 'signup/domain/repositories/signup_repository.dart';
+import 'signup/domain/usecases/create_account_usecase_imp.dart';
+import 'signup/external/datasources/signup_datasource_imp.dart';
+import 'signup/infra/datasources/signup_datasource.dart';
+import 'signup/infra/repositories/signup_repository_imp.dart';
 
 class MainBind extends Bindings {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -50,6 +57,11 @@ class MainBind extends Bindings {
     ClearSecureStorage clearSecure =
         ClearSecureStorageImp(repository: cacheRepository);
 
+    SignupDatasource signupDatasource = SignupDatasourceImp(dio);
+    SignupRepository signupRepository = SignupRepositoryImp(signupDatasource);
+    CreateAccountUsecase createAccount =
+        CreateAccountUsecaseImp(signupRepository);
+
     Get.put(
       AuthenticationController(
         authUseCase: useCase,
@@ -60,5 +72,6 @@ class MainBind extends Bindings {
       permanent: true,
     );
     Get.put(SplashscreenController(loadSecureUseCase));
+    Get.put(SignupController(createAccount), permanent: true);
   }
 }

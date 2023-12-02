@@ -8,7 +8,7 @@ class SignInFormStates {
 
   static final isLoading = false.obs;
 
-  static clear() {
+  static void clear() {
     isLoading.value = false;
     email.value = "";
     password.value = "";
