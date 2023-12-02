@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
+import 'package:gamaapp/app/ocurrences/infra/models/occurrences/listed_occurrences_model.dart';
 
 import '../../infra/datasources/occurrences_datasource.dart';
 import '../../infra/models/occurrences/ocurrences_model.dart';
+import '../../presenter/states/ocurrences_states.dart';
 
 class OccurrencesDatasourceImp implements OccurrencesDatasource {
   final Dio dio;
@@ -46,5 +48,38 @@ class OccurrencesDatasourceImp implements OccurrencesDatasource {
     Response res = await dio.get('/occurrences/$occurrenceId');
     OccurrencesInfo info = OcurrencesModel.fromJson(res.data);
     return info;
+  }
+
+  @override
+  Future<List<ListedOccurrencesModel>> fetchOccurrences({
+    String? createdSince,
+    String? createdUntil,
+    required int size,
+    required int pageNumber,
+  }) async {
+    Map<String, dynamic>? params = {
+      "size": size,
+      "pageNumber": pageNumber,
+    };
+
+    if (createdSince != null) {
+      params["createdSince"] = createdSince;
+    }
+
+    if (createdUntil != null) {
+      params["createdUntil"] = createdUntil;
+    }
+
+    Response res = await dio.get('/occurrences', queryParameters: params);
+
+    int pageAt = res.data['pageNumber'];
+
+    OccurrenceStates.pagination.value =
+        OccurrenceStates.pagination.value.copyWith(count: res.data['count']);
+
+    List<ListedOccurrencesModel> occurrences =
+        ListedOccurrencesModel.fromListJson(res.data['results'], pageAt);
+
+    return occurrences;
   }
 }

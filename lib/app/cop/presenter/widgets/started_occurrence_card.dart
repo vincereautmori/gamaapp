@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../shared/themes/palette.dart';
 
-class StartedOccurrenceCard extends GetView<OcurrencesController> {
+class StartedOccurrenceCard extends GetView<OccurrencesController> {
   const StartedOccurrenceCard({super.key});
 
   @override

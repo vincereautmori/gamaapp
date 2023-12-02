@@ -14,7 +14,7 @@ import '../../../locations/presenter/controllers/location_controller.dart';
 import '../../domain/entities/properties/properties_info.dart';
 import '../controllers/ocurrences_controller.dart';
 
-class NewOccurrencePage extends GetView<OcurrencesController> {
+class NewOccurrencePage extends GetView<OccurrencesController> {
   const NewOccurrencePage({Key? key}) : super(key: key);
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
+import 'package:gamaapp/shared/dtos/pagination_dto.dart';
 import 'package:gamaapp/shared/extensions/datetime_extension.dart';
 import 'package:get/get.dart';
 

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/listed_occurrences_info.dart';
 import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import 'package:gamaapp/app/ocurrences/domain/errors/error.dart';
 import 'package:gamaapp/app/ocurrences/infra/datasources/occurrences_datasource.dart';
@@ -7,6 +8,7 @@ import 'package:multiple_result/multiple_result.dart';
 import '../../../../shared/utils/loading.dart';
 import '../../../auth/domain/errors/errors.dart';
 import '../../domain/repositories/occurrences_repository.dart';
+import '../models/occurrences/listed_occurrences_model.dart';
 
 class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
   final OccurrencesDatasource datasource;
@@ -73,6 +75,29 @@ class OccurrencesRepositoryImp with Loading implements OccurrencesRepository {
       return Success(info);
     } catch (e) {
       return Error(OccurrenceError(message: '$e'));
+    }
+  }
+
+  @override
+  Future<Result<List<ListedOccurrencesInfo>, Failure>> getOccurrences({
+    String? createdSince,
+    String? createdUntil,
+    required int size,
+    required int pageNumber,
+  }) async {
+    try {
+      List<ListedOccurrencesModel> occurrences =
+          await datasource.fetchOccurrences(
+        createdSince: createdSince,
+        createdUntil: createdUntil,
+        size: size,
+        pageNumber: pageNumber,
+      );
+      return Success(occurrences);
+    } catch (e) {
+      return Error(
+        OccurrenceError(message: "Falha ao buscar ocorrências"),
+      );
     }
   }
 }

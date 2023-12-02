@@ -5,6 +5,8 @@ import '../../../../shared/config/dio.dart';
 import '../../domain/repositories/occurrences_repository.dart';
 import '../../domain/usecases/create_occurrence/create_occurrence_usecase.dart';
 import '../../domain/usecases/create_occurrence/create_occurrence_usecase_imp.dart';
+import '../../domain/usecases/get_paginated_occurrences/get_paginated_occurrences_usecase.dart';
+import '../../domain/usecases/get_paginated_occurrences/get_paginated_occurrences_usecase_imp.dart';
 import '../../domain/usecases/load_occurrence_data/load_occurrence_data_usecase.dart';
 import '../../domain/usecases/load_occurrence_data/load_occurrence_data_usecase_imp.dart';
 import '../../domain/usecases/start_occurrence/start_occurrence_usecase.dart';
@@ -36,12 +38,16 @@ class OccurrenceBinding implements Bindings {
     LoadOccurrenceDataUsecase loadOccurrenceData =
         LoadOccurrenceDataUsecaseImp(repository);
 
+    GetPaginatedOccurrencesUsecase getPaginatedOccurrences =
+        GetPaginatedOccurrencesUsecaseImp(repository);
+
     Get.lazyPut(
-      () => OcurrencesController(
+      () => OccurrencesController(
         startOccurrence: startOccurrence,
         stopOccurrence: stopOccurrence,
         createOccurrence: createOccurrence,
         loadOccurrenceData: loadOccurrenceData,
+        getPaginatedOccurrences: getPaginatedOccurrences,
       ),
       fenix: true,
     );

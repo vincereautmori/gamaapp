@@ -1,9 +1,9 @@
-import '../../../domain/entities/ocurrences/ocurrences_list_entity.dart';
-import '../../../domain/entities/ocurrences/ocurrences_list_info.dart';
+import '../../../domain/entities/ocurrences/occurrences_map_entity.dart';
+import '../../../domain/entities/ocurrences/occurrences_map_info.dart';
 
-class OcurrencesListModel extends OcurrencesListEntity
-    implements OccurrencesListInfo {
-  const OcurrencesListModel({
+class OcurrencesMapModel extends OccurrencesMapEntity
+    implements OccurrencesMapInfo {
+  const OcurrencesMapModel({
     required super.createdAt,
     required super.name,
     required super.occurrenceId,
@@ -19,8 +19,8 @@ class OcurrencesListModel extends OcurrencesListEntity
     required super.active,
   });
 
-  factory OcurrencesListModel.fromJson(Map<String, dynamic> json) =>
-      OcurrencesListModel(
+  factory OcurrencesMapModel.fromJson(Map<String, dynamic> json) =>
+      OcurrencesMapModel(
         latitude: json['point']['latitude'],
         longitude: json['point']['longitude'],
         createdAt: DateTime.parse(json['message']['createdAt']),
@@ -37,10 +37,10 @@ class OcurrencesListModel extends OcurrencesListEntity
         active: json['message']['active'],
       );
 
-  static List<OcurrencesListModel> fromJsonList(List jsonList) =>
-      List<OcurrencesListModel>.from(
+  static List<OcurrencesMapModel> fromJsonList(List jsonList) =>
+      List<OcurrencesMapModel>.from(
         jsonList.map(
-          (json) => OcurrencesListModel.fromJson(json),
+          (json) => OcurrencesMapModel.fromJson(json),
         ),
       );
 }

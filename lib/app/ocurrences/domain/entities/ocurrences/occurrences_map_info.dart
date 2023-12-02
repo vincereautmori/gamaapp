@@ -1,4 +1,4 @@
-abstract class OccurrencesListInfo {
+abstract class OccurrencesMapInfo {
   DateTime get createdAt;
   String get name;
   int get occurrenceId;

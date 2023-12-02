@@ -14,7 +14,7 @@ import '../../../../../shared/widgets/mapbox_map.dart';
 import '../../../ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
-class ViewOcurrencePage extends GetView<OcurrencesController> {
+class ViewOcurrencePage extends GetView<OccurrencesController> {
   const ViewOcurrencePage({Key? key}) : super(key: key);
 
   @override

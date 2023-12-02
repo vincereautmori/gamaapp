@@ -2,6 +2,7 @@ import 'package:gamaapp/app/ocurrences/domain/entities/ocurrences/ocurrences_inf
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../../auth/domain/errors/errors.dart';
+import '../entities/ocurrences/listed_occurrences_info.dart';
 
 abstract class OccurrencesRepository {
   Future<Result<Unit, Failure>> startOccurrence(int occurrenceId);
@@ -19,4 +20,10 @@ abstract class OccurrencesRepository {
   );
 
   Future<Result<OccurrencesInfo, Failure>> getOccurrenceById(int id);
+  Future<Result<List<ListedOccurrencesInfo>, Failure>> getOccurrences({
+    String? createdSince,
+    String? createdUntil,
+    required int size,
+    required int pageNumber,
+  });
 }
