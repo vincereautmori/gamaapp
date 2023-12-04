@@ -109,6 +109,12 @@ class OccurrencesController extends GetxController with Loading {
     });
   }
 
+  @override
+  void onReady() {
+    search();
+    super.onReady();
+  }
+
   void scrollListener() {
     OccurrenceStates.scrollDirection.value =
         scroll.position.userScrollDirection;

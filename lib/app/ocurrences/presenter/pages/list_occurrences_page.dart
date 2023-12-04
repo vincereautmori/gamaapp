@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gamaapp/app/auth/presenter/controllers/sign_in_controller.dart';
 import 'package:gamaapp/shared/themes/images.dart';
 import 'package:gamaapp/shared/themes/palette.dart';
 import 'package:gamaapp/shared/themes/text_theme.dart';
+import 'package:gamaapp/shared/widgets/square_line.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,6 +21,8 @@ class OccurrencesList extends GetView<OccurrencesController> {
   Widget build(BuildContext context) {
     final OccurrencesPropertiesController propertiesController =
         Get.find<OccurrencesPropertiesController>();
+    final AuthenticationController authController =
+        Get.find<AuthenticationController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -26,6 +31,61 @@ class OccurrencesList extends GetView<OccurrencesController> {
         ),
         foregroundColor: Palette.white,
         backgroundColor: Palette.primary,
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(color: Palette.primary),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 32),
+                        Image.asset(
+                          Images.logoPNG,
+                          height: 64,
+                          width: 64,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Usuário",
+                          style: Texts.cardTitle.copyWith(
+                            color: Palette.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "Cargo",
+                          style: Texts.subtitle
+                              .copyWith(color: Palette.greyBackground),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SquaresLines(),
+                ],
+              ),
+            ),
+            const ListTile(
+              leading: Icon(PhosphorIcons.user),
+              title: Text("Perfil"),
+            ),
+            ListTile(
+              title: const Text("Sair"),
+              onTap: authController.signOut,
+              leading: const Icon(
+                PhosphorIcons.sign_out,
+              ),
+            ),
+          ],
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: controller.search,
