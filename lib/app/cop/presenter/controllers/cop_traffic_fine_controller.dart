@@ -102,7 +102,13 @@ class CopTrafficFineController extends GetxController with Loading {
     createdUntil.addListener(() async {
       await search();
     });
+  }
+
+  @override
+  void onReady() {
     fetchAllTrafficFines();
+
+    super.onReady();
   }
 
   @override
