@@ -31,8 +31,8 @@ class SplashscreenController extends GetxController {
 
     await Future.delayed(const Duration(seconds: 3));
     result.when(
-      (success) => Get.offAndToNamed(
-        '/${SplashScreenStates.successRoutes[success.role]}',
+      (authData) => Get.offAndToNamed(
+        '/${SplashScreenStates.successRoutes[authData.role]}',
       ),
       (error) {
         if (error.runtimeType == ExpiredTokenError) {

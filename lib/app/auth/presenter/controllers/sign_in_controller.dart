@@ -1,12 +1,15 @@
 import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
 import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase.dart';
 import 'package:gamaapp/app/auth/presenter/states/splash_screen_states.dart';
+import 'package:gamaapp/app/profile/infra/models/profile_model.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../../../shared/utils/loading.dart';
+import '../../../profile/presenter/controllers/profile_controller.dart';
 import '../../domain/entities/auth/auth.dart';
 import '../../domain/entities/auth/auth_info.dart';
 import '../../domain/entities/auth/credentials.dart';
@@ -32,6 +35,8 @@ class AuthenticationController extends GetxController with Loading {
   String get password => SignInFormStates.password.value;
   bool get isLoading => loadingState.value == LoadingStates.login;
 
+  final ProfileController profileController = Get.find<ProfileController>();
+
   void setEmail(String newEmailValue) =>
       SignInFormStates.email.value = newEmailValue;
   void setPassword(String newPasswordValue) =>
@@ -47,6 +52,14 @@ class AuthenticationController extends GetxController with Loading {
 
   bool get isFormValid => credentials.isCredentialsValid;
 
+  void decodeTokenAndSaveData(String token) {
+    Map<String, dynamic>? tokenData = JwtDecoder.tryDecode(token);
+    if (tokenData != null) {
+      profileController.setProfile(ProfileModel.fromJson(tokenData));
+      profileController.loadProfile();
+    }
+  }
+
   Future<void> signIn() async {
     setLoading(LoadingStates.login);
     Result<AuthInfo, Failure> result = await authUseCase.signIn(credentials);
@@ -54,6 +67,7 @@ class AuthenticationController extends GetxController with Loading {
     result.when(
       (authInfo) async {
         await saveSecureToken.save(authInfo as AuthEntity);
+        decodeTokenAndSaveData(authInfo.token);
         Get.offAllNamed('/${SplashScreenStates.successRoutes[authInfo.role]}');
       },
       (error) => utils.callSnackBar(

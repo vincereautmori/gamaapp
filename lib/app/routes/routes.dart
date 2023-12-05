@@ -10,6 +10,7 @@ import 'package:gamaapp/app/locations/presenter/bindings/location_binding.dart';
 import 'package:gamaapp/app/main_bind.dart';
 import 'package:gamaapp/app/ocurrences/presenter/binds/occurrence_binding.dart';
 import 'package:gamaapp/app/ocurrences/presenter/binds/occurrence_properties_binding.dart';
+import 'package:gamaapp/app/profile/presenter/bindings/profile_binding.dart';
 import 'package:gamaapp/shared/apagar_depois/warning_page.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +32,7 @@ class Routes {
   static GetPage get splash => GetPage(
         name: RoutesNames.splash,
         page: () => const SplashScreen(),
-        binding: MainBind(),
+        bindings: [ProfileBinding(), MainBind()],
       );
 
   static GetPage get citizen => GetPage(

@@ -9,6 +9,8 @@ import 'package:gamaapp/shared/widgets/square_line.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../profile/domain/entities/profile_info.dart';
+import '../../../profile/presenter/controllers/profile_controller.dart';
 import '../../domain/entities/ocurrences/listed_occurrences_info.dart';
 import '../controllers/occurrences_properties_controller.dart';
 import '../controllers/ocurrences_controller.dart';
@@ -23,6 +25,9 @@ class OccurrencesList extends GetView<OccurrencesController> {
         Get.find<OccurrencesPropertiesController>();
     final AuthenticationController authController =
         Get.find<AuthenticationController>();
+    final ProfileController profileController = Get.find<ProfileController>();
+
+    ProfileInfo? profileInfo = profileController.profile;
 
     return Scaffold(
       appBar: AppBar(
@@ -55,14 +60,14 @@ class OccurrencesList extends GetView<OccurrencesController> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          "Usuário",
+                          profileInfo?.email ?? "",
                           style: Texts.cardTitle.copyWith(
                             color: Palette.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          "Cargo",
+                          profileController.roleName ?? "",
                           style: Texts.subtitle
                               .copyWith(color: Palette.greyBackground),
                         ),
