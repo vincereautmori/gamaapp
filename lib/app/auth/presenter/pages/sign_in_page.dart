@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gamaapp/app/routes/routes_name.dart';
+import 'package:gamaapp/shared/themes/text_theme.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/themes/images.dart';
@@ -32,7 +34,7 @@ class SignInPage extends GetView<AuthenticationController> {
             const SquaresLines(),
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 36),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -54,18 +56,36 @@ class SignInPage extends GetView<AuthenticationController> {
                   EmailTextField(
                     onChange: controller.setEmail,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   PasswordTextField(
                     onChange: controller.setPassword,
                   ),
-                  const SizedBox(height: 10),
-                  Obx(() => GamaButton(
-                        text: 'Entrar',
-                        onPressed: () async {
-                          await controller.signIn();
-                        },
-                        isLoading: controller.isLoading,
-                      ))
+                  const SizedBox(height: 16),
+                  Obx(
+                    () => GamaButton(
+                      text: 'Entrar',
+                      onPressed: () async {
+                        await controller.signIn();
+                      },
+                      isLoading: controller.isLoading,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Novo por aqui?",
+                        style: Texts.subtitle.copyWith(color: Palette.grey),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Get.toNamed(RoutesNames.signup);
+                          },
+                          child: const Text("Cadastre-se"))
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

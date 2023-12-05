@@ -10,9 +10,9 @@ class EmailTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GamaTextField(
-      label: "E-mail",
+      label: "Usuário",
       keyboardType: TextInputType.emailAddress,
-      placeholder: 'Ex: email@gmail.com',
+      placeholder: 'Insira seu e-mail ou usuário',
       onChange: onChange,
     );
   }

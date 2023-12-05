@@ -1,11 +1,15 @@
 import 'package:gamaapp/app/auth/domain/usecases/clearSecureStorage/clear_secure_storage_usecase.dart';
 import 'package:gamaapp/app/auth/domain/usecases/signOut/signout_usecase.dart';
 import 'package:gamaapp/app/auth/presenter/states/splash_screen_states.dart';
+import 'package:gamaapp/app/profile/infra/models/profile_model.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../../../shared/utils/loading.dart';
+import '../../../profile/presenter/controllers/profile_controller.dart';
 import '../../domain/entities/auth/auth.dart';
 import '../../domain/entities/auth/auth_info.dart';
 import '../../domain/entities/auth/credentials.dart';
@@ -14,7 +18,7 @@ import '../../domain/usecases/saveSecureToken/save_secure_token_usecase.dart';
 import '../../domain/usecases/signIn/sign_in_usecase.dart';
 import '../states/sign_in_form_states.dart';
 
-class AuthenticationController extends GetxController {
+class AuthenticationController extends GetxController with Loading {
   final SignInUseCase authUseCase;
   final SignOutUseCase logoutUseCase;
   final SaveSecureToken saveSecureToken;
@@ -29,7 +33,9 @@ class AuthenticationController extends GetxController {
 
   String get email => SignInFormStates.email.value;
   String get password => SignInFormStates.password.value;
-  bool get isLoading => SignInFormStates.isLoading.value;
+  bool get isLoading => loadingState.value == LoadingStates.login;
+
+  final ProfileController profileController = Get.find<ProfileController>();
 
   void setEmail(String newEmailValue) =>
       SignInFormStates.email.value = newEmailValue;
@@ -46,25 +52,23 @@ class AuthenticationController extends GetxController {
 
   bool get isFormValid => credentials.isCredentialsValid;
 
+  void decodeTokenAndSaveData(String token) {
+    Map<String, dynamic>? tokenData = JwtDecoder.tryDecode(token);
+    if (tokenData != null) {
+      profileController.setProfile(ProfileModel.fromJson(tokenData));
+      profileController.loadProfile();
+    }
+  }
+
   Future<void> signIn() async {
-    SignInFormStates.isLoading.toggle();
+    setLoading(LoadingStates.login);
     Result<AuthInfo, Failure> result = await authUseCase.signIn(credentials);
-    SignInFormStates.isLoading.toggle();
+    stopLoading();
     result.when(
       (authInfo) async {
-        if (authInfo.role == 'Citizen') {
-          utils.callSnackBar(
-            title: "Login desabilitado",
-            message:
-                "Acessar o sistema como cidadão está desabilitado nessa versão.",
-            snackStyle: SnackBarStyles.warning,
-            isFloating: true,
-          );
-        } else {
-          await saveSecureToken.save(authInfo as AuthEntity);
-          Get.offAllNamed(
-              '/${SplashScreenStates.successRoutes[authInfo.role]}');
-        }
+        await saveSecureToken.save(authInfo as AuthEntity);
+        decodeTokenAndSaveData(authInfo.token);
+        Get.offAllNamed('/${SplashScreenStates.successRoutes[authInfo.role]}');
       },
       (error) => utils.callSnackBar(
         title: "Falha na autenticação",
@@ -77,6 +81,7 @@ class AuthenticationController extends GetxController {
   }
 
   Future<void> signOut() async {
+    SignInFormStates.clear();
     await clearSecureStorage.clear();
     await logoutUseCase.signOut();
   }

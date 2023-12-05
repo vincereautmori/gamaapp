@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../shared/themes/palette.dart';
 
-class StartedOccurrenceCard extends GetView<OcurrencesController> {
+class StartedOccurrenceCard extends GetView<OccurrencesController> {
   const StartedOccurrenceCard({super.key});
 
   @override
@@ -13,17 +13,29 @@ class StartedOccurrenceCard extends GetView<OcurrencesController> {
       if (controller.startedOccurrence != null) {
         return Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Palette.white,
-                borderRadius: BorderRadius.circular(6),
+            InkWell(
+              onTap: () =>
+                  controller.viewOccurrence(controller.startedOccurrence!.id),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Palette.warning,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                child: Column(
+                  children: [
+                    Text(
+                      "Ocorrência ${controller.startedOccurrence!.name} está ativa no momento",
+                      style: const TextStyle(color: Palette.white),
+                    ),
+                    const SizedBox(height: 16),
+                    const LinearProgressIndicator(),
+                  ],
+                ),
               ),
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-              child: Text(
-                  "Ocorrência ${controller.startedOccurrence!.id} está ativa no momento"),
             ),
-            const LinearProgressIndicator()
           ],
         );
       }

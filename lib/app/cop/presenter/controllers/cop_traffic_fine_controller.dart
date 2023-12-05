@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gamaapp/app/auth/domain/errors/errors.dart';
 import 'package:gamaapp/app/camera/domain/extensions/camera_extension.dart';
-import 'package:gamaapp/app/cop/domain/entities/dtos/pagination_dto.dart';
 import 'package:gamaapp/app/cop/domain/usecases/saveTrafficFine/save_traffic_usecase.dart';
+import 'package:gamaapp/shared/dtos/pagination_dto.dart';
 import 'package:gamaapp/shared/themes/snackbar_styles.dart';
 import 'package:gamaapp/shared/utils/loading.dart';
 import 'package:gamaapp/shared/utils/utils.dart';
@@ -102,7 +102,13 @@ class CopTrafficFineController extends GetxController with Loading {
     createdUntil.addListener(() async {
       await search();
     });
+  }
+
+  @override
+  void onReady() {
     fetchAllTrafficFines();
+
+    super.onReady();
   }
 
   @override

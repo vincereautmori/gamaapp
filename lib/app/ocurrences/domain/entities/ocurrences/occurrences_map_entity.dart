@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class OcurrencesListEntity extends Equatable {
+class OccurrencesMapEntity extends Equatable {
   final DateTime createdAt;
   final String name;
   final int occurrenceId;
@@ -15,7 +15,7 @@ class OcurrencesListEntity extends Equatable {
   final String userName;
   final bool active;
 
-  const OcurrencesListEntity({
+  const OccurrencesMapEntity({
     required this.createdAt,
     required this.name,
     required this.occurrenceId,

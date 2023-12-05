@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:gamaapp/app/auth/presenter/controllers/sign_in_controller.dart';
 import 'package:gamaapp/app/cop/presenter/controllers/cop_home_controller.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +14,19 @@ class CopHomePage extends GetView<CopHomeController> {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationController authController = Get.find();
     return Scaffold(
       backgroundColor: const Color(0xFFEFEFEF),
+      appBar: AppBar(
+        backgroundColor: Palette.primary,
+        leading: IconButton(
+          onPressed: authController.signOut,
+          icon: const Icon(
+            PhosphorIcons.sign_out,
+            color: Palette.white,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -24,7 +36,7 @@ class CopHomePage extends GetView<CopHomeController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 64, bottom: 24),
+                    padding: const EdgeInsets.only(bottom: 24),
                     child: Image.asset(
                       Images.logoPNG,
                       height: 163,

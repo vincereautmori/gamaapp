@@ -8,14 +8,14 @@ import 'package:get/get.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 import '../../../locations/presenter/controllers/location_controller.dart';
-import '../../../ocurrences/infra/models/occurrences/ocurrences_list_model.dart';
+import '../../../ocurrences/infra/models/occurrences/ocurrences_map_model.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
 
 class CopHomeController extends GetxController with Loading {
   final String serverUrl = Config.socketUrl;
   late HubConnection hubConnection;
-  final OcurrencesController _ocurrenceController =
-      Get.find<OcurrencesController>();
+  final OccurrencesController _ocurrenceController =
+      Get.find<OccurrencesController>();
   final LocationController _locationController = Get.find<LocationController>();
 
   @override
@@ -30,12 +30,12 @@ class CopHomeController extends GetxController with Loading {
     hubConnection.on("ReceiveMessage", (messages) {
       if (messages != null) {
         if (messages.first is List) {
-          _ocurrenceController.fillOccurrences(
-            OcurrencesListModel.fromJsonList(messages.first),
+          _ocurrenceController.fillMapOccurrences(
+            OcurrencesMapModel.fromJsonList(messages.first),
           );
         } else {
           _ocurrenceController.notifyNewOccurrence(
-            OcurrencesListModel.fromJson(messages.first),
+            OcurrencesMapModel.fromJson(messages.first),
           );
         }
       }

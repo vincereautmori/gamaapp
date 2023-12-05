@@ -15,6 +15,7 @@ class GamaTextField extends StatelessWidget {
   final void Function(String)? onChange;
   final List<TextInputFormatter>? masks;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const GamaTextField({
     super.key,
@@ -27,6 +28,7 @@ class GamaTextField extends StatelessWidget {
     this.maxLines = 1,
     this.masks,
     this.controller,
+    this.validator,
   });
 
   @override
@@ -58,6 +60,7 @@ class GamaTextField extends StatelessWidget {
           ),
           maxLines: maxLines,
           inputFormatters: masks,
+          validator: validator,
         ),
       ],
     );

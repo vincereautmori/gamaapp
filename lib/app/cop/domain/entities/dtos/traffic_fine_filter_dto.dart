@@ -1,4 +1,4 @@
-import 'pagination_dto.dart';
+import '../../../../../shared/dtos/pagination_dto.dart';
 
 class TrafficFineFilterDto {
   final String? licensePlate;

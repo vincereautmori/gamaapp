@@ -20,8 +20,8 @@ class MapPage extends GetView<LocationController> {
   @override
   Widget build(BuildContext context) {
     Position? position = controller.position;
-    final OcurrencesController ocurrenceController =
-        Get.find<OcurrencesController>();
+    final OccurrencesController ocurrenceController =
+        Get.find<OccurrencesController>();
     final OccurrencesPropertiesController propertiesController =
         Get.find<OccurrencesPropertiesController>();
 
@@ -41,7 +41,7 @@ class MapPage extends GetView<LocationController> {
         centerTitle: true,
       ),
       body: Obx(() {
-        List<Marker> markers = ocurrenceController.occurrences
+        List<Marker> markers = ocurrenceController.mapOccurrences
             .map<Marker>(
               (ocurrence) => Marker(
                 point: LatLng(ocurrence.latitude, ocurrence.longitude),

@@ -16,17 +16,7 @@ class GamaApp extends StatelessWidget {
       theme: GamaThemes().lightTheme,
       initialBinding: CameraBind(),
       initialRoute: RoutesNames.splash,
-      getPages: [
-        Routes.login,
-        Routes.splash,
-        Routes.cop,
-        Routes.citizen,
-        Routes.newOccurrence,
-        Routes.newTrafficFine,
-        Routes.viewTrafficFine,
-        Routes.warningPage,
-        Routes.viewOccurrence,
-      ],
+      getPages: Routes.pages,
       debugShowCheckedModeBanner: false,
     );
   }
