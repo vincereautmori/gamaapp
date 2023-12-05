@@ -14,6 +14,8 @@ enum LoadingStates {
   creteUser,
   login,
   updatePassword,
+  startOccurrence,
+  stopOccurrence,
 }
 
 mixin Loading {

@@ -91,6 +91,11 @@ class OccurrencesController extends GetxController with Loading {
   bool get isUploading =>
       loadingState.value == LoadingStates.uploadingOccurrenceImage;
 
+  bool get isStartingOrIsStoping => [
+        LoadingStates.startOccurrence,
+        LoadingStates.stopOccurrence
+      ].contains(loadingState.value);
+
   @override
   void onInit() {
     super.onInit();
@@ -337,28 +342,36 @@ class OccurrencesController extends GetxController with Loading {
   }
 
   void start(OccurrencesInfo occurrence) async {
+    setLoading(LoadingStates.startOccurrence);
     Result result = await startOccurrence(occurrence.id);
-    result.when((_) {
-      OccurrenceStates.startedOccurrence.value = occurrence;
-      utils.callSnackBar(
-        title: "Iniciado ocorrência",
-        message: "Ocorrência ${occurrence.id} iniciada com sucesso",
-      );
-      refreshOccurrence(occurrence.id);
-    },
-        (error) => utils.callSnackBar(
-              title: "Falha ao iniciar ocorrência",
-              message: error.message,
-            ));
+    result.when(
+      (_) {
+        OccurrenceStates.startedOccurrence.value = occurrence;
+        utils.callSnackBar(
+          title: "Iniciado ocorrência",
+          message: "Ocorrência ${occurrence.id} iniciada com sucesso",
+          snackStyle: SnackBarStyles.success,
+        );
+        refreshOccurrence(occurrence.id);
+      },
+      (error) => utils.callSnackBar(
+        title: "Falha ao iniciar ocorrência",
+        message: error.message,
+        snackStyle: SnackBarStyles.error,
+      ),
+    );
+    stopLoading();
   }
 
   void stop(int id) async {
+    setLoading(LoadingStates.startOccurrence);
     Result result = await stopOccurrence(id);
     result.when((_) {
       OccurrenceStates.startedOccurrence.value = null;
       utils.callSnackBar(
         title: "Ocorrência finalizada",
         message: "Ocorrência $id finalizada com sucesso",
+        snackStyle: SnackBarStyles.success,
       );
       removeCompletedOccurrence(id);
       refreshOccurrence(id);
@@ -366,7 +379,9 @@ class OccurrencesController extends GetxController with Loading {
         (error) => utils.callSnackBar(
               title: "Falha ao finalizar ocorrência",
               message: error.message,
+              snackStyle: SnackBarStyles.error,
             ));
+    stopLoading();
   }
 
   void newOccurrence() async {

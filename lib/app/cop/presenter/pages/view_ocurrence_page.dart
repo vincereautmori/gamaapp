@@ -449,6 +449,7 @@ class ViewOcurrencePage extends GetView<OccurrencesController> {
                           controller.startedOccurrence?.id == occurrence.id
                               ? Palette.red
                               : Palette.primary,
+                      isLoading: controller.isStartingOrIsStoping,
                     ),
                   const SizedBox(height: 24),
                 ],
