@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:gamaapp/app/routes/routes_name.dart';
+import 'package:gamaapp/shared/widgets/buttons/button.dart';
 import 'package:gamaapp/shared/widgets/square_line.dart';
 import 'package:get/get.dart';
 
@@ -52,6 +54,14 @@ class ProfilePage extends GetView<ProfileController> {
             title: Text(controller.roleName ?? ""),
           ),
           const Divider(color: Palette.lightGrey),
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: GamaButton(
+              text: "Alterar senha",
+              onPressed: () => Get.toNamed(RoutesNames.updatePassword),
+            ),
+          )
         ],
       ),
     );

@@ -11,4 +11,5 @@ class RoutesNames {
   static String get createTrafficFine => '/new-traffic-fine';
   static String get viewTrafficFine => '/view-traffic-fine';
   static String get profile => '/profile';
+  static String get updatePassword => '/update-password';
 }

@@ -12,4 +12,10 @@ abstract class ProfileRepository {
   });
 
   Future<Result<ProfileInfo, Failure>> getProfileData();
+
+  Future<Result<Unit, Failure>> updatePassword(
+    String login, {
+    required String oldPassword,
+    required String newPassword,
+  });
 }

@@ -9,4 +9,10 @@ abstract class ProfileDatasource {
   });
 
   Future<ProfileModel?> getProfile();
+
+  Future<void> updatePassword(
+    String login, {
+    required String oldPassword,
+    required String newPassword,
+  });
 }

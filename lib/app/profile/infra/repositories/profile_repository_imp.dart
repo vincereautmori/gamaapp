@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:gamaapp/app/profile/infra/models/profile_model.dart';
 import 'package:multiple_result/multiple_result.dart';
 
@@ -50,6 +51,34 @@ class ProfileRepositoryImp implements ProfileRepository {
         role: role,
       );
       return Success.unit();
+    } catch (e) {
+      return Error(
+        ProfileError(
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit, Failure>> updatePassword(String login,
+      {required String oldPassword, required String newPassword}) async {
+    try {
+      await datasource.updatePassword(
+        login,
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      );
+      return Success.unit();
+    } on DioException catch (e) {
+      String errorMessage =
+          e.response?.data['errors']['user'].first ?? "Algo deu errado";
+
+      return Error(
+        ProfileError(
+          message: errorMessage,
+        ),
+      );
     } catch (e) {
       return Error(
         ProfileError(

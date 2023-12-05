@@ -11,6 +11,7 @@ import 'package:gamaapp/app/main_bind.dart';
 import 'package:gamaapp/app/ocurrences/presenter/binds/occurrence_binding.dart';
 import 'package:gamaapp/app/ocurrences/presenter/binds/occurrence_properties_binding.dart';
 import 'package:gamaapp/app/profile/presenter/bindings/profile_binding.dart';
+import 'package:gamaapp/app/profile/presenter/pages/update_password_page.dart';
 import 'package:gamaapp/shared/apagar_depois/warning_page.dart';
 import 'package:get/get.dart';
 
@@ -104,6 +105,11 @@ class Routes {
         page: () => const ProfilePage(),
       );
 
+  static GetPage get updatePassword => GetPage(
+        name: RoutesNames.updatePassword,
+        page: () => const UpdatePasswordPage(),
+      );
+
   static List<GetPage> get pages => [
         Routes.login,
         Routes.splash,
@@ -116,5 +122,6 @@ class Routes {
         Routes.newOccurrence,
         Routes.signUp,
         Routes.profile,
+        Routes.updatePassword
       ];
 }

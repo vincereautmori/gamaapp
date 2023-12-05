@@ -13,6 +13,7 @@ enum LoadingStates {
   occurrenceProperties,
   creteUser,
   login,
+  updatePassword,
 }
 
 mixin Loading {

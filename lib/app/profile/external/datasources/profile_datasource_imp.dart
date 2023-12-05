@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:gamaapp/app/profile/external/hive/profile_hive.dart';
 import 'package:gamaapp/app/profile/infra/models/profile_model.dart';
 import 'package:hive/hive.dart';
@@ -6,8 +7,12 @@ import '../../infra/datasources/profile_datasource.dart';
 
 class ProfileDatasourceImp implements ProfileDatasource {
   final Box<ProfileHive> box;
+  final Dio dio;
 
-  ProfileDatasourceImp(this.box);
+  ProfileDatasourceImp({
+    required this.box,
+    required this.dio,
+  });
 
   @override
   Future<ProfileModel?> getProfile() async {
@@ -31,4 +36,16 @@ class ProfileDatasourceImp implements ProfileDatasource {
           role: role,
         ),
       );
+
+  @override
+  Future<void> updatePassword(
+    String login, {
+    required String oldPassword,
+    required String newPassword,
+  }) =>
+      dio.put('/users/$login/password', data: {
+        "login": login,
+        "newPassword": newPassword,
+        "oldPassword": oldPassword
+      });
 }
