@@ -13,12 +13,15 @@ import '../../../../../shared/themes/palette.dart';
 import '../../../../../shared/widgets/mapbox_map.dart';
 import '../../../ocurrences/domain/entities/ocurrences/ocurrences_info.dart';
 import '../../../ocurrences/presenter/controllers/ocurrences_controller.dart';
+import '../../../profile/presenter/controllers/profile_controller.dart';
 
 class ViewOcurrencePage extends GetView<OccurrencesController> {
   const ViewOcurrencePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.find<ProfileController>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ocorrência'),
@@ -432,7 +435,8 @@ class ViewOcurrencePage extends GetView<OccurrencesController> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  if (occurrence.status != "Atendimento concluído")
+                  if (occurrence.status != "Atendimento concluído" &&
+                      profileController.isCop)
                     GamaButton(
                       text: controller.startedOccurrence?.id == occurrence.id
                           ? "Finalizar Ocorrência"

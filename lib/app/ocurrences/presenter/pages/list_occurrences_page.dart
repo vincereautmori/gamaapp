@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../profile/domain/entities/profile_info.dart';
 import '../../../profile/presenter/controllers/profile_controller.dart';
+import '../../../routes/routes_name.dart';
 import '../../domain/entities/ocurrences/listed_occurrences_info.dart';
 import '../controllers/occurrences_properties_controller.dart';
 import '../controllers/ocurrences_controller.dart';
@@ -60,7 +61,7 @@ class OccurrencesList extends GetView<OccurrencesController> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          profileInfo?.email ?? "",
+                          profileInfo?.fullname.split(" ").first ?? "",
                           style: Texts.cardTitle.copyWith(
                             color: Palette.white,
                             fontWeight: FontWeight.bold,
@@ -78,9 +79,10 @@ class OccurrencesList extends GetView<OccurrencesController> {
                 ],
               ),
             ),
-            const ListTile(
-              leading: Icon(PhosphorIcons.user),
-              title: Text("Perfil"),
+            ListTile(
+              leading: const Icon(PhosphorIcons.user),
+              title: const Text("Perfil"),
+              onTap: () => Get.toNamed(RoutesNames.profile),
             ),
             ListTile(
               title: const Text("Sair"),
@@ -123,7 +125,7 @@ class OccurrencesList extends GetView<OccurrencesController> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Nenhuma ocurrência no periodo',
+                            'Nenhuma ocorrência no periodo',
                             style: Texts.subtitle,
                           )
                         ],
@@ -199,7 +201,7 @@ class OccurrencesList extends GetView<OccurrencesController> {
           : FloatingActionButton.extended(
               onPressed: propertiesController.fetchProperties,
               icon: const Icon(Icons.add),
-              label: const Text('Nova ocurrência'),
+              label: const Text('Nova ocorrência'),
             )),
     );
   }

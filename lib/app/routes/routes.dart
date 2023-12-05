@@ -20,6 +20,7 @@ import '../cop/presenter/bindings/cop_traffic_violation_binding.dart';
 import '../cop/presenter/pages/trafficFine/list_traffic_fine_page.dart';
 import '../ocurrences/presenter/pages/list_occurrences_page.dart';
 import '../ocurrences/presenter/pages/new_occurrence_page.dart';
+import '../profile/presenter/pages/profile_page.dart';
 import '../signup/presenter/pages/signup_page.dart';
 import 'routes_name.dart';
 
@@ -98,6 +99,11 @@ class Routes {
         page: () => const SignupPage(),
       );
 
+  static GetPage get profile => GetPage(
+        name: RoutesNames.profile,
+        page: () => const ProfilePage(),
+      );
+
   static List<GetPage> get pages => [
         Routes.login,
         Routes.splash,
@@ -109,5 +115,6 @@ class Routes {
         Routes.viewOccurrence,
         Routes.newOccurrence,
         Routes.signUp,
+        Routes.profile,
       ];
 }
