@@ -12,7 +12,7 @@ class GamaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Gama',
       theme: GamaThemes().lightTheme,
       initialBinding: CameraBind(),
       initialRoute: RoutesNames.splash,

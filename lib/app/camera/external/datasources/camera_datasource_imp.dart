@@ -26,7 +26,8 @@ class CameraDatasourceImp implements CameraDatasource {
       onSendProgress: onSendProgress,
     );
 
-    return response.data;
+    print(response.data);
+    return response.data ?? "";
   }
 
   @override

@@ -27,13 +27,23 @@ class CameraRepositoryImp implements CameraRepository {
     void Function(int, int)? onSendProgress,
   }) async {
     try {
-      String uploadedImageUrl = await datasource.uploadImage(fileFormData,
-          onSendProgress: onSendProgress);
+      String uploadedImageUrl = await datasource.uploadImage(
+        fileFormData,
+        onSendProgress: onSendProgress,
+      );
+      if (uploadedImageUrl.isEmpty) {
+        return Error(
+          UploadImageError(
+            message: 'Tente novamente em alguns instantes',
+          ),
+        );
+      }
+
       return Success(uploadedImageUrl);
     } catch (e) {
       return Error(
         UploadImageError(
-          message: 'Falha ao fazer upload da imagem',
+          message: 'Tente novamente em alguns instantes',
         ),
       );
     }

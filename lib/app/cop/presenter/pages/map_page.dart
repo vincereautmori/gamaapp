@@ -73,7 +73,7 @@ class MapPage extends GetView<LocationController> {
         return FlutterMap(
           options: MapOptions(
             zoom: 15.0,
-            maxZoom: 22,
+            maxZoom: 21,
             center: LatLng(position?.latitude ?? -22.7467,
                 position?.longitude ?? -47.3311),
           ),
