@@ -31,7 +31,6 @@ class CameraRepositoryImp implements CameraRepository {
         fileFormData,
         onSendProgress: onSendProgress,
       );
-
       if (uploadedImageUrl.isEmpty) {
         return Error(
           UploadImageError(
@@ -44,7 +43,7 @@ class CameraRepositoryImp implements CameraRepository {
     } catch (e) {
       return Error(
         UploadImageError(
-          message: 'Falha ao fazer upload da imagem',
+          message: 'Tente novamente em alguns instantes',
         ),
       );
     }

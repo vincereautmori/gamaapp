@@ -224,10 +224,16 @@ class OccurrencesController extends GetxController with Loading {
             OccurrenceStates.trafficFineImageBytesTotal.value = total;
           });
           stopLoading();
-          String url = uploadResult.tryGetSuccess();
-          setFileUrl(url);
-          OccurrenceStates.loadedImage.clear();
-          OccurrenceStates.loadedImage.addAll(await file.readAsBytes());
+          uploadResult.when((url) async {
+            setFileUrl(url);
+            OccurrenceStates.loadedImage.clear();
+            OccurrenceStates.loadedImage.addAll(await file.readAsBytes());
+          },
+              (error) => utils.callSnackBar(
+                    title: "Falha ao salvar imagem",
+                    message: error.message,
+                    snackStyle: SnackBarStyles.error,
+                  ));
         } else {
           OccurrenceStates.trafficFineImageBytesCount.value = 0;
         }

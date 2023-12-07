@@ -287,8 +287,11 @@ class NewOccurrencePage extends GetView<OccurrencesController> {
       ),
       floatingActionButton: Obx(
         () {
+          bool isDisabled = controller.isCreateLoading;
           return FloatingActionButton.extended(
-            onPressed: controller.newOccurrence,
+            backgroundColor: isDisabled ? Palette.lightGrey : null,
+            foregroundColor: isDisabled ? Palette.grey : null,
+            onPressed: isDisabled ? null : controller.newOccurrence,
             icon: controller.isCreateLoading
                 ? const SizedBox(
                     height: 24,
