@@ -74,6 +74,7 @@ class NewOccurrencePage extends GetView<OccurrencesController> {
                 label: 'Título',
                 placeholder: "Dê uma breve descrição da ocorrência",
                 controller: controller.title,
+                maxLength: 20,
               ),
             ),
             const SizedBox(height: 16),
@@ -153,103 +154,104 @@ class NewOccurrencePage extends GetView<OccurrencesController> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Obx(() => ListTile(
-                      leading: const CircleAvatar(
+                      leading: CircleAvatar(
                         child: Icon(
-                          Icons.photo_outlined,
+                          !controller.isUploading &&
+                                  controller.imageBytesCount > 0 &&
+                                  controller.occurrenceInput.imageUrl.isNotEmpty
+                              ? Icons.remove_red_eye
+                              : Icons.photo_outlined,
                         ),
                       ),
-                      onTap: controller.imageBytesCount == 0
-                          ? controller.uploadImage
-                          : !controller.isUploading
-                              ? () {
-                                  Get.dialog(
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: IconButton(
-                                            onPressed: Get.back,
-                                            icon: const Icon(
-                                              Icons.close,
-                                              color: Palette.white,
+                      onTap:
+                          controller.imageBytesCount == 0 ||
+                                  controller.occurrenceInput.imageUrl.isEmpty
+                              ? controller.uploadImage
+                              : !controller.isUploading
+                                  ? () {
+                                      Get.dialog(
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: IconButton(
+                                                onPressed: Get.back,
+                                                icon: const Icon(
+                                                  Icons.close,
+                                                  color: Palette.white,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            Expanded(
+                                              child: Obx(() => Center(
+                                                    child: controller
+                                                            .loadedImage.isEmpty
+                                                        ? const CircularProgressIndicator(
+                                                            color:
+                                                                Palette.white,
+                                                          )
+                                                        : Image.memory(
+                                                            Uint8List.fromList(
+                                                              controller
+                                                                  .loadedImage,
+                                                            ),
+                                                            frameBuilder: (context,
+                                                                child,
+                                                                frame,
+                                                                wasSynchronouslyLoaded) {
+                                                              if (wasSynchronouslyLoaded) {
+                                                                return child;
+                                                              }
+                                                              return AnimatedSwitcher(
+                                                                duration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            200),
+                                                                child: frame !=
+                                                                        null
+                                                                    ? child
+                                                                    : SizedBox(
+                                                                        width: MediaQuery.of(context).size.width -
+                                                                            48,
+                                                                        height:
+                                                                            500,
+                                                                        child: Shimmer.fromColors(
+                                                                            baseColor: Colors.grey.shade300,
+                                                                            highlightColor: Colors.grey.shade100,
+                                                                            child: Container(
+                                                                              width: double.infinity,
+                                                                              height: 500.0,
+                                                                              margin: const EdgeInsets.all(16.0),
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(12.0),
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            )),
+                                                                      ),
+                                                              );
+                                                            },
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width -
+                                                                48,
+                                                          ),
+                                                  )),
+                                            ),
+                                          ],
                                         ),
-                                        Expanded(
-                                          child: Obx(() => Center(
-                                                child: controller
-                                                        .loadedImage.isEmpty
-                                                    ? const CircularProgressIndicator(
-                                                        color: Palette.white,
-                                                      )
-                                                    : Image.memory(
-                                                        Uint8List.fromList(
-                                                          controller
-                                                              .loadedImage,
-                                                        ),
-                                                        frameBuilder: (context,
-                                                            child,
-                                                            frame,
-                                                            wasSynchronouslyLoaded) {
-                                                          if (wasSynchronouslyLoaded) {
-                                                            return child;
-                                                          }
-                                                          return AnimatedSwitcher(
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        200),
-                                                            child: frame != null
-                                                                ? child
-                                                                : SizedBox(
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width -
-                                                                        48,
-                                                                    height: 500,
-                                                                    child: Shimmer.fromColors(
-                                                                        baseColor: Colors.grey.shade300,
-                                                                        highlightColor: Colors.grey.shade100,
-                                                                        child: Container(
-                                                                          width:
-                                                                              double.infinity,
-                                                                          height:
-                                                                              500.0,
-                                                                          margin: const EdgeInsets
-                                                                              .all(
-                                                                              16.0),
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(12.0),
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ),
-                                                                        )),
-                                                                  ),
-                                                          );
-                                                        },
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width -
-                                                            48,
-                                                      ),
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              : null,
+                                      );
+                                    }
+                                  : null,
                       title: Text(
-                        controller.imageBytesCount == 0
+                        controller.imageBytesCount == 0 ||
+                                controller.occurrenceInput.imageUrl.isEmpty
                             ? 'Nenhuma imagem'
                             : controller.isUploading
                                 ? "Carregando..."
-                                : "Imagem carregada!",
+                                : "Clique para visualizar",
                       ),
                       trailing: controller.imageBytesCount == 0
                           ? const Icon(Icons.add)
@@ -276,6 +278,7 @@ class NewOccurrencePage extends GetView<OccurrencesController> {
                 placeholder: "Dê mais detalhes sobre o ocorrido",
                 maxLines: 5,
                 controller: controller.description,
+                maxLength: 200,
               ),
             ),
             const SizedBox(height: 88),
@@ -284,13 +287,8 @@ class NewOccurrencePage extends GetView<OccurrencesController> {
       ),
       floatingActionButton: Obx(
         () {
-          bool isDisabled = controller.isCreateLoading ||
-              controller.title.text.isEmpty ||
-              controller.loadedImage.isEmpty;
           return FloatingActionButton.extended(
-            backgroundColor: isDisabled ? Palette.lightGrey : null,
-            foregroundColor: isDisabled ? Palette.grey : null,
-            onPressed: isDisabled ? null : controller.newOccurrence,
+            onPressed: controller.newOccurrence,
             icon: controller.isCreateLoading
                 ? const SizedBox(
                     height: 24,

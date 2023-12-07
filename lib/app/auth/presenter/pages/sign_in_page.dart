@@ -41,7 +41,7 @@ class SignInPage extends GetView<AuthenticationController> {
                   Column(
                     children: [
                       Text(
-                        'Bem vindo a GAMA',
+                        'Bem vindo à GAMA',
                         style: context.textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),

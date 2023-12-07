@@ -225,7 +225,6 @@ class OccurrencesController extends GetxController with Loading {
           });
           stopLoading();
           String url = uploadResult.tryGetSuccess();
-
           setFileUrl(url);
           OccurrenceStates.loadedImage.clear();
           OccurrenceStates.loadedImage.addAll(await file.readAsBytes());
@@ -316,12 +315,13 @@ class OccurrencesController extends GetxController with Loading {
   }
 
   void viewOccurrence(int id) async {
+    OccurrenceStates.openedOcurrence.value = null;
+    Get.toNamed(RoutesNames.viewOccurrence);
     Result<OccurrencesInfo, Failure> result = await loadOccurrenceData(id);
 
-    result.when((ocurrence) {
+    result.whenSuccess((ocurrence) {
       OccurrenceStates.openedOcurrence.value = ocurrence;
-      Get.toNamed(RoutesNames.viewOccurrence);
-    }, (error) => print(error));
+    });
   }
 
   void clearOpenedOccurrence() {
@@ -332,9 +332,9 @@ class OccurrencesController extends GetxController with Loading {
   void refreshOccurrence(int id) async {
     Result<OccurrencesInfo, Failure> result = await loadOccurrenceData(id);
 
-    result.when((ocurrence) {
+    result.whenSuccess((ocurrence) {
       OccurrenceStates.openedOcurrence.value = ocurrence;
-    }, (error) => print(error));
+    });
   }
 
   void removeCompletedOccurrence(int id) {
@@ -385,6 +385,26 @@ class OccurrencesController extends GetxController with Loading {
   }
 
   void newOccurrence() async {
+    if (occurrenceInput.imageUrl.isEmpty) {
+      return utils.callSnackBar(
+        title: "Campo obrigatório",
+        message: "Imagem é obrigatório",
+      );
+    }
+
+    if (occurrenceInput.description.isEmpty) {
+      return utils.callSnackBar(
+        title: "Campo obrigatório",
+        message: "Descrição é obrigatório",
+      );
+    }
+
+    if (occurrenceInput.name.isEmpty) {
+      return utils.callSnackBar(
+        title: "Campo obrigatório",
+        message: "Título é obrigatório",
+      );
+    }
     setLoading(LoadingStates.createOccurrence);
 
     setOccurrenceLocation();
@@ -393,10 +413,11 @@ class OccurrencesController extends GetxController with Loading {
     );
     stopLoading();
     result.when(
-      (success) {
+      (_) {
         utils.callSnackBar(
-          title: "title",
+          title: "Nova ocorrência!",
           message: "Ocorrência criada com sucesso!",
+          snackStyle: SnackBarStyles.success,
         );
         clearOccurrenceData();
       },

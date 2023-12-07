@@ -100,12 +100,17 @@ class ViewOcurrencePage extends GetView<OccurrencesController> {
                                   fontSize: 14,
                                 ),
                               ),
-                              Text(
-                                occurrence.name,
-                                style: const TextStyle(
-                                  color: Palette.darkGrey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                              SizedBox(
+                                width: 200,
+                                child: Text(
+                                  occurrence.name,
+                                  textAlign: TextAlign.end,
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    color: Palette.darkGrey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               )
                             ],
